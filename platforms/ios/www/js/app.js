@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ngCondova', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'ngCordova','starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -65,22 +65,22 @@ angular.module('starter', ['ionic','ngCondova', 'starter.controllers', 'starter.
         }
       }
     })
-    .state('tab.complete', {
-      url: '/complete',
+    .state('tab.more', {
+      url: '/more',
       views: {
-        'tab-complete': {
-          templateUrl: 'templates/tab-complete.html',
-          controller: 'CompleteCtrl'
+        'tab-more': {
+          templateUrl: 'templates/tab-more.html',
+          controller: 'MoreCtrl'
         }
       }
     })
 
-  .state('tab.reject', {
-    url: '/reject',
+  .state('tab.map', {
+    url: '/map',
     views: {
-      'tab-reject': {
-        templateUrl: 'templates/tab-reject.html',
-        controller: 'MapCtrl'
+      'tab-map': {
+        templateUrl: 'templates/tab-map.html',
+        controller : 'MapCtrl'
       }
     }
   })

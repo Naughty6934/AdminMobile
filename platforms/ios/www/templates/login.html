@@ -1,4 +1,4 @@
-<ion-view view-title="เข้าระบบ" name="login-view">
+<ion-view view-title="เข้าสู่ระบบ" name="login-view">
   <ion-content class="padding">
       <!--<div class="list list-inset">
           <label class="item item-input">
@@ -14,10 +14,10 @@
         <form name="login_form" class="" novalidate>
           <div class="form-fields-outer list list-inset">
           <label class="item item-input">
-              <input type="text" placeholder="Username" name="username" ng-model="credentials.username" required>
+              <input type="text" placeholder="ชื่อผู้ใช้งาน" name="username" ng-model="credentials.username" required>
             </label>
             <label class="item item-input" show-hide-container>
-              <input type="password" placeholder="Password" name="password" ng-model="credentials.password" required show-hide-input>
+              <input type="password" placeholder="รหัสผ่าน" name="password" ng-model="credentials.password" required show-hide-input>
             </label>
           <button type="submit" class="log-in button button-block" ng-click="doLogIn(credentials)" ng-disabled="login_form.$invalid">
             เข้าสู่ระบบ

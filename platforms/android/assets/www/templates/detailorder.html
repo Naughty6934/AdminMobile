@@ -1,8 +1,11 @@
 <ion-view view-title="รายละเอียด">
-    <ion-content>
-        <div class="list">
+  <ion-nav-buttons side="primary">
+      <button class="button" ui-sref="tab.confirmed">Back</button>
+    </ion-nav-buttons>
+  <ion-content>
+    <div class="list">
 
-            <label class="item item-input">
+      <label class="item item-input">
                 <span class="input-label">เลขใบสั่งซื้อ : </span>
                 <input style="background-color: white" type="text" ng-model="order.docno" readonly>
 </label>
@@ -29,9 +32,9 @@
 
 
 <div class='item item-avatar-left item-icon-right item-text-wrap' ng-repeat="item in order.items">
-    <img src={{item.product.images}}>
-    <h2>{{item.product.name}} ({{item.product.price}} บาท)</h2>
-    <p style="margin-right: 20%">จำนวน {{item.qty}}</p>
+  <img src={{item.product.images}}>
+  <h2>{{item.product.name}} ({{item.product.price}} บาท)</h2>
+  <p style="margin-right: 20%">จำนวน {{item.qty}}</p>
 <p style="margin-right: 20%">ราคารวม {{item.totalamount}} บาท</p>
 
 </div>
@@ -58,8 +61,8 @@
 </label>
 
 <div>
-    <!--<button ion-button block ng-hide="order.deliverystatus === 'accept'"  ng-click="modal.show()">เลือกคนส่งข้าว</button>-->
-    <button class=" button button-block button-positive" ng-hide="order.deliverystatus === 'accept'" ng-click="modal.show()">
+  <!--<button ion-button block ng-hide="order.deliverystatus === 'accept'"  ng-click="modal.show()">เลือกคนส่งข้าว</button>-->
+  <button class=" button button-block button-positive" ng-hide="order.deliverystatus === 'accept'" ng-click="modal.show()">
        เลือกคนส่งข้าว
       </button>
 
