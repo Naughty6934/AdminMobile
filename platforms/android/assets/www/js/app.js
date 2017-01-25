@@ -79,7 +79,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     url: '/reject',
     views: {
       'tab-reject': {
-        templateUrl: 'templates/tab-reject.html'
+        templateUrl: 'templates/tab-reject.html',
+        controller: 'MapCtrl'
       }
     }
   })

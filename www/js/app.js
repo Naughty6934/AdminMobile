@@ -65,21 +65,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
-    .state('tab.complete', {
-      url: '/complete',
+    .state('tab.more', {
+      url: '/more',
       views: {
-        'tab-complete': {
-          templateUrl: 'templates/tab-complete.html',
-          controller: 'CompleteCtrl'
+        'tab-more': {
+          templateUrl: 'templates/tab-more.html',
+          controller: 'MoreCtrl'
         }
       }
     })
 
-  .state('tab.reject', {
-    url: '/reject',
+  .state('tab.map', {
+    url: '/map',
     views: {
-      'tab-reject': {
-        templateUrl: 'templates/tab-reject.html'
+      'tab-map': {
+        templateUrl: 'templates/tab-map.html'
       }
     }
   })

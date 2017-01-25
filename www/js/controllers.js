@@ -97,7 +97,7 @@ angular.module('starter.controllers', ['ionic'])
     
   })
 
-  .controller('CompleteCtrl', function ($scope, AuthService, $state) {
+  .controller('MoreCtrl', function ($scope, AuthService, $state) {
     $scope.logOut = function () {
       AuthService.signOut();
       $state.go('login');
