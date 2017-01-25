@@ -122,7 +122,7 @@ var posOptions = { timeout: 10000, enableHighAccuracy: false };
             $state.go('tab.confirmed');
             alert('success');
           } else {
-            alert('คุณไม่มีสิทธิ์');
+            alert('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง');
           }
 
         }, function (error) {

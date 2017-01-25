@@ -120,9 +120,9 @@ var posOptions = { timeout: 10000, enableHighAccuracy: false };
         .then(function (response) {
           if (response.roles[0] === 'admin') {
             $state.go('tab.confirmed');
-            alert('success');
+            alert('ยินดีเข้าสู่ระบบ');
           } else {
-            alert('คุณไม่มีสิทธิ์');
+            alert('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง');
           }
 
         }, function (error) {
