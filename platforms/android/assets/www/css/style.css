@@ -4,3 +4,10 @@
 .badge-error:hover {
   background-color: #953b39;
 }
+.scroll{
+  height: 100%
+}
+#map{
+  height: 100%;
+  width: 100%
+}
