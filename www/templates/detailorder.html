@@ -1,0 +1,86 @@
+<ion-view view-title="รายละเอียด">
+    <ion-content>
+        <div class="list">
+
+            <label class="item item-input">
+                <span class="input-label">เลขใบสั่งซื้อ : </span>
+                <input style="background-color: white" type="text" ng-model="order.docno" readonly>
+</label>
+
+<label class="item item-input">
+                <span class="input-label">วันที่ : </span>
+                <input style="background-color: white" type="text" ng-value="order.docdate | date:'dd/MM/yyyy'" readonly>
+</label>
+
+<label class="item item-input">
+                <span class="input-label">ชื่อ : </span>
+                <input style="background-color: white" type="text" ng-model="order.user.displayName" readonly>
+</label>
+
+<label class="item item-input">
+                <span class="input-label">ที่อยู่ : </span>
+                <textarea style="background-color: white;padding-right: 1cm" type="textarea" ng-model="order.shipping.address" readonly></textarea>
+</label>
+
+<label class="item item-input">
+                <span class="input-label">เบอร์โทร : </span>
+                <input style="background-color: white" type="text" ng-model="order.shipping.tel" readonly>
+</label>
+
+
+<div class='item item-avatar-left item-icon-right item-text-wrap' ng-repeat="item in order.items">
+    <img src={{item.product.images}}>
+    <h2>{{item.product.name}} ({{item.product.price}} บาท)</h2>
+    <p style="margin-right: 20%">จำนวน {{item.qty}}</p>
+<p style="margin-right: 20%">ราคารวม {{item.totalamount}} บาท</p>
+
+</div>
+
+<label class="item item-input">
+                <span class="input-label">ราคารวม : </span>
+                <input style="background-color: white" type="text" ng-value="order.amount+order.discount +' บาท'" readonly>
+</label>
+
+
+<label class="item item-input">
+                <span class="input-label" >ส่วนลด : </span>
+                <input style="background-color: white" type="text" ng-value="order.discount + ' ' + 'บาท'" readonly>
+</label>
+
+<label class="item item-input">
+                <span class="input-label">ราคาสุทธิ : </span>
+                <input style="background-color: white" type="text" ng-value="order.totalamount + ' ' + 'บาท'" readonly>
+</label>
+
+<label class="item item-input" ng-show="order.namedeliver">
+                <span class="input-label">คนส่งข้าว : </span>
+                <input style="background-color: white" type="text" ng-value="order.namedeliver.displayName" readonly>
+</label>
+
+<div>
+    <!--<button ion-button block ng-hide="order.deliverystatus === 'accept'"  ng-click="modal.show()">เลือกคนส่งข้าว</button>-->
+    <button class=" button button-block button-positive" ng-hide="order.deliverystatus === 'accept'" ng-click="modal.show()">
+       เลือกคนส่งข้าว
+      </button>
+
+</div>
+</div>
+</ion-content>
+<script id="templates/modal.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+          <h1 class="title">เลือกคนส่งข้าว</h1>
+          <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
+        </ion-header-bar>
+        <ion-content class="padding">
+            <div class="input-group input-group-sm">
+      <span class="input-group-addon" id="sizing-addon3"><i class="fa fa-search" aria-hidden="true"></i></span>
+      <input type="text" class="form-control" placeholder="Search for order..." ng-model="topsearch" aria-describedby="sizing-addon3">
+    </div>
+          <div class="list">
+            <a ng-repeat="deli in delivers | filter:topsearch" ng-click="chooseDeliver(deli)" class="item">{{deli.displayName}}</a>
+          </div>
+        </ion-content>
+      </ion-modal-view>
+    </script>
+</ion-view>

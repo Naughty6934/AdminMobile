@@ -1,0 +1,20 @@
+<ion-view view-title="ยอมรับ">
+  <ion-content>
+    <!--<ion-searchbar>
+      
+    </ion-searchbar>-->
+    <ion-list>
+      <ion-item class='item item-avatar-left item-icon-right' ng-repeat="data in ordersAccept">
+        <img src={{data.user.profileImageURL}}>
+        <h2>{{data.user.displayName}}</h2>
+        <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
+        <p class="product10">{{data.shipping.district}} {{data.shipping.province}}</p>
+        <p>
+          <h2>{{data.shipping.postcode}}</h2>
+        </p>
+        <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
+        <p class="icon ion-right ">{{data.amount}} ฿</p>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

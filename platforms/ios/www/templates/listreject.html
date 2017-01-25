@@ -1,0 +1,24 @@
+<ion-view view-title="ยกเลิก" ng-init="init()">
+    <ion-content>
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon" id="sizing-addon3"><i class="fa fa-search" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" placeholder="Search for order..." ng-model="topsearch" aria-describedby="sizing-addon3">
+        </div>
+        <ion-list>
+            <ion-item class='item item-avatar-left item-icon-right' ng-repeat="data in ordersReject | filter:topsearch" ui-sref="detailorder({orderId : data._id})">
+                <img src={{data.user.profileImageURL}}>
+                <h2>{{data.user.displayName}}</h2>
+                <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
+                <p class="product10">{{data.shipping.district}} {{data.shipping.province}}</p>
+                <p ng-show="data.namedeliver">
+                    <label>คนส่งข้าว : </label>
+                    <label>{{data.namedeliver.displayName}}</label>
+                </p>
+                <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
+                <p class="icon ion-right ">{{data.totalamount}} ฿</p>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
