@@ -51,7 +51,7 @@ var posOptions = { timeout: 10000, enableHighAccuracy: false };
     $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
         var lat = position.coords.latitude
         var long = position.coords.longitude
-        alert(lat + ':' + long);
+       // alert(lat + ':' + long);
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 18,
           center: new google.maps.LatLng(lat, long), //เปลี่ยนตามต้องการ
