@@ -1,14 +1,20 @@
-
 <!--<ion-tabs class="tabs-icon-top tabs-color-active-positive tabs-top">-->
 <!--</ion-tabs>-->
-
 <ion-view view-title="คนส่งข้าว">
     <ion-content>
         <div class="list">
-            <a  class="item" ng-click="rejected()">ยกเลิก</a>
-            
-            <a  class="item" ng-click="accepted()">ยอมรับ</a>
+
+
+            <a class="item item-icon-left" ng-click="rejected()">
+                <i class="ion-person"></i> ปฎิเสธ
+            </a>
+
+            <a class="item item-icon-left" ng-click="accepted()">
+                <i class="ion-person-add"></i> ยอมรับ
+            </a>
+            <!--<a class="item" ng-click="rejected()">ปฎิเสธ</a>
+
+            <a class="item" ng-click="accepted()">ยอมรับ</a>-->
         </div>
     </ion-content>
 </ion-view>
-                       
