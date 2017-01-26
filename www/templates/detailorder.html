@@ -1,6 +1,6 @@
 <ion-view view-title="รายละเอียด">
   <ion-nav-buttons side="primary">
-      <button class="button" ui-sref="tab.confirmed">Back</button>
+      <button class="button" ui-sref="tab.confirmed">ย้อนกลับ</button>
     </ion-nav-buttons>
   <ion-content>
     <div class="list">
@@ -47,7 +47,7 @@
 
 <label class="item item-input">
                 <span class="input-label" >ส่วนลด : </span>
-                <input style="background-color: white" type="text" ng-value="order.discount + ' ' + 'บาท'" readonly>
+                <input style="background-color: white" type="text" ng-value="order.discountpromotion + ' ' + 'บาท'" readonly>
 </label>
 
 <label class="item item-input">
@@ -73,12 +73,12 @@
       <ion-modal-view>
         <ion-header-bar class="bar bar-header bar-positive">
           <h1 class="title">เลือกคนส่งข้าว</h1>
-          <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
+          <button class="button button-clear button-primary" ng-click="modal.hide()">ยกเลิก</button>
         </ion-header-bar>
         <ion-content class="padding">
             <div class="input-group input-group-sm">
       <span class="input-group-addon" id="sizing-addon3"><i class="fa fa-search" aria-hidden="true"></i></span>
-      <input type="text" class="form-control" placeholder="Search for order..." ng-model="topsearch" aria-describedby="sizing-addon3">
+      <input type="text" class="form-control" placeholder="ค้นหา..." ng-model="topsearch" aria-describedby="sizing-addon3">
     </div>
           <div class="list">
             <a ng-repeat="deli in delivers | filter:topsearch" ng-click="chooseDeliver(deli)" class="item">{{deli.displayName}}</a>

@@ -121,7 +121,7 @@ var posOptions = { timeout: 10000, enableHighAccuracy: false };
           if (response.roles[0] === 'admin') {
             $scope.credentials = {}
             $state.go('tab.confirmed');
-            alert('เข้าสู่ระบบผู้ดูแลระบบ');
+            //alert('เข้าสู่ระบบผู้ดูแลระบบ');
           } else {
             alert('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง');
           }
