@@ -118,17 +118,21 @@ var posOptions = { timeout: 10000, enableHighAccuracy: false };
       }
       AuthService.loginUser(login)
         .then(function (response) {
-          if (response.roles[0] === 'admin') {
+          console.log(response);
+          // alert('then');
+          if (response["message"]) {
             $scope.credentials = {}
-            $state.go('tab.confirmed');
-            //alert('เข้าสู่ระบบผู้ดูแลระบบ');
-          } else {
-            alert('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง');
+            alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
           }
-
-        }, function (error) {
-          console.log(error);
-          alert('dont success' + " " + error.data.message);
+          else {
+            if (response.roles[0] === 'admin') {
+              $scope.credentials = {}
+              $state.go('tab.confirmed');
+              // alert('success');
+            } else {
+              alert('คุณไม่มีสิทธิ์เข้าใช้งาน');
+            }
+          }
         });
       // console.log("doing sign up");
 
@@ -139,6 +143,8 @@ var posOptions = { timeout: 10000, enableHighAccuracy: false };
   .controller('AcceptCtrl', function ($scope, AuthService, $state) {
 
     $scope.init = function () {
+      $scope.Accept = true;
+      $scope.Reject = false;
       $scope.ordersAccept = [];
       $scope.ordersReject = [];
       AuthService.getOrder()

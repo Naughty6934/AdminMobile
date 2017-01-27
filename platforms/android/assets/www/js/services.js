@@ -13,9 +13,12 @@ angular.module('starter.services', [])
       $http.post('https://thamapp.herokuapp.com/api/auth/signin', login).success(function (database) {
         window.localStorage.user = JSON.stringify(database);
         dfd.resolve(database);
+      }).error(function (error) {
+        /* Act on the event */
+        dfd.resolve(error);
+        // return dfd.promise;
       });
       return dfd.promise;
-
     };
     this.getUser = function () {
       return JSON.parse(window.localStorage.user || null);
@@ -67,7 +70,7 @@ angular.module('starter.services', [])
 
     this.Order = function (orderId) {
       var dfd = $q.defer();
-      $http.get('https://thamapp.herokuapp.com/api/orders/'+orderId).success(function (database) {
+      $http.get('https://thamapp.herokuapp.com/api/orders/' + orderId).success(function (database) {
         // var order = _.find(database, function (order) { return order._id == orderId; });
 
         dfd.resolve(database);

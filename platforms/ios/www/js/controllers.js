@@ -51,7 +51,7 @@ var posOptions = { timeout: 10000, enableHighAccuracy: false };
     $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
         var lat = position.coords.latitude
         var long = position.coords.longitude
-        alert(lat + ':' + long);
+       // alert(lat + ':' + long);
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 18,
           center: new google.maps.LatLng(lat, long), //เปลี่ยนตามต้องการ
@@ -118,17 +118,21 @@ var posOptions = { timeout: 10000, enableHighAccuracy: false };
       }
       AuthService.loginUser(login)
         .then(function (response) {
-          if (response.roles[0] === 'admin') {
+          console.log(response);
+          // alert('then');
+          if (response["message"]) {
             $scope.credentials = {}
-            $state.go('tab.confirmed');
-            //alert('เข้าสู่ระบบผู้ดูแลระบบ');
-          } else {
-            alert('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง');
+            alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
           }
-
-        }, function (error) {
-          console.log(error);
-          alert('dont success' + " " + error.data.message);
+          else {
+            if (response.roles[0] === 'admin') {
+              $scope.credentials = {}
+              $state.go('tab.confirmed');
+              // alert('success');
+            } else {
+              alert('คุณไม่มีสิทธิ์เข้าใช้งาน');
+            }
+          }
         });
       // console.log("doing sign up");
 
@@ -139,6 +143,8 @@ var posOptions = { timeout: 10000, enableHighAccuracy: false };
   .controller('AcceptCtrl', function ($scope, AuthService, $state) {
 
     $scope.init = function () {
+      $scope.Accept = true;
+      $scope.Reject = false;
       $scope.ordersAccept = [];
       $scope.ordersReject = [];
       AuthService.getOrder()
