@@ -56,15 +56,6 @@ angular.module('starter', ['ionic', 'ngCordova','starter.controllers', 'starter.
     }
   })
 
-  .state('tab.accept', {
-      url: '/accept',
-      views: {
-        'tab-accept': {
-          templateUrl: 'templates/tab-accept.html',
-          controller: 'AcceptCtrl'
-        }
-      }
-    })
     .state('tab.more', {
       url: '/more',
       views: {
@@ -95,32 +86,15 @@ angular.module('starter', ['ionic', 'ngCordova','starter.controllers', 'starter.
     }
   })
   
-  .state('listorder', {
-    url: '/listorder',
-        templateUrl: 'templates/listorder.html',
-        controller: 'DeliverCtrl'
-     
-  })
   
-  .state('listaccepted', {
-    url: '/listaccepted',
-        templateUrl: 'templates/listaccept.html',
-        controller: 'AcceptCtrl'
-     
-  })
    .state('detailorder', {
     url: '/detailorder/:orderId',
         templateUrl: 'templates/detailorder.html',
         controller: 'OrderCtrl'
      
-  })
-  
-  .state('listrejected', {
-    url: '/listrejected',
-        templateUrl: 'templates/listreject.html',
-        controller: 'AcceptCtrl'
-     
   });
+  
+  
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
