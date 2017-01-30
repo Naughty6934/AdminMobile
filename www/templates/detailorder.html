@@ -1,7 +1,7 @@
 <ion-view view-title="รายละเอียด">
   <ion-nav-buttons side="primary">
-    <button ng-show= "order.deliverystatus === 'confirmed' || order.deliverystatus === 'wait deliver'" class="button" ui-sref="tab.confirmed">ย้อนกลับ</button>
-      <button ng-show= "order.deliverystatus === 'accept' || order.deliverystatus === 'reject'" class="button" ui-sref="tab.detailaccept">ย้อนกลับ</button>
+    <button ng-show= "order.deliverystatus === 'confirmed'" class="button" ui-sref="tab.confirmed">ย้อนกลับ</button>
+      <button ng-show= "order.deliverystatus === 'accept' || order.deliverystatus === 'reject' || order.deliverystatus === 'wait deliver'" class="button" ui-sref="tab.detailaccept">ย้อนกลับ</button>
     </ion-nav-buttons>
   <ion-content>
     <div class="list">
