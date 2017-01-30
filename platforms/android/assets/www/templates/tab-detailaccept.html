@@ -7,8 +7,10 @@
             <input type="text" class="form-control" placeholder="ค้นหา..." ng-model="topsearch" aria-describedby="sizing-addon3">
         </div>
         <div class="button-bar">
-            <a class="button button-positive"  ng-click="Accept = true;Reject = false ">ยอมรับ ({{countOrderApt}})</a>
-            <a class="button button-assertive" ng-click="Reject = true; Accept= false">ปฎิเสธ ({{countOrderRjt}})</a>
+            <a class="button button-outline button-positive {{Wait === true ? 'active' : ''}}" ng-click="Wait = true ;Accept = false;Reject = false ;">รอคนส่ง({{countOrderWt}})</a>
+            <a class="button button-outline button-positive {{Accept === true ? 'active' : ''}}" ng-click="Accept = true;Reject = false ;Wait=false">ยอมรับ ({{countOrderApt}})</a>
+            <a class="button button-outline button-positive {{Reject === true ? 'active' : ''}}" ng-click="Reject = true; Accept= false ;Wait=false">ปฎิเสธ ({{countOrderRjt}})</a>
+            
         </div>
         <!--<ion-nav-buttons side="primary">
                 <button class="button" ui-sref="tab.detailaccept">ย้อนกลับ</button>
@@ -30,6 +32,21 @@
         </div>
 
         <div ng-show="Reject" ng-repeat="data in ordersReject | filter:topsearch">
+            <ion-item class='item item-avatar-left item-icon-right' ui-sref="detailorder({orderId : data._id})">
+                <img src={{data.user.profileImageURL}}>
+                <h2>{{data.user.displayName}}</h2>
+                <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
+                <p class="product10">{{data.shipping.district}} {{data.shipping.province}}</p>
+                <p ng-show="data.namedeliver">
+                    <label>คนส่งข้าว : </label>
+                    <label>{{data.namedeliver.displayName}}</label>
+                </p>
+                <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
+                <p class="icon ion-right ">{{data.totalamount}} ฿</p>
+            </ion-item>
+        </div>
+
+        <div ng-show="Wait" ng-repeat="data in ordersWait | filter:topsearch">
             <ion-item class='item item-avatar-left item-icon-right' ui-sref="detailorder({orderId : data._id})">
                 <img src={{data.user.profileImageURL}}>
                 <h2>{{data.user.displayName}}</h2>

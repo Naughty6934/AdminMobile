@@ -77,7 +77,7 @@ angular.module('starter.controllers', ['ionic'])
         .then(function (data) {
           var orderlist = data;
           angular.forEach(orderlist, function (order) {
-            if (order.deliverystatus === 'confirmed' || order.deliverystatus === 'wait deliver') {
+            if (order.deliverystatus === 'confirmed') {
               $scope.ordersConfirmed.push(order);
             }
           })
@@ -143,12 +143,18 @@ angular.module('starter.controllers', ['ionic'])
       if ($rootScope.countOrderRjt) {
         $rootScope.countOrderRjt = $rootScope.countOrderRjt;
       }
-      $scope.Accept = true;
+       if ($rootScope.countOrdeWt) {
+        $rootScope.countOrdeWt = $rootScope.countOrdeWt;
+      }
+      $scope.Wait = true;
+      $scope.Accept = false;
       $scope.Reject = false;
       $scope.ordersAccept = [];
       $scope.ordersReject = [];
+      $scope.ordersWait = [];
       $rootScope.countOrderApt = 0;
       $rootScope.countOrderRjt = 0;
+      $rootScope.countOrderWt = 0;
       AuthService.getOrder()
         .then(function (data) {
           var orderlist = data;
@@ -158,11 +164,15 @@ angular.module('starter.controllers', ['ionic'])
             }
             else if (order.deliverystatus === 'reject') {
               $scope.ordersReject.push(order);
+            } else if (order.deliverystatus === 'wait deliver') {
+              $scope.ordersWait.push(order);
             }
 
           })
           $rootScope.countOrderApt = $scope.ordersAccept.length;
           $rootScope.countOrderRjt = $scope.ordersReject.length;
+          $rootScope.countOrderWt = $scope.ordersWait.length;
+
         });
     }
     $scope.accepted = function () {
@@ -171,6 +181,8 @@ angular.module('starter.controllers', ['ionic'])
     $scope.rejected = function () {
       $state.go('listrejected');
     };
+
+    
 
     $scope.doRefresh = function () {
       $scope.init();
