@@ -66,13 +66,12 @@ angular.module('starter.controllers', ['ionic'])
 
 
   .controller('ConfirmedCtrl', function ($scope, $http, $state, AuthService, $ionicModal, $rootScope) {
-
     $scope.init = function () {
-      if ($rootScope.countOrder) {
-        $rootScope.countOrder = $rootScope.countOrder;
-      }
-      $scope.ordersConfirmed = [];
+      $scope.loadData();
+    }
+    $scope.loadData = function () {
       $rootScope.countOrder = 0;
+      $scope.ordersConfirmed = [];
       AuthService.getOrder()
         .then(function (data) {
           var orderlist = data;
@@ -82,8 +81,10 @@ angular.module('starter.controllers', ['ionic'])
             }
           })
           $rootScope.countOrder = $scope.ordersConfirmed.length;
-          console.log($scope.ordersConfirmed.length);
+          $rootScope.Order = $scope.ordersConfirmed;
+          console.log($scope.ordersConfirmed);
         });
+
     }
     $scope.DetailOrder = function (data) {
       $state.go('detailorder', { data: JSON.stringify(data) });
@@ -137,13 +138,16 @@ angular.module('starter.controllers', ['ionic'])
   .controller('AcceptCtrl', function ($scope, AuthService, $state, $rootScope) {
 
     $scope.init = function () {
+      $scope.loadData();
+    }
+    $scope.loadData = function () {
       if ($rootScope.countOrderApt) {
         $rootScope.countOrderApt = $rootScope.countOrderApt;
       }
       if ($rootScope.countOrderRjt) {
         $rootScope.countOrderRjt = $rootScope.countOrderRjt;
       }
-       if ($rootScope.countOrdeWt) {
+      if ($rootScope.countOrdeWt) {
         $rootScope.countOrdeWt = $rootScope.countOrdeWt;
       }
       $scope.Wait = true;
@@ -172,6 +176,9 @@ angular.module('starter.controllers', ['ionic'])
           $rootScope.countOrderApt = $scope.ordersAccept.length;
           $rootScope.countOrderRjt = $scope.ordersReject.length;
           $rootScope.countOrderWt = $scope.ordersWait.length;
+          $rootScope.orderApt = $scope.ordersAccept;
+          $rootScope.orderRjt = $scope.ordersReject;
+          $rootScope.orderWt = $scope.ordersWait;
 
         });
     }
@@ -182,7 +189,7 @@ angular.module('starter.controllers', ['ionic'])
       $state.go('listrejected');
     };
 
-    
+
 
     $scope.doRefresh = function () {
       $scope.init();

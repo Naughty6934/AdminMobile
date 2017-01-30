@@ -16,7 +16,7 @@
                 <button class="button" ui-sref="tab.detailaccept">ย้อนกลับ</button>
             </ion-nav-buttons>-->
 
-        <div ng-show="Accept" ng-repeat="data in ordersAccept | filter:topsearch">
+        <div ng-show="Accept" ng-repeat="data in orderApt | filter:topsearch">
             <ion-item class='item item-avatar-left item-icon-right' ui-sref="detailorder({orderId : data._id})">
                 <img src={{data.user.profileImageURL}}>
                 <h2>{{data.user.displayName}}</h2>
@@ -31,7 +31,7 @@
             </ion-item>
         </div>
 
-        <div ng-show="Reject" ng-repeat="data in ordersReject | filter:topsearch">
+        <div ng-show="Reject" ng-repeat="data in orderRjt | filter:topsearch">
             <ion-item class='item item-avatar-left item-icon-right' ui-sref="detailorder({orderId : data._id})">
                 <img src={{data.user.profileImageURL}}>
                 <h2>{{data.user.displayName}}</h2>
@@ -46,7 +46,7 @@
             </ion-item>
         </div>
 
-        <div ng-show="Wait" ng-repeat="data in ordersWait | filter:topsearch">
+        <div ng-show="Wait" ng-repeat="data in orderWt | filter:topsearch">
             <ion-item class='item item-avatar-left item-icon-right' ui-sref="detailorder({orderId : data._id})">
                 <img src={{data.user.profileImageURL}}>
                 <h2>{{data.user.displayName}}</h2>

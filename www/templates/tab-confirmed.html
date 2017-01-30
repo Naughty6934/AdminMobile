@@ -7,7 +7,7 @@
       <input type="text" class="form-control" placeholder="ค้นหา..." ng-model="topsearch" aria-describedby="sizing-addon3">
     </div>
     <ion-list>
-      <ion-item class='item item-avatar-left item-icon-right' ng-repeat="data in ordersConfirmed | filter:topsearch" ui-sref="detailorder({orderId : data._id})">
+      <ion-item class='item item-avatar-left item-icon-right' ng-repeat="data in Order | filter:topsearch" ui-sref="detailorder({orderId : data._id})">
         <img src={{data.user.profileImageURL}}>
         <h2>{{data.user.displayName}}</h2>
         <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
