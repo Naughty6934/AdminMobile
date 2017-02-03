@@ -127,80 +127,87 @@
     },
     "installed_plugins": {
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "cordova-plugin-geolocation": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "phonegap-plugin-push": {
             "SENDER_ID": "816604195373",
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         }
     },
     "dependent_plugins": {},
     "modules": [
         {
-            "file": "plugins/cordova-plugin-device/www/device.js",
             "id": "cordova-plugin-device.device",
+            "file": "plugins/cordova-plugin-device/www/device.js",
+            "pluginId": "cordova-plugin-device",
             "clobbers": [
                 "device"
             ]
         },
         {
-            "file": "plugins/cordova-plugin-geolocation/www/android/geolocation.js",
             "id": "cordova-plugin-geolocation.geolocation",
+            "file": "plugins/cordova-plugin-geolocation/www/android/geolocation.js",
+            "pluginId": "cordova-plugin-geolocation",
             "clobbers": [
                 "navigator.geolocation"
             ]
         },
         {
-            "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
             "id": "cordova-plugin-geolocation.PositionError",
+            "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
+            "pluginId": "cordova-plugin-geolocation",
             "runs": true
         },
         {
-            "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
             "id": "cordova-plugin-splashscreen.SplashScreen",
+            "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+            "pluginId": "cordova-plugin-splashscreen",
             "clobbers": [
                 "navigator.splashscreen"
             ]
         },
         {
-            "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
             "id": "cordova-plugin-statusbar.statusbar",
+            "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
+            "pluginId": "cordova-plugin-statusbar",
             "clobbers": [
                 "window.StatusBar"
             ]
         },
         {
-            "file": "plugins/ionic-plugin-keyboard/www/android/keyboard.js",
             "id": "ionic-plugin-keyboard.keyboard",
+            "file": "plugins/ionic-plugin-keyboard/www/android/keyboard.js",
+            "pluginId": "ionic-plugin-keyboard",
             "clobbers": [
                 "cordova.plugins.Keyboard"
             ],
             "runs": true
         },
         {
-            "file": "plugins/phonegap-plugin-push/www/push.js",
             "id": "phonegap-plugin-push.PushNotification",
+            "file": "plugins/phonegap-plugin-push/www/push.js",
+            "pluginId": "phonegap-plugin-push",
             "clobbers": [
                 "PushNotification"
             ]
