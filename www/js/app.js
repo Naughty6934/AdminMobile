@@ -5,98 +5,111 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngCordova','starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
+  .run(function ($ionicPlatform) {
+    $ionicPlatform.ready(function () {
+      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+      // for form inputs)
+      if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        cordova.plugins.Keyboard.disableScroll(true);
 
-    }
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
-  });
-})
+      }
+      if (window.StatusBar) {
+        // org.apache.cordova.statusbar required
+        StatusBar.styleDefault();
+      }
 
-.config(function($stateProvider, $urlRouterProvider) {
-
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
-  $stateProvider
-
-  // setup an abstract state for the tabs directive
-    .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
+      
+    });
   })
 
-  // Each tab has its own nav history stack:
+  .config(function ($stateProvider, $urlRouterProvider) {
 
-  .state('login', {
-    url: '/login',
+    // Ionic uses AngularUI Router which uses the concept of states
+    // Learn more here: https://github.com/angular-ui/ui-router
+    // Set up the various states which the app can be in.
+    // Each state's controller can be found in controllers.js
+    $stateProvider
+
+      // setup an abstract state for the tabs directive
+      .state('tab', {
+        url: '/tab',
+        abstract: true,
+        templateUrl: 'templates/tabs.html'
+      })
+
+      // Each tab has its own nav history stack:
+
+      .state('login', {
+        url: '/login',
         templateUrl: 'templates/login.html',
         controller: 'LogInCtrl'
-  })
+      })
 
-  .state('tab.confirmed', {
-    url: '/confirmed',
-    views: {
-      'tab-confirmed': {
-        templateUrl: 'templates/tab-confirmed.html',
-        controller: 'ConfirmedCtrl'
-      }
-    }
-  })
-
-    .state('tab.more', {
-      url: '/more',
-      views: {
-        'tab-more': {
-          templateUrl: 'templates/tab-more.html',
-          controller: 'MoreCtrl'
+      .state('tab.confirmed', {
+        url: '/confirmed',
+        views: {
+          'tab-confirmed': {
+            templateUrl: 'templates/tab-confirmed.html',
+            controller: 'ConfirmedCtrl'
+          }
         }
-      }
-    })
+      })
 
-  .state('tab.map', {
-    url: '/map',
-    views: {
-      'tab-map': {
-        templateUrl: 'templates/tab-map.html',
-        controller : 'MapCtrl'
-      }
-    }
-  })
+      .state('tab.more', {
+        url: '/more',
+        views: {
+          'tab-more': {
+            templateUrl: 'templates/tab-more.html',
+            controller: 'MoreCtrl'
+          }
+        }
+      })
 
-  .state('tab.detailaccept', {
-    url: '/detailaccept',
-    views: {
-      'tab-detailaccept': {
-        templateUrl: 'templates/tab-detailaccept.html',
-        controller: 'AcceptCtrl'
-      }
-    }
-  })
-  
-  
-   .state('detailorder', {
-    url: '/detailorder/:orderId',
-        templateUrl: 'templates/detailorder.html',
-        controller: 'OrderCtrl'
-     
+      .state('tab.map', {
+        url: '/map',
+        views: {
+          'tab-map': {
+            templateUrl: 'templates/tab-map.html',
+            controller: 'MapCtrl'
+          }
+        }
+      })
+
+      .state('tab.detailaccept', {
+        url: '/detailaccept',
+        views: {
+          'tab-detailaccept': {
+            templateUrl: 'templates/tab-detailaccept.html',
+            controller: 'ConfirmedCtrl'
+          }
+        }
+      })
+
+      .state('tab.detailorder', {
+        url: '/detailorder:{data}',
+        views: {
+          'tab-confirmed': {
+            templateUrl: 'templates/detailorder.html',
+            controller: 'OrderCtrl'
+          }
+        }
+      })
+      .state('tab.detailorder2', {
+        url: '/detailorder:{data}',
+        views: {
+          'tab-detailaccept': {
+            templateUrl: 'templates/detailorder.html',
+            controller: 'OrderCtrl'
+          }
+        }
+      });
+
+
+
+    // if none of the above states are matched, use this as the fallback
+    $urlRouterProvider.otherwise('/login');
+
   });
-  
-  
-
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
-
-});

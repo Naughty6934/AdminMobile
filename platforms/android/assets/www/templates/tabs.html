@@ -9,15 +9,16 @@ navigation history that also transitions its views in and out.
 
   <!-- Dashboard Tab -->
   <div ng-controller="ConfirmedCtrl" ng-init="init()">
-    <ion-tab title="สั่งจอง" badge="countOrder" icon-off="ion-ios-paper-outline" icon-on="ion-ios-paper" href="#/tab/confirmed">
+    <ion-tab title="สั่งจอง" badge="countOrder"  icon-off="ion-ios-paper-outline" icon-on="ion-ios-paper" href="#/tab/confirmed">
       <ion-nav-view name="tab-confirmed"></ion-nav-view>
     </ion-tab>
   </div>
 
 
-  <!-- Accept Tab -->
-  <div ng-controller="AcceptCtrl" ng-init="init()">
-  <ion-tab title="คนส่งข้าว" badge="countOrderApt + countOrderRjt + countOrderWt" badge-style="color:red;" icon-off="ion-ios-people-outline" icon-on="ion-ios-people" href="#/tab/detailaccept">
+  <!-- Accept Tab on-select="loadData()" -->
+  
+  <div ng-controller="ConfirmedCtrl" ng-init="init()">
+  <ion-tab title="คนส่งข้าว" badge="countOrderApt + countOrderRjt + countOrderWt"  badge-style="color:red;" icon-off="ion-ios-people-outline" icon-on="ion-ios-people" href="#/tab/detailaccept">
     <ion-nav-view name="tab-detailaccept"></ion-nav-view>
   </ion-tab>
   </div>
