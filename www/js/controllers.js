@@ -130,13 +130,13 @@ angular.module('starter.controllers', ['ionic'])
 
     $scope.gotoDetail = function (data) {
       //alert('go to detail');
-      
+
       $state.go('tab.detailorder', { data: JSON.stringify(data) });
     }
 
     $scope.gotoDetail2 = function (data) {
       //alert('go to detail');
-      
+
       $state.go('tab.detailorder2', { data: JSON.stringify(data) });
     }
 
@@ -156,12 +156,42 @@ angular.module('starter.controllers', ['ionic'])
 
   .controller('MapCtrl', function ($scope, $http, $state, AuthService, $stateParams, $cordovaGeolocation) {
     console.log('ok');
+    // $scope.mapConfirmed = []; 
+    $scope.locationConfirmed = [];
+    $scope.locationWait = [];
+    $scope.locationAccept = [];
+    $scope.locationReject = [];
+    AuthService.getOrder()
+      .then(function (data) {
+        data.forEach(function (order) {
+          if (order.deliverystatus === 'confirmed') {
+            //  $scope.mapConfirmed.push(order); 
+            if (order.shipping.sharelocation) {
+              $scope.locationConfirmed.push(order);
+            }
+          } else if (order.deliverystatus === 'wait deliver') {
+            if (order.shipping.sharelocation) {
+              $scope.locationWait.push(order);
+            }
+          } else if (order.deliverystatus === 'accept') {
+            if (order.shipping.sharelocation) {
+              $scope.locationAccept.push(order);
+            }
+          } else if (order.deliverystatus === 'reject') {
+            if (order.shipping.sharelocation) {
+              $scope.locationReject.push(order);
+            }
+          }
+        });
+        // console.log($scope.mapConfirmed); 
+        // console.log($scope.locationConfirmed); 
+      });
 
-    var locations = [
-      [13.9351084, 100.715099],
-      [13.9341505, 100.7141161],
-      [13.9347128, 100.7163853]
-    ]
+    // var locations = [ 
+    //   [13.9351084, 100.715099], 
+    //   [13.9341505, 100.7141161], 
+    //   [13.9347128, 100.7163853] 
+    // ] 
 
     var posOptions = { timeout: 10000, enableHighAccuracy: false };
     $cordovaGeolocation
@@ -169,14 +199,15 @@ angular.module('starter.controllers', ['ionic'])
       .then(function (position) {
         var lat = position.coords.latitude
         var long = position.coords.longitude
-        // alert(lat + ':' + long);
+
+        // alert(lat + ':' + long); 
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 15,
-          center: new google.maps.LatLng(lat, long), //เปลี่ยนตามต้องการ
+          center: new google.maps.LatLng(lat, long), //เปลี่ยนตามต้องการ 
           mapTypeId: google.maps.MapTypeId.ROADMAP
         });
 
-        //////ตำแหน่งที่ mark ปัจจุบัน///////////
+        //////ตำแหน่งที่ mark ปัจจุบัน/////////// 
         var marker = new google.maps.Marker({
           position: map.getCenter(),
           icon: {
@@ -204,16 +235,90 @@ angular.module('starter.controllers', ['ionic'])
           map: map
         });
 
-        for (var i = 0; i < locations.length; i++) {
+        // for (var i = 0; i <   $scope.locationConfirmed.length; i++) { 
+        //   console.log($scope.locationConfirmed[i]);
+        //   var marker = new google.maps.Marker({ 
+        //     position: new google.maps.LatLng($scope.locationConfirmed[i].shipping.latitude, $scope.locationConfirmed[i].shipping.longitude), 
+        //     map: map 
+
+        //   }); 
+        //   console.log(position);
+        // } 
+        $scope.locationConfirmed.forEach(function (locations) {
+          var location = locations.shipping.sharelocation;
+          // console.log($scope.locationConfirmed.length);
           var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+            icon: {
+              path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+              scale: 10,
+              fillColor: 'orange',
+              fillOpacity: 1,
+              strokeColor: 'orange',
+              strokeWeight: 0
+            },
+            position: new google.maps.LatLng(location.latitude, location.longitude),
             map: map
           });
-        }
+          console.log(location.latitude + "    " + location.longitude);
+        });
+
+        $scope.locationWait.forEach(function (locations) {
+          var location = locations.shipping.sharelocation;
+          // console.log($scope.locationConfirmed.length);
+          var marker = new google.maps.Marker({
+            icon: {
+              path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+              scale: 10,
+              fillColor: 'yellow',
+              fillOpacity: 1,
+              strokeColor: 'yellow',
+              strokeWeight: 0
+            },
+            position: new google.maps.LatLng(location.latitude, location.longitude),
+            map: map
+          });
+          console.log(location.latitude + "    " + location.longitude);
+        });
+
+        $scope.locationAccept.forEach(function (locations) {
+          var location = locations.shipping.sharelocation;
+          // console.log($scope.locationConfirmed.length);
+          var marker = new google.maps.Marker({
+            icon: {
+              path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+              scale: 10,
+              fillColor: 'green',
+              fillOpacity: 1,
+              strokeColor: 'green',
+              strokeWeight: 0
+            },
+            position: new google.maps.LatLng(location.latitude, location.longitude),
+            map: map
+          });
+          console.log(location.latitude + "    " + location.longitude);
+        });
+
+        $scope.locationReject.forEach(function (locations) {
+          var location = locations.shipping.sharelocation;
+          // console.log($scope.locationConfirmed.length);
+          var marker = new google.maps.Marker({
+            icon: {
+              path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+              scale: 10,
+              fillColor: 'red',
+              fillOpacity: 1,
+              strokeColor: 'red',
+              strokeWeight: 0
+            },
+            position: new google.maps.LatLng(location.latitude, location.longitude),
+            map: map
+          });
+          console.log(location.latitude + "    " + location.longitude);
+        });
 
         $scope.map = map;
       }, function (err) {
-        // error
+        // error 
       });
   })
 
@@ -225,21 +330,21 @@ angular.module('starter.controllers', ['ionic'])
   })
 
   .controller('OrderCtrl', function ($scope, AuthService, $state, $stateParams, $ionicModal) {
-    
+
     $ionicModal.fromTemplateUrl('templates/modal.html', {
       scope: $scope
     }).then(function (modal) {
       $scope.modal = modal;
     });
-    
+
     // console.log(JSON.parse($stateParams.data));
     //var orderId = $stateParams.orderId;
-   $scope.data = JSON.parse($stateParams.data);
+    $scope.data = JSON.parse($stateParams.data);
     console.log($scope.data);
-    
+
     // $scope.data = JSON.parse($stateParams.data);
     // $scope._id = $scope.data._id
-    
+
     AuthService.getDeliver()
       .then(function (data) {
         var Deliverlist = data;
@@ -269,13 +374,13 @@ angular.module('starter.controllers', ['ionic'])
       }
       */
       $scope.data.namedeliver = deli;
-      
-     $scope.modal.hide();
+
+      $scope.modal.hide();
       //var order = $scope.order;
       //var orderId = $scope._id;
-      
+
     }
-    $scope.save = function(){
+    $scope.save = function () {
       var history = {
         status: 'wait deliver',
         datestatus: new Date()
@@ -283,23 +388,23 @@ angular.module('starter.controllers', ['ionic'])
       var oldStatus = $scope.data.deliverystatus;
       $scope.data.deliverystatus = 'wait deliver';
       $scope.data.historystatus.push(history);
-     
-      
+
+
       AuthService.updateOrder($scope.data._id, $scope.data)
         .then(function (response) {
           //alert('Success');
-          if(oldStatus == 'confirmed'){
+          if (oldStatus == 'confirmed') {
             $state.go('tab.confirmed');
-          }else{
+          } else {
             $state.go('tab.detailaccept');
           }
-          
+
           //tab.confirmed
         }, function (error) {
           console.log(error);
           //alert('dont success' + " " + error.data.message);
         });
-        
+
     }
     $scope.$on('onNotification', function (event, args) {
       // do what you want to do
