@@ -155,198 +155,188 @@ angular.module('starter.controllers', ['ionic'])
   })
 
   .controller('MapCtrl', function ($scope, $http, $state, AuthService, $stateParams, $cordovaGeolocation) {
-    $scope.init =function(){
+
+    console.log('ok');
+    $scope.init = function () {
       $scope.readMap();
     }
-    console.log('ok');
-    $scope.readMap = function (){
-    // $scope.mapConfirmed = []; 
-    $scope.locationConfirmed = [];
-    $scope.locationWait = [];
-    $scope.locationAccept = [];
-    $scope.locationReject = [];
-    $scope.locationDeliver = [];
-    AuthService.getDeliver()
-      .then(function (data) {
-        data.forEach(function (deliver) {
-          if (deliver.roles[0] === 'deliver') {
-            $scope.locationDeliver.push(deliver);
-          }
-        });
-        console.log($scope.locationDeliver);
-        // console.log($scope.locationConfirmed); 
-      });
-    AuthService.getOrder()
-      .then(function (data) {
-        data.forEach(function (order) {
-          if (order.deliverystatus === 'confirmed') {
-            //  $scope.mapConfirmed.push(order); 
-            if (order.shipping.sharelocation) {
-              $scope.locationConfirmed.push(order);
+    $scope.readMap = function () {
+      $scope.locationConfirmed = [];
+      $scope.locationWait = [];
+      $scope.locationAccept = [];
+      $scope.locationReject = [];
+     // $scope.locationDeliver = [];
+      // AuthService.getDeliver()
+      //   .then(function (data) {
+      //     data.forEach(function (deliver) {
+      //       if (deliver.roles[0] === 'deliver') {
+      //         $scope.locationDeliver.push(deliver);
+      //       }
+      //     });
+      //     console.log($scope.locationDeliver);
+      //     // console.log($scope.locationConfirmed); 
+      //   });
+      AuthService.getOrder()
+        .then(function (data) {
+          data.forEach(function (order) {
+            if (order.deliverystatus === 'confirmed') {
+              //  $scope.mapConfirmed.push(order); 
+              if (order.shipping.sharelocation) {
+                $scope.locationConfirmed.push(order);
+              }
+            } else if (order.deliverystatus === 'wait deliver') {
+              if (order.shipping.sharelocation) {
+                $scope.locationWait.push(order);
+              }
+            } else if (order.deliverystatus === 'accept') {
+              if (order.shipping.sharelocation) {
+                $scope.locationAccept.push(order);
+              }
+            } else if (order.deliverystatus === 'reject') {
+              if (order.shipping.sharelocation) {
+                $scope.locationReject.push(order);
+              }
             }
-          } else if (order.deliverystatus === 'wait deliver') {
-            if (order.shipping.sharelocation) {
-              $scope.locationWait.push(order);
-            }
-          } else if (order.deliverystatus === 'accept') {
-            if (order.shipping.sharelocation) {
-              $scope.locationAccept.push(order);
-            }
-          } else if (order.deliverystatus === 'reject') {
-            if (order.shipping.sharelocation) {
-              $scope.locationReject.push(order);
-            }
-          }
-        });
-        // console.log($scope.mapConfirmed); 
-        // console.log($scope.locationConfirmed); 
-        var posOptions = { timeout: 10000, enableHighAccuracy: false };
-        $cordovaGeolocation
-          .getCurrentPosition(posOptions)
-          .then(function (position) {
-            var lat = position.coords.latitude
-            var long = position.coords.longitude
+          });
+          // console.log($scope.mapConfirmed); 
+          // console.log($scope.locationConfirmed); 
+          var posOptions = { timeout: 10000, enableHighAccuracy: false };
+          $cordovaGeolocation
+            .getCurrentPosition(posOptions)
+            .then(function (position) {
+              var lat = position.coords.latitude
+              var long = position.coords.longitude
 
-            // alert(lat + ':' + long); 
-            var map = new google.maps.Map(document.getElementById('map'), {
-              zoom: 15,
-              center: new google.maps.LatLng(lat, long), //เปลี่ยนตามต้องการ 
-              mapTypeId: google.maps.MapTypeId.ROADMAP
-            });
+              // alert(lat + ':' + long); 
+              var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: new google.maps.LatLng(lat, long), //เปลี่ยนตามต้องการ 
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+              });
 
-            //////ตำแหน่งที่ mark ปัจจุบัน/////////// 
-            var marker = new google.maps.Marker({
-              position: map.getCenter(),
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 15,
-                fillColor: 'blue',
-                fillOpacity: 0.2,
-                strokeColor: 'blue',
-                strokeWeight: 0
-              },
-              draggable: true,
-              map: map
-            });
-            var marker = new google.maps.Marker({
-              position: map.getCenter(),
-              icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 10,
-                fillColor: '#1c90f3',
-                fillOpacity: 0.5,
-                strokeColor: 'white',
-                strokeWeight: 1
-              },
-              draggable: true,
-              map: map
-            });
-
-            // for (var i = 0; i <   $scope.locationConfirmed.length; i++) { 
-            //   console.log($scope.locationConfirmed[i]);
-            //   var marker = new google.maps.Marker({ 
-            //     position: new google.maps.LatLng($scope.locationConfirmed[i].shipping.latitude, $scope.locationConfirmed[i].shipping.longitude), 
-            //     map: map 
-
-            //   }); 
-            //   console.log(position);
-            // } 
-            $scope.locationDeliver.forEach(function (locations) {
-              var location = locations.address.sharelocation;
-              // console.log($scope.locationConfirmed.length);
-              if (location) {
+              //////ตำแหน่งที่ mark ปัจจุบัน/////////// 
+              var marker = new google.maps.Marker({
+                position: map.getCenter(),
+                icon: {
+                  path: google.maps.SymbolPath.CIRCLE,
+                  scale: 15,
+                  fillColor: 'blue',
+                  fillOpacity: 0.2,
+                  strokeColor: 'blue',
+                  strokeWeight: 0
+                },
+                draggable: true,
+                map: map
+              });
+              var marker = new google.maps.Marker({
+                position: map.getCenter(),
+                icon: {
+                  path: google.maps.SymbolPath.CIRCLE,
+                  scale: 10,
+                  fillColor: '#1c90f3',
+                  fillOpacity: 0.5,
+                  strokeColor: 'white',
+                  strokeWeight: 1
+                },
+                draggable: true,
+                map: map
+              });
+              // $scope.locationDeliver.forEach(function (locations) {
+              //   var location = locations.address.sharelocation;
+              //   // console.log($scope.locationConfirmed.length);
+              //   if (location) {
+              //     var marker = new google.maps.Marker({
+              //       icon: {
+              //         path: google.maps.SymbolPath.CIRCLE,
+              //         scale: 10,
+              //         fillColor: 'black',
+              //         fillOpacity: 1,
+              //         strokeColor: 'black',
+              //         strokeWeight: 0
+              //       },
+              //       position: new google.maps.LatLng(location.latitude, location.longitude),
+              //       map: map
+              //     });
+              //   }
+              //   console.log(location.latitude + "    " + location.longitude);
+              // });
+              $scope.locationConfirmed.forEach(function (locations) {
+                var location = locations.shipping.sharelocation;
+                // console.log($scope.locationConfirmed.length);
                 var marker = new google.maps.Marker({
                   icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
+                    path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
                     scale: 10,
-                    fillColor: 'black',
+                    fillColor: 'orange',
                     fillOpacity: 1,
-                    strokeColor: 'black',
+                    strokeColor: 'orange',
                     strokeWeight: 0
                   },
                   position: new google.maps.LatLng(location.latitude, location.longitude),
                   map: map
                 });
-              }
-              console.log(location.latitude + "    " + location.longitude);
-            });
-            $scope.locationConfirmed.forEach(function (locations) {
-              var location = locations.shipping.sharelocation;
-              // console.log($scope.locationConfirmed.length);
-              var marker = new google.maps.Marker({
-                icon: {
-                  path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-                  scale: 10,
-                  fillColor: 'orange',
-                  fillOpacity: 1,
-                  strokeColor: 'orange',
-                  strokeWeight: 0
-                },
-                position: new google.maps.LatLng(location.latitude, location.longitude),
-                map: map
+                console.log(location.latitude + "    " + location.longitude);
               });
-              console.log(location.latitude + "    " + location.longitude);
-            });
 
-            $scope.locationWait.forEach(function (locations) {
-              var location = locations.shipping.sharelocation;
-              // console.log($scope.locationConfirmed.length);
-              var marker = new google.maps.Marker({
-                icon: {
-                  path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-                  scale: 10,
-                  fillColor: 'yellow',
-                  fillOpacity: 1,
-                  strokeColor: 'yellow',
-                  strokeWeight: 0
-                },
-                position: new google.maps.LatLng(location.latitude, location.longitude),
-                map: map
+              $scope.locationWait.forEach(function (locations) {
+                var location = locations.shipping.sharelocation;
+                // console.log($scope.locationConfirmed.length);
+                var marker = new google.maps.Marker({
+                  icon: {
+                    path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                    scale: 10,
+                    fillColor: 'yellow',
+                    fillOpacity: 1,
+                    strokeColor: 'yellow',
+                    strokeWeight: 0
+                  },
+                  position: new google.maps.LatLng(location.latitude, location.longitude),
+                  map: map
+                });
+                console.log(location.latitude + "    " + location.longitude);
               });
-              console.log(location.latitude + "    " + location.longitude);
-            });
 
-            $scope.locationAccept.forEach(function (locations) {
-              var location = locations.shipping.sharelocation;
-              // console.log($scope.locationConfirmed.length);
-              var marker = new google.maps.Marker({
-                icon: {
-                  path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-                  scale: 10,
-                  fillColor: 'green',
-                  fillOpacity: 1,
-                  strokeColor: 'green',
-                  strokeWeight: 0
-                },
-                position: new google.maps.LatLng(location.latitude, location.longitude),
-                map: map
+              $scope.locationAccept.forEach(function (locations) {
+                var location = locations.shipping.sharelocation;
+                // console.log($scope.locationConfirmed.length);
+                var marker = new google.maps.Marker({
+                  icon: {
+                    path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                    scale: 10,
+                    fillColor: 'green',
+                    fillOpacity: 1,
+                    strokeColor: 'green',
+                    strokeWeight: 0
+                  },
+                  position: new google.maps.LatLng(location.latitude, location.longitude),
+                  map: map
+                });
+                console.log(location.latitude + "    " + location.longitude);
               });
-              console.log(location.latitude + "    " + location.longitude);
-            });
 
-            $scope.locationReject.forEach(function (locations) {
-              var location = locations.shipping.sharelocation;
-              // console.log($scope.locationConfirmed.length);
-              var marker = new google.maps.Marker({
-                icon: {
-                  path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-                  scale: 10,
-                  fillColor: 'red',
-                  fillOpacity: 1,
-                  strokeColor: 'red',
-                  strokeWeight: 0
-                },
-                position: new google.maps.LatLng(location.latitude, location.longitude),
-                map: map
+              $scope.locationReject.forEach(function (locations) {
+                var location = locations.shipping.sharelocation;
+                // console.log($scope.locationConfirmed.length);
+                var marker = new google.maps.Marker({
+                  icon: {
+                    path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                    scale: 10,
+                    fillColor: 'red',
+                    fillOpacity: 1,
+                    strokeColor: 'red',
+                    strokeWeight: 0
+                  },
+                  position: new google.maps.LatLng(location.latitude, location.longitude),
+                  map: map
+                });
+                console.log(location.latitude + "    " + location.longitude);
               });
-              console.log(location.latitude + "    " + location.longitude);
-            });
 
-            $scope.map = map;
-          }, function (err) {
-            // error 
-          });
-      });
+              $scope.map = map;
+            }, function (err) {
+              // error 
+            });
+        });
 
     }
 

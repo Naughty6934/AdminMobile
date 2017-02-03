@@ -165,17 +165,17 @@ angular.module('starter.controllers', ['ionic'])
       $scope.locationWait = [];
       $scope.locationAccept = [];
       $scope.locationReject = [];
-      $scope.locationDeliver = [];
-      AuthService.getDeliver()
-        .then(function (data) {
-          data.forEach(function (deliver) {
-            if (deliver.roles[0] === 'deliver') {
-              $scope.locationDeliver.push(deliver);
-            }
-          });
-          console.log($scope.locationDeliver);
-          // console.log($scope.locationConfirmed); 
-        });
+     // $scope.locationDeliver = [];
+      // AuthService.getDeliver()
+      //   .then(function (data) {
+      //     data.forEach(function (deliver) {
+      //       if (deliver.roles[0] === 'deliver') {
+      //         $scope.locationDeliver.push(deliver);
+      //       }
+      //     });
+      //     console.log($scope.locationDeliver);
+      //     // console.log($scope.locationConfirmed); 
+      //   });
       AuthService.getOrder()
         .then(function (data) {
           data.forEach(function (order) {
@@ -241,25 +241,25 @@ angular.module('starter.controllers', ['ionic'])
                 draggable: true,
                 map: map
               });
-              $scope.locationDeliver.forEach(function (locations) {
-                var location = locations.address.sharelocation;
-                // console.log($scope.locationConfirmed.length);
-                if (location) {
-                  var marker = new google.maps.Marker({
-                    icon: {
-                      path: google.maps.SymbolPath.CIRCLE,
-                      scale: 10,
-                      fillColor: 'black',
-                      fillOpacity: 1,
-                      strokeColor: 'black',
-                      strokeWeight: 0
-                    },
-                    position: new google.maps.LatLng(location.latitude, location.longitude),
-                    map: map
-                  });
-                }
-                console.log(location.latitude + "    " + location.longitude);
-              });
+              // $scope.locationDeliver.forEach(function (locations) {
+              //   var location = locations.address.sharelocation;
+              //   // console.log($scope.locationConfirmed.length);
+              //   if (location) {
+              //     var marker = new google.maps.Marker({
+              //       icon: {
+              //         path: google.maps.SymbolPath.CIRCLE,
+              //         scale: 10,
+              //         fillColor: 'black',
+              //         fillOpacity: 1,
+              //         strokeColor: 'black',
+              //         strokeWeight: 0
+              //       },
+              //       position: new google.maps.LatLng(location.latitude, location.longitude),
+              //       map: map
+              //     });
+              //   }
+              //   console.log(location.latitude + "    " + location.longitude);
+              // });
               $scope.locationConfirmed.forEach(function (locations) {
                 var location = locations.shipping.sharelocation;
                 // console.log($scope.locationConfirmed.length);
