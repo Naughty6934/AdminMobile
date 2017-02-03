@@ -53,13 +53,13 @@
                 <img src={{item.product.images}}>
                 <h2>{{item.product.name}} ({{item.product.price}} บาท)</h2>
                 <p style="margin-right: 20%">จำนวน {{item.qty}} ถุง</p>
-                <p style="margin-right: 20%">ราคารวม {{data.amount}} บาท</p>
+                <p style="margin-right: 20%">ราคารวม {{item.amount}} บาท</p>
 
             </div>
 
             <label class="item item-input">
                 <span class="input-label">ราคารวม : </span>
-                <input style="background-color: white" type="text" ng-value="data.totalamount +' บาท'" readonly>
+                <input style="background-color: white" type="text" ng-value="data.amount +' บาท'" readonly>
             </label>
 
             <label class="item item-input">
