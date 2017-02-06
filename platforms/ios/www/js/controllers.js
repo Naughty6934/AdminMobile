@@ -1,7 +1,7 @@
 angular.module('starter.controllers', ['ionic'])
 
   .controller('LogInCtrl', function ($scope, $state, AuthService, $rootScope) {
-    
+    /*
     var push = new Ionic.Push({
       "debug": true,
       "onNotification": function (notification) {
@@ -19,7 +19,7 @@ angular.module('starter.controllers', ['ionic'])
       window.localStorage.token = JSON.stringify(token.token);
       push.saveToken(token);  // persist the token in the Ionic Platform
     });
-    
+    */
     $scope.userStore = AuthService.getUser();
     if ($scope.userStore) {
 
@@ -130,13 +130,13 @@ angular.module('starter.controllers', ['ionic'])
 
     $scope.gotoDetail = function (data) {
       //alert('go to detail');
-      
+
       $state.go('tab.detailorder', { data: JSON.stringify(data) });
     }
 
     $scope.gotoDetail2 = function (data) {
       //alert('go to detail');
-      
+
       $state.go('tab.detailorder2', { data: JSON.stringify(data) });
     }
 
@@ -154,65 +154,190 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('MapCtrl', function ($scope, $cordovaGeolocation, AuthService) {
-    
-    var locations = [
-      [13.9351084, 100.715099],
-      [13.9341505, 100.7141161],
-      [13.9347128, 100.7163853]
-    ]
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 18,
-      center: new google.maps.LatLng(13.9351084, 100.715099), //เปลี่ยนตามต้องการ
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
-    for (var i = 0; i < locations.length; i++) {
-      var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[i][0], locations[i][1]),
-        map: map
-      });
-    }
-    //////ตำแหน่งที่ mark ปัจจุบัน///////////
-    var marker = new google.maps.Marker({
-      position: map.getCenter(),
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 15,
-        fillColor: 'blue',
-        fillOpacity: 0.2,
-        strokeColor: 'blue',
-        strokeWeight: 0
-      },
-      draggable: true,
-      map: map
-    });
-    var marker = new google.maps.Marker({
-      position: map.getCenter(),
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 10,
-        fillColor: '#1c90f3',
-        fillOpacity: 0.5,
-        strokeColor: 'white',
-        strokeWeight: 1
-      },
-      draggable: true,
-      map: map
-    });
+  .controller('MapCtrl', function ($scope, $http, $state, AuthService, $stateParams, $cordovaGeolocation) {
 
-    var posOptions = { timeout: 10000, enableHighAccuracy: false };
-    $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
-      var lat = position.coords.latitude
-      var long = position.coords.longitude
-      // alert(lat + ':' + long);
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 18,
-        center: new google.maps.LatLng(lat, long), //เปลี่ยนตามต้องการ
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      })
-    });
-    $scope.map = map;
-    ///////////////////////////
+    console.log('ok');
+    $scope.init = function () {
+      $scope.readService();
+    }
+    $scope.readService = function(){
+       AuthService.getOrder()
+        .then(function (data) {
+          $scope.locationConfirmed = [];
+          $scope.locationWait = [];
+          $scope.locationAccept = [];
+          $scope.locationReject = [];
+          data.forEach(function (order) {
+            if (order.deliverystatus === 'confirmed') {
+              //  $scope.mapConfirmed.push(order); 
+              if (order.shipping.sharelocation) {
+                $scope.locationConfirmed.push(order);
+              }
+            } else if (order.deliverystatus === 'wait deliver') {
+              if (order.shipping.sharelocation) {
+                $scope.locationWait.push(order);
+              }
+            } else if (order.deliverystatus === 'accept') {
+              if (order.shipping.sharelocation) {
+                $scope.locationAccept.push(order);
+              }
+            } else if (order.deliverystatus === 'reject') {
+              if (order.shipping.sharelocation) {
+                $scope.locationReject.push(order);
+              }
+            }
+          });
+        });
+      AuthService.getDeliver()
+        .then(function (data) {
+          var Deliverlist = data;
+          $scope.locationDeliver = [];
+          angular.forEach(Deliverlist, function (deliver) {
+            if (deliver.roles[0] === 'deliver') {
+              $scope.locationDeliver.push(deliver);
+            }
+            //console.log($scope.delivers);
+          })
+
+        });
+        $scope.readMap();
+    }
+    $scope.readMap = function () {
+
+      var posOptions = { timeout: 10000, enableHighAccuracy: false };
+      $cordovaGeolocation
+        .getCurrentPosition(posOptions)
+        .then(function (position) {
+          var lat = position.coords.latitude
+          var long = position.coords.longitude
+
+          // alert(lat + ':' + long); 
+          var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: new google.maps.LatLng(lat, long), //เปลี่ยนตามต้องการ 
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          });
+
+          //////ตำแหน่งที่ mark ปัจจุบัน/////////// 
+          var marker = new google.maps.Marker({
+            position: map.getCenter(),
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 15,
+              fillColor: 'blue',
+              fillOpacity: 0.2,
+              strokeColor: 'blue',
+              strokeWeight: 0
+            },
+            draggable: true,
+            map: map
+          });
+          var marker = new google.maps.Marker({
+            position: map.getCenter(),
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 10,
+              fillColor: '#1c90f3',
+              fillOpacity: 0.5,
+              strokeColor: 'white',
+              strokeWeight: 1
+            },
+            draggable: true,
+            map: map
+          });
+          $scope.locationDeliver.forEach(function (locations) {
+            var location = locations.address.sharelocation;
+            if (location) {
+              var marker = new google.maps.Marker({
+                icon: {
+                  url: 'http://res.cloudinary.com/hflvlav04/image/upload/v1486371430/rbxhgg4rwbionmqfusxc.png',
+                  scaledSize: new google.maps.Size(28, 36),
+                  // The origin for this image is (0, 0). 
+                  origin: new google.maps.Point(0, 0),
+                  // The anchor for this image is the base of the flagpole at (0, 32). 
+                  // anchor: new google.maps.Point(0, 32)
+                },
+                position: new google.maps.LatLng(location.latitude, location.longitude),
+                map: map
+              });
+            }
+          });
+          $scope.locationConfirmed.forEach(function (locations) {
+            var location = locations.shipping.sharelocation;
+            // console.log($scope.locationConfirmed.length);
+            var marker = new google.maps.Marker({
+             icon: {
+                  url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371637/zfx1xml50sn5rn8bu26h.png',
+                  scaledSize: new google.maps.Size(32, 51),
+                  // The origin for this image is (0, 0). 
+                  origin: new google.maps.Point(0, 0),
+                  // The anchor for this image is the base of the flagpole at (0, 32). 
+                  // anchor: new google.maps.Point(0, 32)
+                },
+              position: new google.maps.LatLng(location.latitude, location.longitude),
+              map: map
+            });
+          });
+
+          $scope.locationWait.forEach(function (locations) {
+            var location = locations.shipping.sharelocation;
+            // console.log($scope.locationConfirmed.length);
+            var marker = new google.maps.Marker({
+              icon: {
+                  url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371643/riwxnxtjdfjganurw46m.png',
+                  scaledSize: new google.maps.Size(32, 51),
+                  // The origin for this image is (0, 0). 
+                  origin: new google.maps.Point(0, 0),
+                  // The anchor for this image is the base of the flagpole at (0, 32). 
+                  // anchor: new google.maps.Point(0, 32)
+                },
+              position: new google.maps.LatLng(location.latitude, location.longitude),
+              map: map
+            });
+          });
+
+          $scope.locationAccept.forEach(function (locations) {
+            var location = locations.shipping.sharelocation;
+            // console.log($scope.locationConfirmed.length);
+            var marker = new google.maps.Marker({
+              icon: {
+                  url: 'http://res.cloudinary.com/hflvlav04/image/upload/v1486371632/sj4niz8oykdqfadnwhbo.png',
+                  scaledSize: new google.maps.Size(28, 45),
+                  // The origin for this image is (0, 0). 
+                  origin: new google.maps.Point(0, 0),
+                  // The anchor for this image is the base of the flagpole at (0, 32). 
+                  // anchor: new google.maps.Point(0, 0)
+                },
+              position: new google.maps.LatLng(location.latitude, location.longitude),
+              map: map
+            });
+          });
+
+          $scope.locationReject.forEach(function (locations) {
+            var location = locations.shipping.sharelocation;
+            // console.log($scope.locationConfirmed.length);
+            var marker = new google.maps.Marker({
+              icon: {
+                  url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371639/igflklgols9u1kflmmkh.png',
+                  scaledSize: new google.maps.Size(28, 45),
+                  // The origin for this image is (0, 0). 
+                  origin: new google.maps.Point(0, 0),
+                  // The anchor for this image is the base of the flagpole at (0, 32). 
+                  // anchor: new google.maps.Point(0, 32)
+                },
+              position: new google.maps.LatLng(location.latitude, location.longitude),
+              map: map
+            });
+          });
+
+          $scope.map = map;
+        }, function (err) {
+          // error 
+        });
+
+
+    }
+
   })
 
   .controller('MoreCtrl', function ($scope, AuthService, $state) {
@@ -223,21 +348,21 @@ angular.module('starter.controllers', ['ionic'])
   })
 
   .controller('OrderCtrl', function ($scope, AuthService, $state, $stateParams, $ionicModal) {
-    
+
     $ionicModal.fromTemplateUrl('templates/modal.html', {
       scope: $scope
     }).then(function (modal) {
       $scope.modal = modal;
     });
-    
+
     // console.log(JSON.parse($stateParams.data));
     //var orderId = $stateParams.orderId;
-   $scope.data = JSON.parse($stateParams.data);
+    $scope.data = JSON.parse($stateParams.data);
     console.log($scope.data);
-    
+
     // $scope.data = JSON.parse($stateParams.data);
     // $scope._id = $scope.data._id
-    
+
     AuthService.getDeliver()
       .then(function (data) {
         var Deliverlist = data;
@@ -267,13 +392,13 @@ angular.module('starter.controllers', ['ionic'])
       }
       */
       $scope.data.namedeliver = deli;
-      
-     $scope.modal.hide();
+
+      $scope.modal.hide();
       //var order = $scope.order;
       //var orderId = $scope._id;
-      
+
     }
-    $scope.save = function(){
+    $scope.save = function () {
       var history = {
         status: 'wait deliver',
         datestatus: new Date()
@@ -281,23 +406,23 @@ angular.module('starter.controllers', ['ionic'])
       var oldStatus = $scope.data.deliverystatus;
       $scope.data.deliverystatus = 'wait deliver';
       $scope.data.historystatus.push(history);
-     
-      
+
+
       AuthService.updateOrder($scope.data._id, $scope.data)
         .then(function (response) {
           //alert('Success');
-          if(oldStatus == 'confirmed'){
+          if (oldStatus == 'confirmed') {
             $state.go('tab.confirmed');
-          }else{
+          } else {
             $state.go('tab.detailaccept');
           }
-          
+
           //tab.confirmed
         }, function (error) {
           console.log(error);
           //alert('dont success' + " " + error.data.message);
         });
-        
+
     }
     $scope.$on('onNotification', function (event, args) {
       // do what you want to do
