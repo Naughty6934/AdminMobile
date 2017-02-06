@@ -258,7 +258,6 @@ angular.module('starter.controllers', ['ionic'])
                   // anchor: new google.maps.Point(0, 32)
                 },
                 position: new google.maps.LatLng(location.latitude, location.longitude),
-                title: locations.firstName + " " + locations.lastName,
                 map: map
               });
             }
@@ -303,7 +302,7 @@ angular.module('starter.controllers', ['ionic'])
             var marker = new google.maps.Marker({
               icon: {
                   url: 'http://res.cloudinary.com/hflvlav04/image/upload/v1486371632/sj4niz8oykdqfadnwhbo.png',
-                  scaledSize: new google.maps.Size(28, 45),
+                  scaledSize: new google.maps.Size(30, 48),
                   // The origin for this image is (0, 0). 
                   origin: new google.maps.Point(0, 0),
                   // The anchor for this image is the base of the flagpole at (0, 32). 
