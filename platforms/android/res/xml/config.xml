@@ -35,10 +35,7 @@
     <content src="index.html" />
     <access origin="*" />
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
-<<<<<<< HEAD
-=======
     <allow-navigation href="http://192.168.1.121:8100" />
->>>>>>> e268c08a1a8a149fd304f2d484dcab361071deb8
     <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
     <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
     <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />

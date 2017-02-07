@@ -160,8 +160,8 @@ angular.module('starter.controllers', ['ionic'])
     $scope.init = function () {
       $scope.readService();
     }
-    $scope.readService = function(){
-       AuthService.getOrder()
+    $scope.readService = function () {
+      AuthService.getOrder()
         .then(function (data) {
           $scope.locationConfirmed = [];
           $scope.locationWait = [];
@@ -200,7 +200,7 @@ angular.module('starter.controllers', ['ionic'])
           })
 
         });
-        $scope.readMap();
+      $scope.readMap();
     }
     $scope.readMap = function () {
 
@@ -246,6 +246,16 @@ angular.module('starter.controllers', ['ionic'])
             map: map
           });
           $scope.locationDeliver.forEach(function (locations) {
+            var contentString = '<div>'
+              + '<p>' + locations.displayName + '</p>'
+              + '</div>';
+            var infowindow = new google.maps.InfoWindow({
+              content: locations.displayName
+            });
+
+            marker.addListener('click', function () {
+              infowindow.open(map, marker);
+            });
             var location = locations.address.sharelocation;
             if (location) {
               var marker = new google.maps.Marker({
@@ -260,73 +270,128 @@ angular.module('starter.controllers', ['ionic'])
                 position: new google.maps.LatLng(location.latitude, location.longitude),
                 map: map
               });
+              var infowindow = new google.maps.InfoWindow({
+                content: contentString
+              });
+              marker.addListener('click', function () {
+                console.log('click');
+                infowindow.open($scope.map, this);
+              });
             }
           });
           $scope.locationConfirmed.forEach(function (locations) {
+            var contentString = '<div>'
+              + '<p>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</p>'
+              + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '</p>'
+              + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>'
+              + '</div>';
             var location = locations.shipping.sharelocation;
             // console.log($scope.locationConfirmed.length);
             var marker = new google.maps.Marker({
-             icon: {
-                  url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371637/zfx1xml50sn5rn8bu26h.png',
-                  scaledSize: new google.maps.Size(32, 51),
-                  // The origin for this image is (0, 0). 
-                  origin: new google.maps.Point(0, 0),
-                  // The anchor for this image is the base of the flagpole at (0, 32). 
-                  // anchor: new google.maps.Point(0, 32)
-                },
+              icon: {
+                url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371637/zfx1xml50sn5rn8bu26h.png',
+                scaledSize: new google.maps.Size(32, 51),
+                // The origin for this image is (0, 0). 
+                origin: new google.maps.Point(0, 0),
+                // The anchor for this image is the base of the flagpole at (0, 32). 
+                // anchor: new google.maps.Point(0, 32)
+              },
               position: new google.maps.LatLng(location.latitude, location.longitude),
               map: map
+            });
+            var infowindow = new google.maps.InfoWindow({
+              content: contentString
+            });
+            marker.addListener('click', function () {
+              console.log('click');
+              infowindow.open($scope.map, this);
             });
           });
 
           $scope.locationWait.forEach(function (locations) {
+            var contentString = '<div>'
+              + '<p>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</p>'
+              + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '</p>'
+              + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>'
+              + '</div>';
             var location = locations.shipping.sharelocation;
             // console.log($scope.locationConfirmed.length);
             var marker = new google.maps.Marker({
               icon: {
-                  url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371643/riwxnxtjdfjganurw46m.png',
-                  scaledSize: new google.maps.Size(32, 51),
-                  // The origin for this image is (0, 0). 
-                  origin: new google.maps.Point(0, 0),
-                  // The anchor for this image is the base of the flagpole at (0, 32). 
-                  // anchor: new google.maps.Point(0, 32)
-                },
+                url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371643/riwxnxtjdfjganurw46m.png',
+                scaledSize: new google.maps.Size(32, 51),
+                // The origin for this image is (0, 0). 
+                origin: new google.maps.Point(0, 0),
+                // The anchor for this image is the base of the flagpole at (0, 32). 
+                // anchor: new google.maps.Point(0, 32)
+              },
               position: new google.maps.LatLng(location.latitude, location.longitude),
               map: map
+            });
+            var infowindow = new google.maps.InfoWindow({
+              content: contentString
+            });
+            marker.addListener('click', function () {
+              console.log('click');
+              infowindow.open($scope.map, this);
             });
           });
 
           $scope.locationAccept.forEach(function (locations) {
+            var contentString = '<div>'
+              + '<p>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</p>'
+              + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '</p>'
+              + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>'
+              + '</div>';
             var location = locations.shipping.sharelocation;
             // console.log($scope.locationConfirmed.length);
             var marker = new google.maps.Marker({
               icon: {
-                  url: 'http://res.cloudinary.com/hflvlav04/image/upload/v1486371632/sj4niz8oykdqfadnwhbo.png',
-                  scaledSize: new google.maps.Size(30, 48),
-                  // The origin for this image is (0, 0). 
-                  origin: new google.maps.Point(0, 0),
-                  // The anchor for this image is the base of the flagpole at (0, 32). 
-                  // anchor: new google.maps.Point(0, 0)
-                },
+                url: 'http://res.cloudinary.com/hflvlav04/image/upload/v1486371632/sj4niz8oykdqfadnwhbo.png',
+                scaledSize: new google.maps.Size(30, 48),
+                // The origin for this image is (0, 0). 
+                origin: new google.maps.Point(0, 0),
+                // The anchor for this image is the base of the flagpole at (0, 32). 
+                // anchor: new google.maps.Point(0, 0)
+              },
               position: new google.maps.LatLng(location.latitude, location.longitude),
               map: map
+            });
+            var infowindow = new google.maps.InfoWindow({
+              content: contentString
+            });
+            marker.addListener('click', function () {
+              console.log('click');
+              infowindow.open($scope.map, this);
             });
           });
 
           $scope.locationReject.forEach(function (locations) {
+            var contentString = '<div>'
+              + '<p>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</p>'
+              + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '</p>'
+              + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>'
+              + '</div>';
             var location = locations.shipping.sharelocation;
             // console.log($scope.locationConfirmed.length);
             var marker = new google.maps.Marker({
               icon: {
-                  url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371639/igflklgols9u1kflmmkh.png',
-                  scaledSize: new google.maps.Size(28, 45),
-                  // The origin for this image is (0, 0). 
-                  origin: new google.maps.Point(0, 0),
-                  // The anchor for this image is the base of the flagpole at (0, 32). 
-                  // anchor: new google.maps.Point(0, 32)
-                },
+                url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371639/igflklgols9u1kflmmkh.png',
+                scaledSize: new google.maps.Size(28, 45),
+                // The origin for this image is (0, 0). 
+                origin: new google.maps.Point(0, 0),
+                // The anchor for this image is the base of the flagpole at (0, 32). 
+                // anchor: new google.maps.Point(0, 32)
+              },
               position: new google.maps.LatLng(location.latitude, location.longitude),
               map: map
+            });
+            var infowindow = new google.maps.InfoWindow({
+              content: contentString
+            });
+            marker.addListener('click', function () {
+              console.log('click');
+              infowindow.open($scope.map, this);
             });
           });
 
