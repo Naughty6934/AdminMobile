@@ -8,34 +8,34 @@
     },
     "installed_plugins": {
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "cordova-plugin-geolocation": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         },
         "phonegap-plugin-push": {
             "SENDER_ID": "816604195373",
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "com.ionicframework.adminmo371962"
+            "PACKAGE_NAME": "com.thamturakit.admin"
         }
     }
 }

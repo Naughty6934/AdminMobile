@@ -30,6 +30,8 @@
 	<string>816604195373</string>
 	<key>IS_GCM_ENABLED</key>
 	<true/>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -39,19 +41,17 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>$(PRODUCT_NAME) location use</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) photo use</string>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
-	<key>NSMainNibFile</key>
-	<string></string>
 	<key>NSMainNibFile~ipad</key>
 	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) photo use</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
 	</array>
 	<key>UIRequiresFullScreen</key>
 	<true/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array/>
 </dict>
 </plist>
