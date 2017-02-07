@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <merger version="3"><dataSet config="main"><source path="/Users/admin/Desktop/MobileAdmin/AdminMobile/platforms/android/CordovaLib/assets"/><source path="/Users/admin/Desktop/MobileAdmin/AdminMobile/platforms/android/CordovaLib/build/generated/assets/shaders/debug"/></dataSet><dataSet config="debug"><source path="/Users/admin/Desktop/MobileAdmin/AdminMobile/platforms/android/CordovaLib/src/debug/assets"/></dataSet></merger>
+=======
+<merger version="3"><dataSet config="main"><source path="/Users/admin/Desktop/AdminMobile/AdminMobile/platforms/android/CordovaLib/assets"/><source path="/Users/admin/Desktop/AdminMobile/AdminMobile/platforms/android/CordovaLib/build/generated/assets/shaders/debug"/></dataSet><dataSet config="debug"><source path="/Users/admin/Desktop/AdminMobile/AdminMobile/platforms/android/CordovaLib/src/debug/assets"/></dataSet></merger>
+>>>>>>> e268c08a1a8a149fd304f2d484dcab361071deb8

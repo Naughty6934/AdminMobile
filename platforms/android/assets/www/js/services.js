@@ -1,6 +1,6 @@
 angular.module('starter.services', [])
   .factory('OrderService', function ($http) {
-    var apiUrl = 'https://thamapp.herokuapp.com/api';
+    var apiUrl = 'https://thamapptest.herokuapp.com/api';
     // instantiate our initial object
     var OrderService = function() {
         this.orders = [];
@@ -29,7 +29,7 @@ angular.module('starter.services', [])
     return OrderService;
   })
   .service('AuthService', ['$http', '$q', function ($http, $q) {
-    var apiURL = 'https://thamapp.herokuapp.com/api';
+    var apiURL = 'https://thamapptest.herokuapp.com/api';
     this.saveUser = function (user) {
       return $http.post(apiURL + '/auth/signup', user);
 
