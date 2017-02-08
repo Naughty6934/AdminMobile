@@ -1,7 +1,7 @@
 angular.module('starter.controllers', ['ionic'])
 
   .controller('LogInCtrl', function ($scope, $state, AuthService, $rootScope) {
-    /*
+    
     var push = new Ionic.Push({
       "debug": true,
       "onNotification": function (notification) {
@@ -19,7 +19,7 @@ angular.module('starter.controllers', ['ionic'])
       window.localStorage.token = JSON.stringify(token.token);
       push.saveToken(token);  // persist the token in the Ionic Platform
     });
-    */
+    
     $scope.userStore = AuthService.getUser();
     if ($scope.userStore) {
 
