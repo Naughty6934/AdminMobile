@@ -1,7 +1,7 @@
 {
-  "name": "adminmo",
+  "name": "ผู้ดูแลระบบ",
   "version": "1.1.1",
-  "description": "adminmo: An Ionic project",
+  "description": "ผู้ดูแลระบบ: An Ionic project",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",
