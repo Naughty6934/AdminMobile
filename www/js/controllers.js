@@ -248,7 +248,7 @@ angular.module('starter.controllers', ['ionic'])
           $scope.locationDeliver.forEach(function (locations) {
             var contentString = '<div>'
               + '<label>' + locations.displayName + '</label><br>'
-              + '<label>' + locations.address.tel + '</label>'
+              + 'โทร : ' + '<a href="tel:' + locations.address.tel + '">' + locations.address.tel + '</a>'
               + '</div>';
             var location = locations.address.sharelocation;
             if (location) {
