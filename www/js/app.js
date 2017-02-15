@@ -21,7 +21,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
         StatusBar.styleDefault();
       }
 
-      
+
     });
   })
 
@@ -91,6 +91,12 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
             controller: 'MoreCtrl'
           }
         }
+      })
+
+      .state('liststock', {
+        url: '/liststock',
+        templateUrl: 'templates/liststock.html',
+        controller: 'MoreCtrl'
       })
 
       .state('tab.map', {

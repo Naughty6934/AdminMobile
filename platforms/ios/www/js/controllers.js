@@ -1,7 +1,7 @@
 angular.module('starter.controllers', ['ionic'])
 
   .controller('LogInCtrl', function ($scope, $state, AuthService, $rootScope) {
-    /*
+
     var push = new Ionic.Push({
       "debug": true,
       "onNotification": function (notification) {
@@ -19,7 +19,7 @@ angular.module('starter.controllers', ['ionic'])
       window.localStorage.token = JSON.stringify(token.token);
       push.saveToken(token);  // persist the token in the Ionic Platform
     });
-    */
+
     $scope.userStore = AuthService.getUser();
     if ($scope.userStore) {
 
@@ -247,7 +247,8 @@ angular.module('starter.controllers', ['ionic'])
           });
           $scope.locationDeliver.forEach(function (locations) {
             var contentString = '<div>'
-              + '<p>' + locations.displayName + '</p>'
+              + '<label>' + locations.displayName + '</label><br>'
+              + 'โทร : ' + '<a href="tel:' + locations.address.tel + '">' + locations.address.tel + '</a>'
               + '</div>';
             var location = locations.address.sharelocation;
             if (location) {
@@ -274,19 +275,19 @@ angular.module('starter.controllers', ['ionic'])
           });
           $scope.locationConfirmed.forEach(function (locations) {
             var product = '';
-                var price = null;
-                locations.items.forEach(function(pro){
-                  product += 'ชื่อสินค้า : '+pro.product.name +'<br> ราคา : ' + pro.product.price + ' บาท จำนวน : '+ pro.qty + ' ชิ้น<br>' ;
-                })
-                var contentString = '<div>'
-                  + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
-                  + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode +'<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>'+'</p>'
-                  + '<p>'+product+'</p>'
-                  + '<label>'+'ราคารวม : '+locations.amount+' บาท'+'</label><br>'     
-                  + '<label>'+'ค่าจัดส่ง : '+locations.deliveryamount+' บาท'+'</label><br>'                  
-                  + '<label>'+'ส่วนลด : '+locations.discountpromotion+' บาท'+'</label><br>'                                    
-                  + '<label>'+'รวมสุทธิ : '+locations.totalamount+' บาท'+'</label>'                  
-                  + '</div>';
+            var price = null;
+            locations.items.forEach(function (pro) {
+              product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
+            })
+            var contentString = '<div>'
+              + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
+              + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
+              + '<p>' + product + '</p>'
+              + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
+              + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
+              + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
+              + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
+              + '</div>';
             var location = locations.shipping.sharelocation;
             // console.log($scope.locationConfirmed.length);
             var marker = new google.maps.Marker({
@@ -311,20 +312,20 @@ angular.module('starter.controllers', ['ionic'])
           });
 
           $scope.locationWait.forEach(function (locations) {
-           var product = '';
-                var price = null;
-                locations.items.forEach(function(pro){
-                  product += 'ชื่อสินค้า : '+pro.product.name +'<br> ราคา : ' + pro.product.price + ' บาท จำนวน : '+ pro.qty + ' ชิ้น<br>' ;
-                })
-                var contentString = '<div>'
-                  + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
-                  + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode +'<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>'+'</p>'
-                  + '<p>'+product+'</p>'
-                  + '<label>'+'ราคารวม : '+locations.amount+' บาท'+'</label><br>'     
-                  + '<label>'+'ค่าจัดส่ง : '+locations.deliveryamount+' บาท'+'</label><br>'                  
-                  + '<label>'+'ส่วนลด : '+locations.discountpromotion+' บาท'+'</label><br>'                                    
-                  + '<label>'+'รวมสุทธิ : '+locations.totalamount+' บาท'+'</label>'                  
-                  + '</div>';
+            var product = '';
+            var price = null;
+            locations.items.forEach(function (pro) {
+              product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
+            })
+            var contentString = '<div>'
+              + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
+              + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
+              + '<p>' + product + '</p>'
+              + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
+              + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
+              + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
+              + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
+              + '</div>';
             var location = locations.shipping.sharelocation;
             // console.log($scope.locationConfirmed.length);
             var marker = new google.maps.Marker({
@@ -349,20 +350,20 @@ angular.module('starter.controllers', ['ionic'])
           });
 
           $scope.locationAccept.forEach(function (locations) {
-           var product = '';
-                var price = null;
-                locations.items.forEach(function(pro){
-                  product += 'ชื่อสินค้า : '+pro.product.name +'<br> ราคา : ' + pro.product.price + ' บาท จำนวน : '+ pro.qty + ' ชิ้น<br>' ;
-                })
-                var contentString = '<div>'
-                  + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
-                  + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode +'<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>'+'</p>'
-                  + '<p>'+product+'</p>'
-                  + '<label>'+'ราคารวม : '+locations.amount+' บาท'+'</label><br>'     
-                  + '<label>'+'ค่าจัดส่ง : '+locations.deliveryamount+' บาท'+'</label><br>'                  
-                  + '<label>'+'ส่วนลด : '+locations.discountpromotion+' บาท'+'</label><br>'                                    
-                  + '<label>'+'รวมสุทธิ : '+locations.totalamount+' บาท'+'</label>'                  
-                  + '</div>';
+            var product = '';
+            var price = null;
+            locations.items.forEach(function (pro) {
+              product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
+            })
+            var contentString = '<div>'
+              + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
+              + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
+              + '<p>' + product + '</p>'
+              + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
+              + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
+              + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
+              + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
+              + '</div>';
             var location = locations.shipping.sharelocation;
             // console.log($scope.locationConfirmed.length);
             var marker = new google.maps.Marker({
@@ -387,20 +388,20 @@ angular.module('starter.controllers', ['ionic'])
           });
 
           $scope.locationReject.forEach(function (locations) {
-           var product = '';
-                var price = null;
-                locations.items.forEach(function(pro){
-                  product += 'ชื่อสินค้า : '+pro.product.name +'<br> ราคา : ' + pro.product.price + ' บาท จำนวน : '+ pro.qty + ' ชิ้น<br>' ;
-                })
-                var contentString = '<div>'
-                  + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
-                  + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode +'<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>'+'</p>'
-                  + '<p>'+product+'</p>'
-                  + '<label>'+'ราคารวม : '+locations.amount+' บาท'+'</label><br>'     
-                  + '<label>'+'ค่าจัดส่ง : '+locations.deliveryamount+' บาท'+'</label><br>'                  
-                  + '<label>'+'ส่วนลด : '+locations.discountpromotion+' บาท'+'</label><br>'                                    
-                  + '<label>'+'รวมสุทธิ : '+locations.totalamount+' บาท'+'</label>'                  
-                  + '</div>';
+            var product = '';
+            var price = null;
+            locations.items.forEach(function (pro) {
+              product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
+            })
+            var contentString = '<div>'
+              + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
+              + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
+              + '<p>' + product + '</p>'
+              + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
+              + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
+              + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
+              + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
+              + '</div>';
             var location = locations.shipping.sharelocation;
             // console.log($scope.locationConfirmed.length);
             var marker = new google.maps.Marker({

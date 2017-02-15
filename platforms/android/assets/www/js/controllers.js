@@ -435,11 +435,26 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('MoreCtrl', function ($scope, AuthService, $state) {
+  .controller('MoreCtrl', function ($scope, AuthService, $state, $stateParams) {
     $scope.logOut = function () {
       AuthService.signOut();
       $state.go('login');
     }
+    ///mam work
+    //  $scope.deleteOrder = function (data) {
+    //   ProductService.deleteOrder(data._id)
+    //     .then(function (response) {
+    //       $state.go('stock');
+    //     }, function (error) {
+    //       console.log(error);
+    //       alert('dont success' + " " + error.data.message);
+    //     });
+    // }
+     ///mam work
+    $scope.liststock = function () {
+      // $state.go('stock');
+      alert();
+    };
   })
 
   .controller('OrderCtrl', function ($scope, AuthService, $state, $stateParams, $ionicModal) {

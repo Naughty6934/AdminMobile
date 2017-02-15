@@ -1,0 +1,51 @@
+<ion-view view-title="สต็อก" ng-init="init()">
+
+    <ion-nav-bar align-title="center">
+        <ion-nav-buttons side="left">
+            <button class="button button-icon icon-left" ui-sref="tab.more">ย้อนกลับ
+      </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right">
+            <button class="button button-positive button-clear" ng-click="modal.show()">สร้างสต็อก</button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+     
+
+    <ion-content>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col col-90">
+                <div class="button-bar">
+                    <a class="button button-outline button-positive {{Request === true ? 'active' : ''}}" ng-click="Request = true ;  Response = false ;Received = false ;">คำขอ</a>
+                    <a class="button button-outline button-positive {{Response === true ? 'active' : ''}}" ng-click="Response = true; Received = false ;Request = false">จัดทำแล้ว</a>
+                    <a class="button button-outline button-positive {{Received === true ? 'active' : ''}}" ng-click="Received = true; Request = false ;Response = false">ส่งแล้ว</a>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()"></ion-refresher>
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon" id="sizing-addon3"><i class="fa fa-search" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" placeholder="ค้นหา..." ng-model="topsearch" aria-describedby="sizing-addon3">
+        </div>
+       <div ng-show="Request" >
+            <ion-item class='item item-avatar-left item-icon-right'>
+                <p>Test Request1 </p>
+            </ion-item>
+        </div>
+
+        <div ng-show="Response" >
+            <ion-item class='item item-avatar-left item-icon-right'>
+                <p>Test Response2 </p>
+            </ion-item>
+        </div>
+
+        <div ng-show="Received">
+            <ion-item class='item item-avatar-left item-icon-right'>
+                <p>Test Received3 </p>
+            </ion-item>
+        </div>
+    </ion-content>
+
+    
+</ion-view>

@@ -92,6 +92,12 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
           }
         }
       })
+       ///mam work
+       .state('stock', {
+        url: '/stock',
+        templateUrl: 'templates/stock.html',
+        controller: 'MoreCtrl'
+      })
 
       .state('tab.map', {
         url: '/map',
