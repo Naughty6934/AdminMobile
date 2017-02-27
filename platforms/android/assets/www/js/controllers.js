@@ -2,23 +2,23 @@ angular.module('starter.controllers', ['ionic'])
 
   .controller('LogInCtrl', function ($scope, $state, AuthService, $rootScope) {
 
-    var push = new Ionic.Push({
-      "debug": true,
-      "onNotification": function (notification) {
-        //console.log(notification);
-        if (notification._raw.additionalData.foreground) {
-          //alert(notification.message);
+    // var push = new Ionic.Push({
+    //   "debug": true,
+    //   "onNotification": function (notification) {
+    //     //console.log(notification);
+    //     if (notification._raw.additionalData.foreground) {
+    //       //alert(notification.message);
 
-          $rootScope.$broadcast('onNotification');
-        }
-      }
-    });
+    //       $rootScope.$broadcast('onNotification');
+    //     }
+    //   }
+    // });
 
-    push.register(function (token) {
-      console.log("My Device token:", token.token);
-      window.localStorage.token = JSON.stringify(token.token);
-      push.saveToken(token);  // persist the token in the Ionic Platform
-    });
+    // push.register(function (token) {
+    //   console.log("My Device token:", token.token);
+    //   window.localStorage.token = JSON.stringify(token.token);
+    //   push.saveToken(token);  // persist the token in the Ionic Platform
+    // });
 
     $scope.userStore = AuthService.getUser();
     if ($scope.userStore) {
@@ -435,26 +435,32 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('MoreCtrl', function ($scope, AuthService, $state, $stateParams) {
+  .controller('MoreCtrl', function ($scope, AuthService, $state, $ionicModal) {
     $scope.logOut = function () {
       AuthService.signOut();
       $state.go('login');
-    }
-    ///mam work
-    //  $scope.deleteOrder = function (data) {
-    //   ProductService.deleteOrder(data._id)
-    //     .then(function (response) {
-    //       $state.go('stock');
-    //     }, function (error) {
-    //       console.log(error);
-    //       alert('dont success' + " " + error.data.message);
-    //     });
-    // }
-     ///mam work
-    $scope.liststock = function () {
-      // $state.go('stock');
-      alert();
     };
+    $ionicModal.fromTemplateUrl('templates/modal.html', {
+      scope: $scope
+    }).then(function (modal) {
+      $scope.modal = modal;
+    });
+    $scope.liststock = function () {
+      $state.go('liststock');
+       $scope.Request = true;
+          $scope.Response = false;
+          $scope.Received = false;
+          $scope.ordersConfirmed = [];
+
+          $scope.ordersResponse = [];
+          $scope.ordersReceived = [];
+          $scope.ordersRequest = [];
+          $rootScope.countOrderRes = 0;
+          $rootScope.countOrderRec = 0;
+          $rootScope.countOrderReq = 0;
+    };
+    
+
   })
 
   .controller('OrderCtrl', function ($scope, AuthService, $state, $stateParams, $ionicModal) {

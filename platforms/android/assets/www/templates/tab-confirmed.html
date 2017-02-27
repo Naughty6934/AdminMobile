@@ -7,7 +7,7 @@
       <input type="text" class="form-control" placeholder="ค้นหา..." ng-model="topsearch" aria-describedby="sizing-addon3">
     </div>
     <ion-list>
-      <ion-item class='item item-avatar-left item-icon-right' ng-repeat="data in ordersConfirmed | filter:topsearch" ng-click = "gotoDetail(data)">
+      <ion-item class='item item-avatar-left item-icon-right' ng-repeat="data in ordersConfirmed | filter:topsearch" ng-click="gotoDetail(data)">
         <img src={{data.user.profileImageURL}}>
         <h2>{{data.user.displayName}}</h2>
         <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
@@ -15,12 +15,18 @@
         <p>
           <h2>{{data.shipping.postcode}}</h2>
         </p>
+        <p class="icon ion-right marT  ion-clock" am-time-ago="data.created"></p>
         <p ng-show="data.namedeliver">
           <label>คนส่งข้าว : </label>
           <label>{{data.namedeliver.displayName}}</label>
         </p>
         <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
+
+
+
+
         <p class="icon ion-right amount">{{data.totalamount}} ฿</p>
+
         <!--<ion-option-button class="button-positive" ng-click="modal.show()">เลือกคนส่งข้าว</ion-option-button>-->
       </ion-item>
     </ion-list>

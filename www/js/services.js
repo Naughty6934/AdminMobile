@@ -2,29 +2,29 @@ angular.module('starter.services', [])
   .factory('OrderService', function ($http) {
     var apiUrl = 'https://thamapptest.herokuapp.com/api';
     // instantiate our initial object
-    var OrderService = function() {
-        this.orders = [];
-        this.getOrder();
+    var OrderService = function () {
+      this.orders = [];
+      this.getOrder();
     };
 
     // define the getProfile method which will fetch data
     // from GH API and *returns* a promise
-    OrderService.prototype.getOrder = function() {
+    OrderService.prototype.getOrder = function () {
 
-        // Generally, javascript callbacks, like here the $http.get callback,
-        // change the value of the "this" variable inside it
-        // so we need to keep a reference to the current instance "this" :
-        var self = this;
+      // Generally, javascript callbacks, like here the $http.get callback,
+      // change the value of the "this" variable inside it
+      // so we need to keep a reference to the current instance "this" :
+      var self = this;
 
-        return $http.get(apiUrl + '/orders').then(function(response) {
+      return $http.get(apiUrl + '/orders').then(function (response) {
 
-            // when we get the results we store the data in user.profile
-            self.orders = response.data
+        // when we get the results we store the data in user.profile
+        self.orders = response.data
 
-            // promises success should always return something in order to allow chaining
-            return response;
+        // promises success should always return something in order to allow chaining
+        return response;
 
-        });
+      });
     };
     return OrderService;
   })
@@ -35,11 +35,13 @@ angular.module('starter.services', [])
 
     };
     this.loginUser = function (login) {
+      window.localStorage.credential = JSON.stringify(login);
 
       var dfd = $q.defer();
 
       $http.post(apiURL + '/auth/signin', login).success(function (database) {
         window.localStorage.user = JSON.stringify(database);
+        alert('Success');
         dfd.resolve(database);
       }).error(function (error) {
         /* Act on the event */
@@ -71,6 +73,7 @@ angular.module('starter.services', [])
     this.signOut = function () {
       // window.localStorage.clear();
       window.localStorage.removeItem('user');
+      window.localStorage.removeItem('credential');
       return true;
     };
 
