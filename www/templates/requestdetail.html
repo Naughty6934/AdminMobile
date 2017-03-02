@@ -15,7 +15,7 @@
 
             <label class="item item-input">
                 <span class="input-label">ชื่อ : </span>
-                <input style="background-color: white" type="text" ng-model="data.user.displayName" readonly>
+                <input style="background-color: white" type="text" ng-model="data.namedeliver.displayName" readonly>
             </label>
 
             <label class="item item-input item-text-wrap">
@@ -28,27 +28,12 @@
                 <span class="input-label">เบอร์โทร : </span>
                 <input style="background-color: white" type="text" ng-model="data.shipping.tel" readonly>
             </label>
-            
-            <a class="item item-icon-left" ng-hide="data.deliverystatus === 'confirmed' || data.deliverystatus === 'reject'">
-              <i class="icon ion-person-stalker"></i>
-                คนส่งข้าว
-              <span class="input-label" ng-show="data.namedeliver">{{data.namedeliver.displayName}}</span>
-              <span class="input-label" ng-hide="data.namedeliver">ยังไม่ได้ระบุคนส่งข้าว</span>
+            <a class="item item-icon-left" ng-show="data.transport">
+              <i class="icon ion-android-bus"></i>
+                บริษัทขนส่งข้าว
+              <span class="input-label" ng-show="data.namedeliver">{{data.transport.displayName}}</span>
             </a>
-
-            <a class="item item-icon-left" ng-show="data.deliverystatus === 'confirmed' || data.deliverystatus === 'reject'" ng-click="modal.show()">
-              <i class="icon ion-person-stalker"></i>
-                คนส่งข้าว
-              <span class="input-label" ng-show="data.namedeliver">{{data.namedeliver.displayName}}</span>
-              <span class="input-label" ng-hide="data.namedeliver">ยังไม่ได้ระบุคนส่งข้าว</span>
-            </a>
-            
-            
         </div>
-        <button class="button button-block button-positive" ng-show="(data.deliverystatus === 'confirmed' || data.deliverystatus === 'reject') && data.namedeliver" ng-click = "save()">
-            บันทึกข้อมูล
-        </button>
-
             <div class='item item-avatar-left item-icon-right item-text-wrap' ng-repeat="item in data.items">
                 <img src={{item.product.images}}>
                 <h2>{{item.product.name}} ({{item.product.price}} บาท)</h2>

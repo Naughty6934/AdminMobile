@@ -20,7 +20,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
-      if(window.localStorage.credential){
+      if (window.localStorage.credential) {
         var user = JSON.parse(window.localStorage.credential);
         AuthService.loginUser(user);
       }
@@ -131,12 +131,32 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
           }
         }
       })
+
       .state('tab.detailorder2', {
         url: '/detailorder:{data}',
         views: {
           'tab-detailaccept': {
             templateUrl: 'templates/detailorder.html',
             controller: 'OrderCtrl'
+          }
+        }
+      })
+
+      .state('tab.listtransports', {
+        url: '/listtransports',
+        views: {
+          'tab-more': {
+            templateUrl: 'templates/listtransports.html',
+            controller: 'MoreCtrl'
+          }
+        }
+      })
+      .state('tab.requestdetail', {
+        url: '/requestdetail:{data}',
+        views: {
+          'tab-more': {
+            templateUrl: 'templates/requestdetail.html',
+            controller: 'MoreDetailCtrl'
           }
         }
       });

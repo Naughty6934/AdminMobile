@@ -2,24 +2,24 @@ angular.module('starter.controllers', ['ionic'])
 
   .controller('LogInCtrl', function ($scope, $state, AuthService, $rootScope) {
 
-    var push = new Ionic.Push({
-      "debug": true,
-      "onNotification": function (notification) {
-        //console.log(notification);
-        if (notification._raw.additionalData.foreground) {
-          //alert(notification.message);
+    // var push = new Ionic.Push({
+    //   "debug": true,
+    //   "onNotification": function (notification) {
+    //     //console.log(notification);
+    //     if (notification._raw.additionalData.foreground) {
+    //       alert(notification.message);
 
-          $rootScope.$broadcast('onNotification');
-        }
-      }
-    });
+    //      // $rootScope.$broadcast('onNotification');
+    //     }
+    //   }
+    // });
 
-    push.register(function (token) {
-       console.log("My Device token:", token.token);
-       alert(token.token);
-       window.localStorage.token = JSON.stringify(token.token);
-       push.saveToken(token);  // persist the token in the Ionic Platform
-    });
+    // push.register(function (token) {
+    //    console.log("My Device token:", token.token);
+    //   // alert(token.token);
+    //    window.localStorage.token = JSON.stringify(token.token);
+    //    push.saveToken(token);  // persist the token in the Ionic Platform
+    // });
 
     $scope.userStore = AuthService.getUser();
     if ($scope.userStore) {
@@ -436,34 +436,77 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('MoreCtrl', function ($scope, AuthService, $state, $ionicModal) {
+  .controller('MoreCtrl', function ($scope, AuthService, $state, $ionicModal, RequestService) {
     $scope.logOut = function () {
       AuthService.signOut();
       $state.go('login');
     };
-    $ionicModal.fromTemplateUrl('templates/modal.html', {
-      scope: $scope
-    }).then(function (modal) {
-      $scope.modal = modal;
-    });
-    $scope.liststock = function () {
-      $state.go('liststock');
-       $scope.Request = true;
-          $scope.Response = false;
-          $scope.Received = false;
-          $scope.ordersConfirmed = [];
 
-          $scope.ordersResponse = [];
-          $scope.ordersReceived = [];
-          $scope.ordersRequest = [];
-          $rootScope.countOrderRes = 0;
-          $rootScope.countOrderRec = 0;
-          $rootScope.countOrderReq = 0;
+   
+    $scope.init = function (){
+       $scope.requestsorders();
     };
-    
+    // $ionicModal.fromTemplateUrl('templates/modal.html', {
+    //   scope: $scope
+    // }).then(function (modal) {
+    //   $scope.modal = modal;
+    // });
+    // $scope.liststock = function () {
+    //   $state.go('liststock');
+    //   $scope.Request = true;
+    //   $scope.Response = false;
+    //   $scope.Received = false;
+    //   $scope.ordersConfirmed = [];
 
+    //   $scope.ordersResponse = [];
+    //   $scope.ordersReceived = [];
+    //   $scope.ordersRequest = [];
+    //   $rootScope.countOrderRes = 0;
+    //   $rootScope.countOrderRec = 0;
+    //   $rootScope.countOrderReq = 0;
+    // };
+    $scope.listtransports = function () {
+      $state.go('tab.listtransports');
+    };
+    $scope.requestsorders = function () {
+      RequestService.getRequests()
+        .then(function (data) {
+          var requestlist = data;
+          $scope.listRequest = [];
+          $scope.listResponse = [];
+          $scope.listReceived = [];
+          requestlist.forEach(function (request) {
+            if (request.deliverystatus === 'request') {
+              $scope.listRequest.push(request);
+            }
+            else if (request.deliverystatus === 'response') {
+              $scope.listResponse.push(request);
+            }
+            else if (request.deliverystatus === 'received') {
+              $scope.listReceived.push(request);
+            }
+          })
+          console.log($scope.listRequest.length);
+          console.log($scope.listResponse.length);
+          console.log($scope.listReceived.length);
+        })
+    }
+    $scope.requestDetail = function(data){
+      $state.go('tab.requestdetail', { data: JSON.stringify(data) }); 
+    }
+     $scope.doRefresh = function () {
+      $scope.init();
+      // Stop the ion-refresher from spinning
+      $scope.$broadcast('scroll.refreshComplete');
+
+    };
   })
 
+  .controller('MoreDetailCtrl', function ($scope, $stateParams,AuthService, $state, $ionicModal, RequestService){
+    $scope.data = JSON.parse($stateParams.data);
+    console.log($scope.data);
+
+  })
   .controller('OrderCtrl', function ($scope, AuthService, $state, $stateParams, $ionicModal) {
 
     $ionicModal.fromTemplateUrl('templates/modal.html', {

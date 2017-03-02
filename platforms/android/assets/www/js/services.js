@@ -143,4 +143,16 @@ angular.module('starter.services', [])
 
     }
 
+  }])
+  .service('RequestService', ['$http', '$q', function ($http, $q) {
+    var apiURL = 'https://thamapptest.herokuapp.com/api';
+    this.getRequests = function () {
+      var dfd = $q.defer();
+      $http.get(apiURL + '/requestorders').success(function (requestsorders) {
+        console.log(requestsorders);
+
+        dfd.resolve(requestsorders);
+      });
+      return dfd.promise;
+    };
   }]);

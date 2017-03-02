@@ -2,7 +2,7 @@
     <ion-content>
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
-        
+
         <div class="row">
             <div class="col"></div>
             <div class="col col-90">
@@ -24,7 +24,7 @@
             </ion-nav-buttons>-->
 
         <div ng-show="Accept" ng-repeat="data in orderApt | filter:topsearch">
-            <ion-item class='item item-avatar-left item-icon-right' ng-click = "gotoDetail2(data)">
+            <ion-item class='item item-avatar-left item-icon-right' ng-click="gotoDetail2(data)">
                 <img src={{data.user.profileImageURL}}>
                 <h2>{{data.user.displayName}}</h2>
                 <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
@@ -33,14 +33,14 @@
                     <label>คนส่งข้าว : </label>
                     <label>{{data.namedeliver.displayName}}</label>
                 </p>
-             <p class="icon ion-right marT  ion-clock" am-time-ago="data.created"></p>
+                <p class="icon ion-right marT  ion-clock" am-time-ago="data.created"></p>
                 <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
                 <p class="icon ion-right amount">{{data.totalamount}} ฿</p>
             </ion-item>
         </div>
 
         <div ng-show="Reject" ng-repeat="data in orderRjt | filter:topsearch">
-            <ion-item class='item item-avatar-left item-icon-right' ng-click = "gotoDetail2(data)">
+            <ion-item class='item item-avatar-left item-icon-right' ng-click="gotoDetail2(data)">
                 <img src={{data.user.profileImageURL}}>
                 <h2>{{data.user.displayName}}</h2>
                 <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
@@ -49,14 +49,14 @@
                     <label>คนส่งข้าว : </label>
                     <label>{{data.namedeliver.displayName}}</label>
                 </p>
-              <p class="icon ion-right marT  ion-clock" am-time-ago="data.created"></p>
+                <p class="icon ion-right marT  ion-clock" am-time-ago="data.created"></p>
                 <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
                 <p class="icon ion-right amount ">{{data.totalamount}} ฿</p>
             </ion-item>
         </div>
 
         <div ng-show="Wait" ng-repeat="data in orderWt | filter:topsearch">
-            <ion-item class='item item-avatar-left item-icon-right' ng-click = "gotoDetail2(data)">
+            <ion-item class='item item-avatar-left item-icon-right' ng-click="gotoDetail2(data)">
                 <img src={{data.user.profileImageURL}}>
                 <h2>{{data.user.displayName}}</h2>
                 <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
@@ -65,8 +65,8 @@
                     <label>คนส่งข้าว : </label>
                     <label>{{data.namedeliver.displayName}}</label>
                 </p>
-            <p class="icon ion-right marT  ion-clock" am-time-ago="data.created"></p>
-                
+                <p class="icon ion-right marT  ion-clock" am-time-ago="data.created"></p>
+
                 <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
                 <p class="icon ion-right amount">{{data.totalamount}} ฿</p>
             </ion-item>
