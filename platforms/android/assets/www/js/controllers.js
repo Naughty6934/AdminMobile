@@ -9,16 +9,16 @@ angular.module('starter.controllers', ['ionic'])
         if (notification._raw.additionalData.foreground) {
           alert(notification.message);
 
-         // $rootScope.$broadcast('onNotification');
+          // $rootScope.$broadcast('onNotification');
         }
       }
     });
 
     push.register(function (token) {
-       console.log("My Device token:", token.token);
-      alert(token.token);
-       window.localStorage.token = JSON.stringify(token.token);
-       push.saveToken(token);  // persist the token in the Ionic Platform
+      console.log("My Device token:", token.token);
+      // alert(token.token);
+      window.localStorage.token = JSON.stringify(token.token);
+      push.saveToken(token);  // persist the token in the Ionic Platform
     });
 
     $scope.userStore = AuthService.getUser();
@@ -436,15 +436,16 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('MoreCtrl', function ($scope, AuthService, $state, $ionicModal, RequestService) {
+  .controller('MoreCtrl', function ($scope, AuthService, $state, $ionicModal, RequestService, ReturnService) {
     $scope.logOut = function () {
       AuthService.signOut();
       $state.go('login');
     };
 
-   
-    $scope.init = function (){
-       $scope.requestsorders();
+
+    $scope.init = function () {
+      $scope.requestsorders();
+      $scope.returnorders();
     };
     // $ionicModal.fromTemplateUrl('templates/modal.html', {
     //   scope: $scope
@@ -467,6 +468,10 @@ angular.module('starter.controllers', ['ionic'])
     // };
     $scope.listtransports = function () {
       $state.go('tab.listtransports');
+    };
+
+    $scope.listtreturn = function () {
+      $state.go('tab.listtreturn');
     };
     $scope.requestsorders = function () {
       RequestService.getRequests()
@@ -491,20 +496,80 @@ angular.module('starter.controllers', ['ionic'])
           console.log($scope.listReceived.length);
         })
     }
-    $scope.requestDetail = function(data){
-      $state.go('tab.requestdetail', { data: JSON.stringify(data) }); 
+
+    $scope.returnorders = function () {
+      ReturnService.getReturns()
+        .then(function (data) {
+          var returnlist = data;
+          $scope.listReturnRet = [];
+          $scope.listReturnRes = [];
+          $scope.listReturnRec = [];
+          returnlist.forEach(function (returnOr) {
+            if (returnOr.deliverystatus === 'return') {
+              $scope.listReturnRet.push(returnOr);
+            }
+            else if (returnOr.deliverystatus === 'response') {
+              $scope.listReturnRes.push(returnOr);
+            }
+            else if (returnOr.deliverystatus === 'received') {
+              $scope.listReturnRec.push(returnOr);
+            }
+          })
+          console.log($scope.listReturnRet.length);
+          console.log($scope.listReturnRes.length);
+          console.log($scope.listReturnRec.length);
+        })
     }
-     $scope.doRefresh = function () {
+
+    $scope.returnDetail = function (data) {
+      $state.go('tab.returndetail', { data: JSON.stringify(data) });
+    }
+
+
+    $scope.requestDetail = function (data) {
+      $state.go('tab.requestdetail', { data: JSON.stringify(data) });
+    }
+    $scope.doRefresh = function () {
       $scope.init();
       // Stop the ion-refresher from spinning
       $scope.$broadcast('scroll.refreshComplete');
 
     };
+
   })
 
-  .controller('MoreDetailCtrl', function ($scope, $stateParams,AuthService, $state, $ionicModal, RequestService){
+  .controller('MoreDetailCtrl', function ($scope, $stateParams, AuthService, $state, $ionicModal, RequestService, ReturnService) {
     $scope.data = JSON.parse($stateParams.data);
     console.log($scope.data);
+
+    $scope.returnOrder = function (item) {
+      var listord =
+        {
+          status: 'received',
+          datestatus: new Date()
+        };
+      item.historystatus.push(listord);
+
+      var status = item.deliverystatus;
+      status = 'received';
+      var returnorder = {
+        deliverystatus: status,
+        historystatus: item.historystatus,
+        transport: $scope.userStore
+      }
+      var returnorderId = item._id;
+
+
+      ReturnService.updateReturnOrder(returnorderId, returnorder)
+        .then(function (received) {
+          // alert('success'); 
+          $state.go('tab.listtreturn');
+        }, function (error) {
+          console.log(error);
+          alert('dont success' + " " + error.data.message);
+        });
+
+    };
 
   })
   .controller('OrderCtrl', function ($scope, AuthService, $state, $stateParams, $ionicModal) {

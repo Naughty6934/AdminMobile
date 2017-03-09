@@ -155,4 +155,26 @@ angular.module('starter.services', [])
       });
       return dfd.promise;
     };
+  }])
+
+  .service('ReturnService', ['$http', '$q', function ($http, $q) {
+    var apiURL = 'https://thamapptest.herokuapp.com/api';
+    this.getReturns = function () {
+      var dfd = $q.defer();
+      $http.get(apiURL + '/returnorders').success(function (returnorders) {
+        console.log(returnorders);
+
+        dfd.resolve(returnorders);
+      });
+      return dfd.promise;
+    };
+
+    this.updateReturnOrder = function (returnorderId, returnorder) {
+      var dfd = $q.defer();
+      $http.put(apiURL + '/returnorders/' + returnorderId, returnorder).success(function (returnorders) {
+
+        dfd.resolve(returnorders);
+      });
+      return dfd.promise;
+    }
   }]);

@@ -1,0 +1,21 @@
+<ion-view view-title="คลังสินค้า">
+    <ion-content>
+
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon" id="sizing-addon3"><i class="fa fa-search" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" placeholder="ค้นหา..." ng-model="topsearch" aria-describedby="sizing-addon3">
+        </div>
+        <div class="list">
+
+            <a class="item item-thumbnail-left" href="#" ng-repeat="pro in data.stocks">
+                <img src="{{pro.product.images}}">
+                <h2>{{pro.product.name}}</h2>
+                <p>รับเข้า : {{pro.income}}</p>
+                <p>ขายออก : {{pro.outcome}}</p>
+                <p>จอง : {{pro.wip}}</p>
+                <p>คงเหลือ : {{(pro.income-pro.outcome)+pro.wip}}</p>
+            </a>
+
+        </div>
+    </ion-content>
+</ion-view>
