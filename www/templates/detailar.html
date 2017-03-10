@@ -1,0 +1,101 @@
+<ion-view view-title="รายละเอียด">
+    <!--<ion-nav-buttons side="primary">
+    <button class="button button-clear" ui-sref="tab.more">Back</button>
+  </ion-nav-buttons>-->
+    <ion-content>
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">เลขใบแจ้งหนี้ : </span>
+                <input style="background-color: white" type="text" ng-model="data.docno" readonly>
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">วันที่ : </span>
+                <input style="background-color: white" type="text" ng-value="data.docdate | date:'dd/MM/yyyy'" readonly>
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">ชื่อ : </span>
+                <input style="background-color: white" type="text" ng-model="data.namedeliver.displayName" readonly>
+            </label>
+
+            <label class="item item-input item-text-wrap">
+                <span class="input-label ">ที่อยู่ : </span>
+                <label style="background-color: white;padding-right: 2cm;color:black" type="text" readonly>{{data.namedeliver.address.address +''+data.namedeliver.address.subdistrict+''+data.namedeliver.address.district+''+data.namedeliver.address.province+''+data.namedeliver.address.postcode}}
+                    </label>
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">เบอร์โทร : </span>
+                <input style="background-color: white" type="text" ng-model="data.namedeliver.address.tel" readonly>
+            </label>
+
+            <div class="row">
+                <div class="col"></div>
+                <div class="col col-90">
+                    <button class="button button-block button-positive" ng-click="updatewaitconfirmed(data)" ng-show="data.arstatus === 'wait for review'">
+                            รอยืนยัน
+                        </button>
+                </div>
+                <div class="col"></div>
+            </div>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col col-90">
+                    <button class="button button-block button-positive" ng-click="updateconfirmed(data)" ng-show="data.arstatus === 'confirmed'">
+                            รับเงิน
+                        </button>
+                </div>
+                <div class="col"></div>
+            </div>
+
+            <div ng-repeat="prod in data.items" class='item item-text-wrap'>
+                <div>
+                    <label>เลขใบสั่งซื้อ : </label><label>{{prod.docno}}</label>
+                </div>
+                <div ng-repeat="item in prod.items" class="marT10">
+                    <img src={{item.product.images}} class="img-circle marB" width="15%">
+                    <label>{{item.product.name}} ({{item.product.price}} บาท)</label>
+                    <div class="row">
+                        <div class="col col-10">
+
+                        </div>
+                        <div class="col col-90">
+                            <p style="margin-right: 20%">จำนวน {{item.qty}} ถุง</p>
+                            <p style="margin-right: 20%">ราคารวม {{item.amount}} บาท</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='item item-text-wrap' ng-show="data.adjustments.length > 0">
+                <div>
+                    รายการปรับปรุง
+                </div>
+                <div class="row" ng-repeat="adj in data.adjustments">
+                    <div class="col col-10">
+                    </div>
+                    <div class="col col-50">
+                        {{adj.paid.typepaid}}
+                    </div>
+                    <div class="col col-33">
+                        {{adj.paid.total | number:2}}
+                    </div>
+                </div>
+            </div>
+
+            <label class="item item-input" ng-show="data.billamount > 0 && data.adjustments.length > 0">
+                <span class="input-label">รวม : </span>
+                <input style="background-color: white" type="text" ng-value="data.billamount+' บาท'" readonly>
+            </label>
+
+            <label class="item item-input" ng-show="data.adjustamount > 0">
+                <span class="input-label">รวมรายการปรับปรุง : </span>
+                <input style="background-color: white" type="text" ng-value="data.adjustamount+' บาท'" readonly>
+               </label>
+            <label class="item item-input" ng-show="data.totalamount > 0">
+                <span class="input-label">รวมสุทธิ : </span>
+                <input style="background-color: white" type="text" ng-value="data.totalamount + ' ' + 'บาท'" readonly>
+            </label>
+        </div>
+    </ion-content>
+</ion-view>

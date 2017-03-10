@@ -111,7 +111,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         views: {
           'tab-more': {
             templateUrl: 'templates/detailstock.html',
-            controller: 'MoreDetailCtrl'
+            controller: 'MoreCtrl'
           }
         }
       })
@@ -199,6 +199,16 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         views: {
           'tab-more': {
             templateUrl: 'templates/requestdetail.html',
+            controller: 'MoreDetailCtrl'
+          }
+        }
+      })
+
+      .state('tab.detailar', {
+        url: '/detailar:{data}',
+        views: {
+          'tab-more': {
+            templateUrl: 'templates/detailar.html',
             controller: 'MoreDetailCtrl'
           }
         }

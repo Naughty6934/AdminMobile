@@ -1,16 +1,16 @@
-<ion-view view-title="รายการใบแจ้งหนี้" >
+<ion-view view-title="รายการใบแจ้งหนี้" ng-init="init()">
     <ion-content>
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
-        
+
         <div class="row">
             <div class="col"></div>
             <div class="col col-90">
                 <div class="button-bar">
-                    <a class="button button-outline button-positive {{waitforreview === true ? 'active' : ''}}" ng-click="waitforreview = true ;confirmed = false; Respowaitforconfirmednse = false ;  receipt = false ;">รอตรวจสอบ</a>
+                    <a class="button button-outline button-positive {{waitforreview === true ? 'active' : ''}}" ng-click="waitforreview = true ;confirmed = false; waitforconfirmed = false ;  receipt = false ;">รอตรวจสอบ</a>
                     <a class="button button-outline button-positive {{waitforconfirmed === true ? 'active' : ''}}" ng-click="waitforconfirmed = true;waitforreview = false ;confirmed=false ; receipt = false ;">รอยืนยัน</a>
                     <a class="button button-outline button-positive {{confirmed === true ? 'active' : ''}}" ng-click="confirmed = true; waitforreview= false ;waitforconfirmed=false ; receipt = false ;">ยืนยันแล้ว</a>
-                     <a class="button button-outline button-positive {{receipt === true ? 'active' : ''}}" ng-click="receipt = true; waitforreview= false ;waitforconfirmed=false ; confirmed = false ;">ได้รับ</a>
+                    <a class="button button-outline button-positive {{receipt === true ? 'active' : ''}}" ng-click="receipt = true; waitforreview= false ;waitforconfirmed=false ; confirmed = false ;">ได้รับ</a>
                 </div>
             </div>
             <div class="col"></div>
@@ -24,47 +24,51 @@
                 <button class="button" ui-sref="tab.detailaccept">ย้อนกลับ</button>
             </ion-nav-buttons>-->
 
-        <div ng-show="Request" ng-repeat="data in  listRequest | filter:topsearch">
-            <ion-item class='item item-avatar-left item-icon-right' ng-click = "requestDetail(data)">
+        <div ng-show="waitforreview" ng-repeat="data in listWaitforreview | filter:topsearch">
+            <ion-item class='item item-avatar-left item-icon-right' ng-click="arDetail(data)">
                 <img src={{data.namedeliver.profileImageURL}}>
                 <h2>{{data.namedeliver.displayName}}</h2>
-                <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
-                <p class="product10">{{data.shipping.district}} {{data.shipping.province}} {{data.shipping.postcode}} </p>
-                <p class="product10">{{data.shipping.tel}} </p>
-               
-             <p class="icon ion-right marT  ion-clock" am-time-ago="data.created"></p>
-                <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
-                <p class="icon ion-right amount">{{data.totalamount}} ฿</p>
+                <p style="margin-right: 20%">{{data.namedeliver.address.address}} {{data.namedeliver.address.subdistrict}}</p>
+                <p style="margin-right: 20%">{{data.namedeliver.address.district}} {{data.namedeliver.address.province}} {{data.namedeliver.address.postcode}}</p>
+                <p style="margin-right: 20%">{{data.namedeliver.address.tel}}</p>
+                <p class="icon ion-right clock  ion-clock" am-time-ago="data.created"></p>
+                <p class="icon ion-right amount">{{data.totalamount | number:0}} ฿</p>
             </ion-item>
         </div>
 
-        <div ng-show="Response" ng-repeat="data in listResponse | filter:topsearch">
-            <ion-item class='item item-avatar-left item-icon-right' ng-click = "requestDetail(data)">
+        <div ng-show="waitforconfirmed" ng-repeat="data in listWaitforconfirmed | filter:topsearch">
+            <ion-item class='item item-avatar-left item-icon-right' ng-click="arDetail(data)">
                 <img src={{data.namedeliver.profileImageURL}}>
                 <h2>{{data.namedeliver.displayName}}</h2>
-                <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
-                <p class="product10">{{data.shipping.district}} {{data.shipping.province}} {{data.shipping.postcode}}</p>
-                  <p class="product10">{{data.shipping.tel}} </p>
-                  <p> บริษัทฯ : {{data.transport.displayName}}</p>
-              <p class="icon ion-right marT  ion-clock" am-time-ago="data.created"></p>
-                <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
-                <p class="icon ion-right amount ">{{data.totalamount}} ฿</p>
-                
+                <p style="margin-right: 20%">{{data.namedeliver.address.address}} {{data.namedeliver.address.subdistrict}}</p>
+                <p style="margin-right: 20%">{{data.namedeliver.address.district}} {{data.namedeliver.address.province}} {{data.namedeliver.address.postcode}}</p>
+                <p style="margin-right: 20%">{{data.namedeliver.address.tel}}</p>
+                <p class="icon ion-right clock  ion-clock" am-time-ago="data.created"></p>
+                <p class="icon ion-right amount">{{data.totalamount | number:0}} ฿</p>
             </ion-item>
         </div>
 
-        <div ng-show="Received" ng-repeat="data in listReceived | filter:topsearch">
-            <ion-item class='item item-avatar-left item-icon-right' ng-click = "requestDetail(data)">
-                <img src={{data.namedeliver.profileImageURL}}>    
+        <div ng-show="confirmed" ng-repeat="data in listConfirmed | filter:topsearch">
+            <ion-item class='item item-avatar-left item-icon-right' ng-click="arDetail(data)">
+                <img src={{data.namedeliver.profileImageURL}}>
                 <h2>{{data.namedeliver.displayName}}</h2>
-                <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
-                <p class="product10">{{data.shipping.district}} {{data.shipping.province}} {{data.shipping.postcode}}</p>
-             <p class="product10">{{data.shipping.tel}} </p>
-             <p> บริษัทฯ : {{data.transport.displayName}}</p>
-            <p class="icon ion-right marT  ion-clock" am-time-ago="data.created"></p>
-                
-                <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
-                <p class="icon ion-right amount">{{data.totalamount}} ฿</p>
+                <p style="margin-right: 20%">{{data.namedeliver.address.address}} {{data.namedeliver.address.subdistrict}}</p>
+                <p style="margin-right: 20%">{{data.namedeliver.address.district}} {{data.namedeliver.address.province}} {{data.namedeliver.address.postcode}}</p>
+                <p style="margin-right: 20%">{{data.namedeliver.address.tel}}</p>
+                <p class="icon ion-right clock  ion-clock" am-time-ago="data.created"></p>
+                <p class="icon ion-right amount">{{data.totalamount | number:0}} ฿</p>
+            </ion-item>
+        </div>
+
+        <div ng-show="receipt" ng-repeat="data in listReceipt | filter:topsearch">
+            <ion-item class='item item-avatar-left item-icon-right' ng-click="arDetail(data)">
+                <img src={{data.namedeliver.profileImageURL}}>
+                <h2>{{data.namedeliver.displayName}}</h2>
+                <p style="margin-right: 20%">{{data.namedeliver.address.address}} {{data.namedeliver.address.subdistrict}}</p>
+                <p style="margin-right: 20%">{{data.namedeliver.address.district}} {{data.namedeliver.address.province}} {{data.namedeliver.address.postcode}}</p>
+                <p style="margin-right: 20%">{{data.namedeliver.address.tel}}</p>
+                <p class="icon ion-right clock  ion-clock" am-time-ago="data.created"></p>
+                <p class="icon ion-right amount">{{data.totalamount | number:0}} ฿</p>
             </ion-item>
         </div>
     </ion-content>

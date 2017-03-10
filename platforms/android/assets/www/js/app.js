@@ -96,10 +96,24 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('liststock', {
+      .state('tab.liststock', {
         url: '/liststock',
-        templateUrl: 'templates/liststock.html',
-        controller: 'MoreCtrl'
+        views: {
+          'tab-more': {
+            templateUrl: 'templates/liststock.html',
+            controller: 'MoreCtrl'
+          }
+        }
+      })
+
+      .state('tab.detailstock', {
+        url: '/detailstock:{data}',
+        views: {
+          'tab-more': {
+            templateUrl: 'templates/detailstock.html',
+            controller: 'MoreCtrl'
+          }
+        }
       })
 
       .state('tab.map', {
@@ -185,6 +199,16 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         views: {
           'tab-more': {
             templateUrl: 'templates/requestdetail.html',
+            controller: 'MoreDetailCtrl'
+          }
+        }
+      })
+
+      .state('tab.detailar', {
+        url: '/detailar:{data}',
+        views: {
+          'tab-more': {
+            templateUrl: 'templates/detailar.html',
             controller: 'MoreDetailCtrl'
           }
         }

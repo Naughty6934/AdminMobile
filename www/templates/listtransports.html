@@ -2,7 +2,7 @@
     <ion-content>
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
-        
+
         <div class="row">
             <div class="col"></div>
             <div class="col col-90">
@@ -24,44 +24,44 @@
             </ion-nav-buttons>-->
 
         <div ng-show="Request" ng-repeat="data in  listRequest | filter:topsearch">
-            <ion-item class='item item-avatar-left item-icon-right' ng-click = "requestDetail(data)">
+            <ion-item class='item item-avatar-left item-icon-right' ng-click="requestDetail(data)">
                 <img src={{data.namedeliver.profileImageURL}}>
                 <h2>{{data.namedeliver.displayName}}</h2>
                 <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
                 <p class="product10">{{data.shipping.district}} {{data.shipping.province}} {{data.shipping.postcode}} </p>
                 <p class="product10">{{data.shipping.tel}} </p>
-               
-             <p class="icon ion-right marT  ion-clock" am-time-ago="data.created"></p>
+
+                <p class="icon ion-right clock  ion-clock" am-time-ago="data.created"></p>
                 <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
                 <p class="icon ion-right amount">{{data.totalamount}} ฿</p>
             </ion-item>
         </div>
 
         <div ng-show="Response" ng-repeat="data in listResponse | filter:topsearch">
-            <ion-item class='item item-avatar-left item-icon-right' ng-click = "requestDetail(data)">
+            <ion-item class='item item-avatar-left item-icon-right' ng-click="requestDetail(data)">
                 <img src={{data.namedeliver.profileImageURL}}>
                 <h2>{{data.namedeliver.displayName}}</h2>
                 <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
                 <p class="product10">{{data.shipping.district}} {{data.shipping.province}} {{data.shipping.postcode}}</p>
-                  <p class="product10">{{data.shipping.tel}} </p>
-                  <p> บริษัทฯ : {{data.transport.displayName}}</p>
-              <p class="icon ion-right marT  ion-clock" am-time-ago="data.created"></p>
+                <p class="product10">{{data.shipping.tel}} </p>
+                <p> บริษัทฯ : {{data.transport.displayName}}</p>
+                <p class="icon ion-right clock  ion-clock" am-time-ago="data.created"></p>
                 <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
                 <p class="icon ion-right amount ">{{data.totalamount}} ฿</p>
-                
+
             </ion-item>
         </div>
 
         <div ng-show="Received" ng-repeat="data in listReceived | filter:topsearch">
-            <ion-item class='item item-avatar-left item-icon-right' ng-click = "requestDetail(data)">
-                <img src={{data.namedeliver.profileImageURL}}>    
+            <ion-item class='item item-avatar-left item-icon-right' ng-click="requestDetail(data)">
+                <img src={{data.namedeliver.profileImageURL}}>
                 <h2>{{data.namedeliver.displayName}}</h2>
                 <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
                 <p class="product10">{{data.shipping.district}} {{data.shipping.province}} {{data.shipping.postcode}}</p>
-             <p class="product10">{{data.shipping.tel}} </p>
-             <p> บริษัทฯ : {{data.transport.displayName}}</p>
-            <p class="icon ion-right marT  ion-clock" am-time-ago="data.created"></p>
-                
+                <p class="product10">{{data.shipping.tel}} </p>
+                <p> บริษัทฯ : {{data.transport.displayName}}</p>
+                <p class="icon ion-right clock  ion-clock" am-time-ago="data.created"></p>
+
                 <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
                 <p class="icon ion-right amount">{{data.totalamount}} ฿</p>
             </ion-item>

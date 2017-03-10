@@ -191,4 +191,25 @@ angular.module('starter.services', [])
       return dfd.promise;
     };
   }])
-  ;
+
+  .service('AccuralreceiptsService', ['$http', '$q', function ($http, $q) {
+    var apiURL = 'https://thamapptest.herokuapp.com/api';
+    this.getAccuralreceipts = function () {
+      var dfd = $q.defer();
+      $http.get(apiURL + '/accuralreceipts').success(function (accuralreceipts) {
+        // console.log(accuralreceipts);
+
+        dfd.resolve(accuralreceipts);
+      });
+      return dfd.promise;
+    };
+    this.updateaccuralreceipt = function (accuralreceiptsId, accuralreceipts) {
+      var dfd = $q.defer();
+      $http.put(apiURL + '/accuralreceipts/' + accuralreceiptsId, accuralreceipts).success(function (accuralreceipts) {
+        dfd.resolve(accuralreceipts);
+      }).error(function (error) {
+        dfd.reject(error);
+      });
+      return dfd.promise;
+    };
+  }]);
