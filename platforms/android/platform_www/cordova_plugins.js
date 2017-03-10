@@ -48,8 +48,8 @@ module.exports = [
         "runs": true
     },
     {
-        "id": "phonegap-plugin-push.PushNotification",
         "file": "plugins/phonegap-plugin-push/www/push.js",
+        "id": "phonegap-plugin-push.PushNotification",
         "pluginId": "phonegap-plugin-push",
         "clobbers": [
             "PushNotification"
@@ -67,7 +67,7 @@ module.exports.metadata =
     "cordova-plugin-statusbar": "2.2.1",
     "cordova-plugin-whitelist": "1.3.1",
     "ionic-plugin-keyboard": "2.2.1",
-    "phonegap-plugin-push": "1.8.4"
-};
+    "phonegap-plugin-push": "1.9.4"
+}
 // BOTTOM OF METADATA
 });
