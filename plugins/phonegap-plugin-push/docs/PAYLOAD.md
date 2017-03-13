@@ -17,6 +17,7 @@
   - [Picture Messages](#picture-messages)
   - [Background Notifications](#background-notifications)
     - [Use of content-available: true](#use-of-content-available-true)
+  - [Caching](#caching)
   - [Huawei and Xiaomi Phones](#huawei-and-xiaomi-phones)
   - [Application force closed](#application-force-closed)
   - [Visibility](#visibility-of-notifications)
@@ -346,6 +347,43 @@ service.send(message, { registrationTokens: [ deviceID ] }, function (err, respo
 Produces the following notification.
 
 ![2015-07-24 02 17 55](https://cloud.githubusercontent.com/assets/353180/8866900/2df0ab06-3190-11e5-9a81-fdb85bb0f5a4.png)
+
+Finally the Material UI guidelines recommend using a circular icon for the large icon if the subject of the image is a person. This JSON sent from GCM:
+
+```javascript
+{
+    "registration_ids": ["my device id"],
+    "data": {
+    	"title": "Large Circular Icon",
+    	"message": "Loaded from URL",
+        "image": "https://pbs.twimg.com/profile_images/837060031895896065/VHIQ4oUf_400x400.jpg",
+        "image-type": "circle"
+    }
+}
+```
+
+Here is an example using node-gcm that sends the above JSON:
+
+```javascript
+var gcm = require('node-gcm');
+// Replace these with your own values.
+var apiKey = "replace with API key";
+var deviceID = "my device id";
+var service = new gcm.Sender(apiKey);
+var message = new gcm.Message();
+message.addData('title', 'Large Circular Icon');
+message.addData('message', 'Loaded from URL');
+message.addData('image', 'https://pbs.twimg.com/profile_images/837060031895896065/VHIQ4oUf_400x400.jpg');
+message.addData('image-type', 'circular');
+service.send(message, { registrationTokens: [ deviceID ] }, function (err, response) {
+	if(err) console.error(err);
+	else 	console.log(response);
+});
+```
+
+Produces the following notification.
+
+![screenshot_20170308-214947](https://cloud.githubusercontent.com/assets/353180/23733917/902a4650-0449-11e7-924e-d45a38030c74.png)
 
 ## Sound
 
@@ -1072,6 +1110,22 @@ service.send(message, { registrationTokens: [ deviceID ] }, function (err, respo
 });
 ```
 
+### Caching
+
+By default, when a notification arrives and 'content-available' is set to '1', the plugin will try to deliver the data payload even if the app is not running. In that case, the payload is cached and may be delivered when the app is started again. To disable this behavior, you can set a `no-cache` flag in the notification payload. 0: caching enabled (default), 1: caching disabled.
+
+```javascript
+{
+    "registration_ids": ["my device id"],
+    "data": {
+        "title": "Push without cache",
+        "message": "When the app is closed, this notification will not be cached",
+        "content-available": "1",
+        "no-cache": "1"
+    }
+}
+```
+
 ## Visibility of Notifications
 
 You can set a visibility parameter for your notifications. Just add a `visibility` field in your notification. -1: secret, 0: private (default), 1: public. `Secret` shows only the most minimal information, excluding even the notification's icon. `Private` shows basic information about the existence of this notification, including its icon and the name of the app that posted it. The rest of the notification's details are not displayed. `Public` Shows the notification's full content.
@@ -1178,7 +1232,7 @@ Note: "sound" and "soundname" are equivalent and are considered to be the same b
 
 ## Sound
 
-In order for your notification to play a custom sound you will need to add the files to root of your iOS project. The files must be in the proper format. See the [Local and Remote Notification Programming Guide](https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html#//apple_ref/doc/uid/TP40008194-CH103-SW6) for more info on proper file formats and how to convert existing sound files.
+In order for your notification to play a custom sound you will need to add the files to root of your iOS project. The files must be in the proper format. See the [Local and Remote Notification Programming Guide](https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/SupportingNotificationsinYourApp.html#//apple_ref/doc/uid/TP40008194-CH4-SW10) for more info on proper file formats and how to convert existing sound files.
 
 Then send the follow JSON from APNS:
 

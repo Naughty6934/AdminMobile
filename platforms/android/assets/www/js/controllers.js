@@ -7,7 +7,7 @@ angular.module('starter.controllers', ['ionic'])
       "onNotification": function (notification) {
         //console.log(notification);
         if (notification._raw.additionalData.foreground) {
-          alert(notification.message);
+          // alert(notification.message);
 
           $rootScope.$broadcast('onNotification');
         }
