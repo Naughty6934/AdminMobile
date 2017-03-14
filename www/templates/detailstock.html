@@ -11,9 +11,11 @@
                 <img src="{{pro.product.images}}">
                 <h2>{{pro.product.name}}</h2>
                 <p>รับเข้า : {{pro.income}}</p>
+                <p>รับคืน : {{pro.returnord}}</p>
+                <p>จ่ายแล้ว : {{pro.ap}}</p>
                 <p>ขายออก : {{pro.outcome}}</p>
                 <p>จอง : {{pro.wip}}</p>
-                <p>คงเหลือ : {{(pro.income-pro.outcome)+pro.wip}}</p>
+                <p>คงเหลือ : {{(pro.income - (pro.outcome + pro.wip + pro.ap)) + pro.returnord}}</p>
             </a>
 
         </div>
