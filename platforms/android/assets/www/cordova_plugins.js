@@ -67,7 +67,7 @@ module.exports.metadata =
     "cordova-plugin-statusbar": "2.2.1",
     "cordova-plugin-whitelist": "1.3.1",
     "ionic-plugin-keyboard": "2.2.1",
-    "phonegap-plugin-push": "1.8.4"
+    "phonegap-plugin-push": "1.10.0"
 };
 // BOTTOM OF METADATA
 });

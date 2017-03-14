@@ -41,7 +41,7 @@ angular.module('starter.services', [])
 
       $http.post(apiURL + '/auth/signin', login).success(function (database) {
         window.localStorage.user = JSON.stringify(database);
-        alert('Success');
+        // alert('Success');
         dfd.resolve(database);
       }).error(function (error) {
         /* Act on the event */
