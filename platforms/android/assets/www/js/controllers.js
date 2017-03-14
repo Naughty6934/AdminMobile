@@ -451,6 +451,17 @@ angular.module('starter.controllers', ['ionic'])
       $scope.returnorders();
       $scope.liststock();
       $scope.listaccuralreceipts();
+
+      $scope.waitforreview = true;
+      $scope.waitforconfirmed = false;
+      $scope.confirmed = false;
+      $scope.receipt = false;
+
+      $scope.Returns = true;
+      $scope.Response = false;
+      $scope.Received = false;
+
+      $scope.Request = true;
     };
 
     $scope.listaccuralreceipt = function () {
@@ -498,6 +509,7 @@ angular.module('starter.controllers', ['ionic'])
       RequestService.getRequests()
         .then(function (data) {
           var requestlist = data;
+
           $scope.listRequest = [];
           $scope.listResponse = [];
           $scope.listReceived = [];
@@ -522,6 +534,7 @@ angular.module('starter.controllers', ['ionic'])
       AccuralreceiptsService.getAccuralreceipts()
         .then(function (data) {
           var Arlist = data;
+
           $scope.listWaitforreview = [];
           $scope.listWaitforconfirmed = [];
           $scope.listConfirmed = [];
