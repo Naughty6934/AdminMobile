@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="C:\Users\Sirintra\Desktop\appadminmobile\AdminMobile\platforms\android\CordovaLib\src\main\shaders"/></dataSet><dataSet config="debug"><source path="C:\Users\Sirintra\Desktop\appadminmobile\AdminMobile\platforms\android\CordovaLib\src\debug\shaders"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="C:\Users\Sarawut\Desktop\adminMobile\AdminMobile\platforms\android\CordovaLib\src\main\shaders"/></dataSet><dataSet config="debug"><source path="C:\Users\Sarawut\Desktop\adminMobile\AdminMobile\platforms\android\CordovaLib\src\debug\shaders"/></dataSet></merger>

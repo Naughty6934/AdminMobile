@@ -36,39 +36,70 @@ angular.module('starter.controllers', ['ionic'])
         });
     }
     $scope.credentials = {}
+
+    $rootScope.$on('userLoggedIn', function (e, response) {
+      console.log(response);
+      if (response.roles[0] === 'admin') {
+
+        var push_usr = {
+          user_id: response._id,
+          user_name: response.username,
+          role: 'admin',
+          device_token: JSON.parse(window.localStorage.token || null)
+        };
+        AuthService.saveUserPushNoti(push_usr)
+          .then(function (res) {
+            $scope.credentials = {}
+            $state.go('tab.confirmed');
+          });
+        // alert('success');
+      } else {
+        alert('คุณไม่มีสิทธิ์เข้าใช้งาน');
+      }
+    });
+
+    $rootScope.$on('userFailedLogin', function (e, response) {
+      console.log(response);
+      // alert(response.message);
+      if (response["message"]) {
+        $scope.credentials = {}
+        alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+      }
+    });
+
     $scope.doLogIn = function (credentials) {
       var login = {
         username: credentials.username,
         password: credentials.password
       }
-      AuthService.loginUser(login)
-        .then(function (response) {
-          //console.log(response);
-          // alert('then');
-          if (response["message"]) {
-            $scope.credentials = {}
-            alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
-          }
-          else {
-            if (response.roles[0] === 'admin') {
+      AuthService.loginUser(login);
+      // .then(function (response) {
+      //   //console.log(response);
+      //   // alert('then');
+      //   if (response["message"]) {
+      //     $scope.credentials = {}
+      //     alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+      //   }
+      //   else {
+      //     if (response.roles[0] === 'admin') {
 
-              var push_usr = {
-                user_id: response._id,
-                user_name: response.username,
-                role: 'admin',
-                device_token: JSON.parse(window.localStorage.token || null)
-              };
-              AuthService.saveUserPushNoti(push_usr)
-                .then(function (res) {
-                  $scope.credentials = {}
-                  $state.go('tab.confirmed');
-                });
-              // alert('success');
-            } else {
-              alert('คุณไม่มีสิทธิ์เข้าใช้งาน');
-            }
-          }
-        });
+      //       var push_usr = {
+      //         user_id: response._id,
+      //         user_name: response.username,
+      //         role: 'admin',
+      //         device_token: JSON.parse(window.localStorage.token || null)
+      //       };
+      //       AuthService.saveUserPushNoti(push_usr)
+      //         .then(function (res) {
+      //           $scope.credentials = {}
+      //           $state.go('tab.confirmed');
+      //         });
+      //       // alert('success');
+      //     } else {
+      //       alert('คุณไม่มีสิทธิ์เข้าใช้งาน');
+      //     }
+      //   }
+      // });
       // console.log("doing sign up");
 
     };

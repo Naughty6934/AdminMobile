@@ -16,6 +16,9 @@
         "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "com.thamturakit.admin"
         },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.thamturakit.admin"
+        },
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.thamturakit.admin"
         },
@@ -30,9 +33,6 @@
         },
         "phonegap-plugin-push": {
             "SENDER_ID": "816604195373",
-            "PACKAGE_NAME": "com.thamturakit.admin"
-        },
-        "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.thamturakit.admin"
         }
     },
