@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.controllers', 'starter.services', 'satellizer'])
 
   .run(function ($ionicPlatform, AuthService) {
     $ionicPlatform.ready(function () {
@@ -60,7 +60,20 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
     })
   })
 
-  .config(function ($stateProvider, $urlRouterProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $authProvider) {
+
+    var commonConfig = {
+      popupOptions: {
+        location: 'no',
+        toolbar: 'yes',
+        width: window.screen.width,
+        height: window.screen.height
+      }
+    };
+
+    if (ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
+      commonConfig.redirectUri = 'https://thamapp.herokuapp.com/';
+    }
 
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router

@@ -1,6 +1,6 @@
 angular.module('starter.services', [])
   .factory('OrderService', function ($http) {
-    var apiUrl = 'https://thamapp.herokuapp.com/api';
+    var apiURL = 'https://thamapp.herokuapp.com/api';
     // instantiate our initial object
     var OrderService = function () {
       this.orders = [];
@@ -16,7 +16,7 @@ angular.module('starter.services', [])
       // so we need to keep a reference to the current instance "this" :
       var self = this;
 
-      return $http.get(apiUrl + '/orders').then(function (response) {
+      return $http.get(apiURL + '/orders').then(function (response) {
 
         // when we get the results we store the data in user.profile
         self.orders = response.data
@@ -28,27 +28,43 @@ angular.module('starter.services', [])
     };
     return OrderService;
   })
-  .service('AuthService', ['$http', '$q', function ($http, $q) {
+  .service('AuthService', ['$http', '$q', '$rootScope', '$auth', function ($http, $q, $rootScope, $auth) {
     var apiURL = 'https://thamapp.herokuapp.com/api';
     this.saveUser = function (user) {
       return $http.post(apiURL + '/auth/signup', user);
 
     };
+
+    this.successAuth = function (data) {
+      window.localStorage.user = JSON.stringify(data.data);
+      $rootScope.$emit('userLoggedIn', data.data);
+    };
+
+    this.failedAuth = function (err) {
+      $rootScope.$emit('userFailedLogin', err.data);
+    };
+
     this.loginUser = function (login) {
-      window.localStorage.credential = JSON.stringify(login);
+      $auth
+        .login(login, {
+          url: apiURL + '/auth/signin'
+        })
+        .then(this.successAuth)
+        .catch(this.failedAuth);
+      // window.localStorage.credential = JSON.stringify(login);
 
-      var dfd = $q.defer();
+      // var dfd = $q.defer();
 
-      $http.post(apiURL + '/auth/signin', login).success(function (database) {
-        window.localStorage.user = JSON.stringify(database);
-        // alert('Success');
-        dfd.resolve(database);
-      }).error(function (error) {
-        /* Act on the event */
-        dfd.resolve(error);
-        // return dfd.promise;
-      });
-      return dfd.promise;
+      // $http.post(apiURL + '/auth/signin', login).success(function (database) {
+      //   window.localStorage.user = JSON.stringify(database);
+      //   // alert('Success');
+      //   dfd.resolve(database);
+      // }).error(function (error) {
+      //   /* Act on the event */
+      //   dfd.resolve(error);
+      //   // return dfd.promise;
+      // });
+      // return dfd.promise;
     };
 
     this.saveUserPushNoti = function (push_user) {
@@ -156,7 +172,6 @@ angular.module('starter.services', [])
       return dfd.promise;
     };
   }])
-
   .service('ReturnService', ['$http', '$q', function ($http, $q) {
     var apiURL = 'https://thamapp.herokuapp.com/api';
     this.getReturns = function () {
@@ -178,7 +193,6 @@ angular.module('starter.services', [])
       return dfd.promise;
     }
   }])
-
   .service('StockService', ['$http', '$q', function ($http, $q) {
     var apiURL = 'https://thamapp.herokuapp.com/api';
     this.getStocks = function () {
@@ -191,7 +205,6 @@ angular.module('starter.services', [])
       return dfd.promise;
     };
   }])
-
   .service('AccuralreceiptsService', ['$http', '$q', function ($http, $q) {
     var apiURL = 'https://thamapp.herokuapp.com/api';
     this.getAccuralreceipts = function () {
