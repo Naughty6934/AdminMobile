@@ -110,6 +110,8 @@ angular.module('starter.controllers', ['ionic'])
       $scope.loadData();
     }
 
+
+
     $scope.loadData = function () {
       AuthService.getOrder()
         .then(function (data) {
@@ -739,6 +741,11 @@ angular.module('starter.controllers', ['ionic'])
       $scope.modal = modal;
     });
 
+    $scope.btnGoProfile = function (data) {
+      console.log(data);
+      $state.go('tab.deliver-profile', { data: JSON.stringify(data) });
+    };
+
     // console.log(JSON.parse($stateParams.data));
     //var orderId = $stateParams.orderId;
     $scope.data = JSON.parse($stateParams.data);
@@ -813,4 +820,15 @@ angular.module('starter.controllers', ['ionic'])
       //$scope.init();
       //alert('');
     });
+    
+  })
+  
+  .controller('ProfileDeliverCtrl', function ($scope, $state, $stateParams, AuthService) {
+
+    $scope.data = JSON.parse($stateParams.data);
+  console.log($scope.data);
+    $scope.tel = function (telnumber) {
+      window.location = 'tel:' + telnumber;
+    };
+
   });

@@ -1,0 +1,36 @@
+<ion-view view-title="โปรไฟล์">
+<div ng-repeat="itm in data">
+    <img src={{itm.user.profileImageURL}}>
+</div>
+    <ion-content has-header="true">
+        <img id="profile-image" src="{{data.user.profileImageURL}}">
+        <ion-list>
+            <div class="list">
+                <label class="item item-input">
+                <span class="input-label">ชื่อ : </span>
+                <input style="background-color: white" type="text" ng-model="data.user.displayName" readonly>
+            </label>
+
+                <label class="item item-input item-text-wrap">
+                <span class="input-label ">ที่อยู่ : </span>
+                <label style="background-color: white;padding-right: 2cm;color:black" type="text" readonly>{{data.shipping.address +''+data.shipping.subdistrict+''+data.shipping.district+''+data.shipping.province+''+data.shipping.postcode}}
+                    </label>
+                </label>
+
+                <div class="list card">
+                    <div class="row">
+                        <div class="col col-50">
+                            <a ui-sref="tab.chat" class="item item-icon-left">
+                                <i class="icon ion-ios-chatbubble"></i> พูดคุย
+                            </a>
+                        </div>
+                        <div class="col col-50">
+                            <a ng-click="tel({{data.shipping.tel}})" class="item item-icon-left">
+                                <i class="icon ion-ios-telephone"></i> โทร
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        </ion-list>
+    </ion-content>
+</ion-view>

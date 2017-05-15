@@ -29,10 +29,10 @@
                 <input style="background-color: white" type="text" ng-model="data.shipping.tel" readonly>
             </label>
             
-            <a class="item item-icon-left" ng-hide="data.deliverystatus === 'confirmed' || data.deliverystatus === 'reject'">
+            <a class="item item-icon-left" ng-hide="data.deliverystatus === 'confirmed' || data.deliverystatus === 'reject'" ng-click="btnGoProfile(data)">
               <i class="icon ion-person-stalker"></i>
                 คนส่งข้าว
-              <span class="input-label" ng-show="data.namedeliver">{{data.namedeliver.displayName}}</span>
+              <span class="input-label" ng-show="data.namedeliver" >{{data.namedeliver.displayName}}</span>
               <span class="input-label" ng-hide="data.namedeliver">ยังไม่ได้ระบุคนส่งข้าว</span>
             </a>
 

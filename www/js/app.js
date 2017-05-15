@@ -106,6 +106,10 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
+
+
+      
+
       .state('tab.more', {
         url: '/more',
         views: {
@@ -156,6 +160,8 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
+      
+
       .state('tab.detailorder', {
         url: '/detailorder:{data}',
         views: {
@@ -175,6 +181,28 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
           }
         }
       })
+      .state('tab.deliver-profile', {
+        url: '/deliver-profile:{data}',
+        views: {
+          'tab-detailaccept': {
+            templateUrl: 'templates/deliver-profile.html',
+            controller: 'ProfileDeliverCtrl'
+          }
+        }
+      })
+
+      .state('tab.chat', {
+        url: '/chat',
+        views: {
+          'tab-detailaccept': {
+            templateUrl: 'templates/chat.html',
+            controller: 'ChatCtrl'
+          }
+        }
+      })
+
+
+      
       .state('tab.listar', {
         url: '/listar',
         views: {

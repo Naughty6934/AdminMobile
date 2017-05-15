@@ -1,5 +1,6 @@
 angular.module('starter.services', [])
   .factory('OrderService', function ($http) {
+
     var apiURL = 'https://thamapp.herokuapp.com/api';
     // instantiate our initial object
     var OrderService = function () {
@@ -161,7 +162,7 @@ angular.module('starter.services', [])
 
   }])
   .service('RequestService', ['$http', '$q', function ($http, $q) {
-    var apiURL = 'https://thamapp.herokuapp.com/api';
+    var apiURL = 'https://thamapptest.herokuapp.com/api';
     this.getRequests = function () {
       var dfd = $q.defer();
       $http.get(apiURL + '/requestorders').success(function (requestsorders) {
@@ -173,7 +174,7 @@ angular.module('starter.services', [])
     };
   }])
   .service('ReturnService', ['$http', '$q', function ($http, $q) {
-    var apiURL = 'https://thamapp.herokuapp.com/api';
+    var apiURL = 'https://thamapptest.herokuapp.com/api';
     this.getReturns = function () {
       var dfd = $q.defer();
       $http.get(apiURL + '/returnorders').success(function (returnorders) {
@@ -194,7 +195,7 @@ angular.module('starter.services', [])
     }
   }])
   .service('StockService', ['$http', '$q', function ($http, $q) {
-    var apiURL = 'https://thamapp.herokuapp.com/api';
+    var apiURL = 'https://thamapptest.herokuapp.com/api';
     this.getStocks = function () {
       var dfd = $q.defer();
       $http.get(apiURL + '/stocks').success(function (stocks) {
@@ -206,7 +207,7 @@ angular.module('starter.services', [])
     };
   }])
   .service('AccuralreceiptsService', ['$http', '$q', function ($http, $q) {
-    var apiURL = 'https://thamapp.herokuapp.com/api';
+    var apiURL = 'https://thamapptest.herokuapp.com/api';
     this.getAccuralreceipts = function () {
       var dfd = $q.defer();
       $http.get(apiURL + '/accuralreceipts').success(function (accuralreceipts) {
