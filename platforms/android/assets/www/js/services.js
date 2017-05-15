@@ -132,7 +132,7 @@ angular.module('starter.services', [])
       //console.log(orderId);
       //console.log(order);
       // var dfd = $q.defer();
-      // $http.put('https://thamapp.herokuapp.com/api/orders/'+orderId, order).success(function (database) {
+      // $http.put('https://thamapptest.herokuapp.com/api/orders/'+orderId, order).success(function (database) {
 
       //   dfd.resolve(database);
       //   console.log(database);
@@ -193,7 +193,7 @@ angular.module('starter.services', [])
   }])
 
   .service('AccuralreceiptsService', ['$http', '$q', function ($http, $q) {
-    var apiURL = 'https://thamapptest.herokuapp.com/api';
+    var apiURL = 'https://thamapptwst.herokuapp.com/api';
     this.getAccuralreceipts = function () {
       var dfd = $q.defer();
       $http.get(apiURL + '/accuralreceipts').success(function (accuralreceipts) {
