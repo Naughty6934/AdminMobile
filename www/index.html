@@ -55,7 +55,9 @@
     </ion-nav-back-button>
     <ion-nav-buttons side="right">
       <div ng-controller="menuCtrl">
-        <button class="button button-icon icon ion-navicon" ng-click="toggleLeftSideMenu()"></button>
+        <div ng-if="userStore">
+          <button class="button button-icon icon ion-navicon" ng-click="toggleLeftSideMenu()"></button>
+        </div>
       </div>
     </ion-nav-buttons>
   </ion-nav-bar>
@@ -73,7 +75,7 @@
     </ion-side-menu-content>
 
     <!-- Left Side Menu -->
-    <ion-side-menu expose-aside-when="large" name="menus-liststock">
+    <ion-side-menu ng-if="userStore" expose-aside-when="large" name="menus-liststock">
       <!--<h1></h1>-->
       <!--<ion-item menu-close href="#/app/search">
         Search
@@ -114,7 +116,7 @@
           </div>
 
           <div ng-controller="menuCtrl" ng-init="init()">
-            <a class="item item-icon-left settings-option"  href="#/menulisttransports/listtransports"ng-click="listtransports()">
+            <a class="item item-icon-left settings-option" href="#/menulisttransports/listtransports" ng-click="listtransports()">
               <i class="icon ion-ios-box-outline"></i>
                 รายการขนส่งข้าว
                 <span class="badge badge-assertive">{{countTran}}</span>
@@ -129,7 +131,7 @@
             </a>
           </div>
 
-         
+
         </div>
       </ion-content>
     </ion-side-menu>

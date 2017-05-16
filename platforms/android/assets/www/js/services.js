@@ -36,6 +36,7 @@ angular.module('starter.services', [])
     };
 
     this.successAuth = function (data) {
+      console.log(data.data);
       window.localStorage.user = JSON.stringify(data.data);
       $rootScope.$emit('userLoggedIn', data.data);
     };

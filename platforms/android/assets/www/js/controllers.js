@@ -1,89 +1,26 @@
 angular.module('starter.controllers', ['ionic'])
 
-
-  .controller('menuCtrl', function ($scope, $http, $state, AuthService, $ionicModal, $rootScope, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService, $ionicSideMenuDelegate) {
-
-
-    $scope.toggleLeftSideMenu = function () {
-      $ionicSideMenuDelegate.toggleLeft();
-      // alert('menuCtrl');
-    };
-
-    $scope.homes = function () {
-      $state.go('tab.confirmed');
-      $scope.toggleLeftSideMenu();
-    };
-
-    $scope.liststocks = function () {
-      $state.go('menuliststock.liststock');
-      $scope.toggleLeftSideMenu();
-    };
-
-    $scope.listtreturn = function () {
-      $state.go('menulisttreturn.listtreturn');
-      $scope.toggleLeftSideMenu();
-    };
-
-    $scope.listaccuralreceipt = function () {
-      $state.go('menulistar.listar');
-      $scope.toggleLeftSideMenu();
-    };
-
-    $scope.listtransports = function () {
-      $state.go('menulisttransports.listtransports');
-      $scope.toggleLeftSideMenu();
-    };
-
-    $scope.logOut = function () {
-      AuthService.signOut();
-      $state.go('login');
-      $scope.toggleLeftSideMenu();
-    };
-
-    StockService.getStocks()
-      .then(function (data) {
-        $rootScope.Stocks = data;
-        $rootScope.countStocks = $rootScope.Stocks.length;
-      });
-
-    ReturnService.getReturns()
-      .then(function (data) {
-        $rootScope.countReturns = data.length;
-      });
-
-    AccuralreceiptsService.getAccuralreceipts()
-      .then(function (data) {
-        $rootScope.countAcc = data.length;
-      });
-
-    RequestService.getRequests()
-      .then(function (data) {
-        $rootScope.countTran = data.length;
-      });
-
-
-  })
-
   .controller('LogInCtrl', function ($scope, $state, AuthService, $rootScope) {
+    $rootScope.userStore = AuthService.getUser();
 
-    // var push = new Ionic.Push({
-    //   "debug": true,
-    //   "onNotification": function (notification) {
-    //     //console.log(notification);
-    //     if (notification._raw.additionalData.foreground) {
-    //       // alert(notification.message);
+    var push = new Ionic.Push({
+      "debug": true,
+      "onNotification": function (notification) {
+        //console.log(notification);
+        if (notification._raw.additionalData.foreground) {
+          // alert(notification.message);
 
-    //       $rootScope.$broadcast('onNotification');
-    //     }
-    //   }
-    // });
+          $rootScope.$broadcast('onNotification');
+        }
+      }
+    });
 
-    // push.register(function (token) {
-    //   console.log("My Device token:", token.token);
-    //   // alert(token.token);
-    //   window.localStorage.token = JSON.stringify(token.token);
-    //   push.saveToken(token);  // persist the token in the Ionic Platform
-    // });
+    push.register(function (token) {
+      console.log("My Device token:", token.token);
+      // alert(token.token);
+      window.localStorage.token = JSON.stringify(token.token);
+      push.saveToken(token);  // persist the token in the Ionic Platform
+    });
 
     $scope.userStore = AuthService.getUser();
     if ($scope.userStore) {
@@ -115,6 +52,7 @@ angular.module('starter.controllers', ['ionic'])
           .then(function (res) {
             $scope.credentials = {}
             $state.go('tab.confirmed');
+            $rootScope.$broadcast('loading:hide');
           });
         // alert('success');
       } else {
@@ -127,6 +65,7 @@ angular.module('starter.controllers', ['ionic'])
       // alert(response.message);
       if (response["message"]) {
         $scope.credentials = {}
+        $rootScope.$broadcast('loading:hide');
         alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
       }
     });
@@ -169,7 +108,86 @@ angular.module('starter.controllers', ['ionic'])
     };
   })
 
+  .controller('menuCtrl', function ($scope, $ionicHistory, $http, $state, AuthService, $ionicModal, $rootScope, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService, $ionicSideMenuDelegate) {
+    $rootScope.userStore = AuthService.getUser();
+    // console.log(userStore);
+
+    $scope.toggleLeftSideMenu = function () {
+      $ionicSideMenuDelegate.toggleLeft();
+      // alert('menuCtrl');
+    };
+
+    $scope.homes = function () {
+      $state.go('tab.confirmed');
+      $scope.toggleLeftSideMenu();
+    };
+
+    $scope.liststocks = function () {
+      // $state.go('menuliststock.liststock');
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
+
+      $scope.toggleLeftSideMenu();
+    };
+
+    $scope.listtreturn = function () {
+      // $state.go('menulisttreturn.listtreturn');
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
+      $scope.toggleLeftSideMenu();
+    };
+
+    $scope.listaccuralreceipt = function () {
+      // $state.go('menulistar.listar');
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
+      $scope.toggleLeftSideMenu();
+    };
+
+    $scope.listtransports = function () {
+      // $state.go('menulisttransports.listtransports');
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
+      $scope.toggleLeftSideMenu();
+    };
+
+    $scope.logOut = function () {
+      AuthService.signOut();
+      $state.go('login');
+      $scope.toggleLeftSideMenu();
+    };
+
+    StockService.getStocks()
+      .then(function (data) {
+        $rootScope.Stocks = data;
+        $rootScope.countStocks = $rootScope.Stocks.length;
+      });
+
+    ReturnService.getReturns()
+      .then(function (data) {
+        $rootScope.countReturns = data.length;
+      });
+
+    AccuralreceiptsService.getAccuralreceipts()
+      .then(function (data) {
+        $rootScope.countAcc = data.length;
+      });
+
+    RequestService.getRequests()
+      .then(function (data) {
+        $rootScope.countTran = data.length;
+      });
+
+
+  })
+
   .controller('ConfirmedCtrl', function ($scope, $http, $state, AuthService, $ionicModal, $rootScope) {
+    $rootScope.userStore = AuthService.getUser();
+
     $scope.gotoConfirmed = function () {
       $state.go('tab.confirmed');
     }
@@ -255,7 +273,8 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('MapCtrl', function ($scope, $http, $state, AuthService, $stateParams, $cordovaGeolocation) {
+  .controller('MapCtrl', function ($scope, $http, $state, AuthService, $stateParams, $cordovaGeolocation, $rootScope) {
+    $rootScope.userStore = AuthService.getUser();
 
     console.log('ok');
     $scope.init = function () {
@@ -536,7 +555,8 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('MoreCtrl', function ($scope, AuthService, $state, $ionicModal, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService) {
+  .controller('MoreCtrl', function ($scope, $rootScope, AuthService, $state, $ionicModal, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService) {
+    $rootScope.userStore = AuthService.getUser();
 
     if ($stateParams.data) {
       $scope.data = JSON.parse($stateParams.data);
@@ -711,7 +731,9 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('MoreDetailCtrl', function ($scope, $stateParams, AuthService, $state, $ionicModal, RequestService, ReturnService, AccuralreceiptsService) {
+  .controller('MoreDetailCtrl', function ($scope, $rootScope, $stateParams, AuthService, $state, $ionicModal, RequestService, ReturnService, AccuralreceiptsService) {
+    $rootScope.userStore = AuthService.getUser();
+
     $scope.data = JSON.parse($stateParams.data);
     console.log($scope.data);
 
@@ -801,7 +823,8 @@ angular.module('starter.controllers', ['ionic'])
     };
 
   })
-  .controller('OrderCtrl', function ($scope, AuthService, $state, $stateParams, $ionicModal) {
+  .controller('OrderCtrl', function ($scope, $rootScope, AuthService, $state, $stateParams, $ionicModal) {
+    $rootScope.userStore = AuthService.getUser();
 
     $ionicModal.fromTemplateUrl('templates/modal.html', {
       scope: $scope
@@ -891,7 +914,8 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('ProfileDeliverCtrl', function ($scope, $state, $stateParams, AuthService) {
+  .controller('ProfileDeliverCtrl', function ($scope, $rootScope, $state, $stateParams, AuthService) {
+    $rootScope.userStore = AuthService.getUser();
 
     $scope.data = JSON.parse($stateParams.data);
     console.log($scope.data);
