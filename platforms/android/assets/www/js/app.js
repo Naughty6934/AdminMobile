@@ -60,20 +60,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
     })
   })
 
-  .config(function ($stateProvider, $urlRouterProvider, $authProvider) {
-
-    var commonConfig = {
-      popupOptions: {
-        location: 'no',
-        toolbar: 'yes',
-        width: window.screen.width,
-        height: window.screen.height
-      }
-    };
-
-    if (ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
-      commonConfig.redirectUri = 'https://thamapp.herokuapp.com/';
-    }
+  .config(function ($stateProvider, $urlRouterProvider) {
 
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
@@ -87,6 +74,8 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         abstract: true,
         templateUrl: 'templates/tabs.html'
       })
+
+
 
       // Each tab has its own nav history stack:
 
@@ -107,9 +96,6 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
       })
 
 
-
-      
-
       .state('tab.more', {
         url: '/more',
         views: {
@@ -120,20 +106,27 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('tab.liststock', {
+      .state('menuliststock', {
+        url: '/menuliststock',
+        controller: 'MoreCtrl',
+        templateUrl: 'templates/menuliststock.html'
+      })
+
+
+      .state('menuliststock.liststock', {
         url: '/liststock',
         views: {
-          'tab-more': {
+          'menuliststock-liststock': {
             templateUrl: 'templates/liststock.html',
             controller: 'MoreCtrl'
           }
         }
       })
 
-      .state('tab.detailstock', {
+      .state('menuliststock.detailstock', {
         url: '/detailstock:{data}',
         views: {
-          'tab-more': {
+          'menuliststock-liststock': {
             templateUrl: 'templates/detailstock.html',
             controller: 'MoreCtrl'
           }
@@ -160,7 +153,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      
+
 
       .state('tab.detailorder', {
         url: '/detailorder:{data}',
@@ -202,67 +195,84 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
       })
 
 
-      
-      .state('tab.listar', {
+
+      .state('menulistar', {
+        url: '/menulistar',
+        controller: 'MoreCtrl',
+        templateUrl: 'templates/menulistar.html'
+      })
+
+      .state('menulistar.listar', {
         url: '/listar',
         views: {
-          'tab-more': {
+          'menulistar-listar': {
             templateUrl: 'templates/listar.html',
             controller: 'MoreCtrl'
           }
         }
       })
-      .state('tab.listtreturn', {
+
+      .state('menulistar.detailar', {
+        url: '/detailar:{data}',
+        views: {
+          'menulistar-listar': {
+            templateUrl: 'templates/detailar.html',
+            controller: 'MoreDetailCtrl'
+          }
+        }
+      })
+
+      .state('menulisttreturn', {
+        url: '/menulisttreturn',
+        controller: 'MoreCtrl',
+        templateUrl: 'templates/menulisttreturn.html'
+      })
+
+      .state('menulisttreturn.listtreturn', {
         url: '/listtreturn',
         views: {
-          'tab-more': {
+          'menulisttreturn-listtreturn': {
             templateUrl: 'templates/listtreturn.html',
             controller: 'MoreCtrl'
           }
         }
       })
 
-      .state('tab.returndetail', {
+      .state('menulisttreturn.returndetail', {
         url: '/returndetail:{data}',
         views: {
-          'tab-more': {
+          'menulisttreturn-listtreturn': {
             templateUrl: 'templates/returndetail.html',
             controller: 'MoreDetailCtrl'
           }
         }
       })
 
-      .state('tab.listtransports', {
+      .state('menulisttransports', {
+        url: '/menulisttransports',
+        controller: 'MoreCtrl',
+        templateUrl: 'templates/menulisttransports.html'
+      })
+
+      .state('menulisttransports.listtransports', {
         url: '/listtransports',
         views: {
-          'tab-more': {
+          'menulisttransports-listtransports': {
             templateUrl: 'templates/listtransports.html',
             controller: 'MoreCtrl'
           }
         }
       })
 
-      .state('tab.requestdetail', {
+      .state('menulisttransports.requestdetail', {
         url: '/requestdetail:{data}',
         views: {
-          'tab-more': {
+          'menulisttransports-listtransports': {
             templateUrl: 'templates/requestdetail.html',
             controller: 'MoreDetailCtrl'
           }
         }
-      })
-
-      .state('tab.detailar', {
-        url: '/detailar:{data}',
-        views: {
-          'tab-more': {
-            templateUrl: 'templates/detailar.html',
-            controller: 'MoreDetailCtrl'
-          }
-        }
       });
-
-
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/login');

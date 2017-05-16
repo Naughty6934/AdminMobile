@@ -9,13 +9,14 @@ navigation history that also transitions its views in and out.
 
   <!-- Dashboard Tab -->
   <div ng-controller="ConfirmedCtrl" ng-init="init()">
-    <ion-tab title="สั่งจอง" badge="countOrder" icon-off="ion-ios-paper-outline" icon-on="ion-ios-paper" href="#/tab/confirmed">
+    <ion-tab title="สั่งจอง" badge="countOrder" icon-off="ion-ios-paper-outline" icon-on="ion-ios-paper" ng-click="gotoConfirmed()" href="#/tab/confirmed">
       <ion-nav-view name="tab-confirmed"></ion-nav-view>
     </ion-tab>
   </div>
 
 
   <!-- Accept Tab on-select="loadData()" -->
+  
 
   <div ng-controller="ConfirmedCtrl" ng-init="init()">
     <ion-tab title="คนส่งข้าว" badge="countOrderApt + countOrderRjt + countOrderWt" badge-style="color:red;" icon-off="ion-ios-people-outline"
@@ -33,11 +34,17 @@ navigation history that also transitions its views in and out.
   </div>
 
   <!-- More Tab -->
-  <div ng-controller="MoreCtrl" ng-init="init()">
+  <!--<div ng-controller="MoreCtrl" ng-init="init()">
     <ion-tab title="ตั้งค่า" icon-off="ion-ios-more-outline" icon-on="ion-ios-more" href="#/tab/more">
       <ion-nav-view name="tab-more"></ion-nav-view>
     </ion-tab>
-  </div>
+  </div>-->
 
+  <!-- chat Tab-->
+  <div>
+    <ion-tab title="แชท" icon-off="ion-ios-more-outline" icon-on="ion-ios-more">
+      <ion-nav-view name="tab-xxx"></ion-nav-view>
+    </ion-tab>
+  </div>
 
 </ion-tabs>

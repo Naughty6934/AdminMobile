@@ -1,5 +1,69 @@
 angular.module('starter.controllers', ['ionic'])
 
+
+  .controller('menuCtrl', function ($scope, $http, $state, AuthService, $ionicModal, $rootScope, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService, $ionicSideMenuDelegate) {
+
+
+    $scope.toggleLeftSideMenu = function () {
+      $ionicSideMenuDelegate.toggleLeft();
+      // alert('menuCtrl');
+    };
+
+    $scope.homes = function () {
+      $state.go('tab.confirmed');
+      $scope.toggleLeftSideMenu();
+    };
+
+    $scope.liststocks = function () {
+      $state.go('menuliststock.liststock');
+      $scope.toggleLeftSideMenu();
+    };
+
+    $scope.listtreturn = function () {
+      $state.go('menulisttreturn.listtreturn');
+      $scope.toggleLeftSideMenu();
+    };
+
+    $scope.listaccuralreceipt = function () {
+      $state.go('menulistar.listar');
+      $scope.toggleLeftSideMenu();
+    };
+
+    $scope.listtransports = function () {
+      $state.go('menulisttransports.listtransports');
+      $scope.toggleLeftSideMenu();
+    };
+
+    $scope.logOut = function () {
+      AuthService.signOut();
+      $state.go('login');
+      $scope.toggleLeftSideMenu();
+    };
+
+    StockService.getStocks()
+      .then(function (data) {
+        $rootScope.Stocks = data;
+        $rootScope.countStocks = $rootScope.Stocks.length;
+      });
+
+    ReturnService.getReturns()
+      .then(function (data) {
+        $rootScope.countReturns = data.length;
+      });
+
+    AccuralreceiptsService.getAccuralreceipts()
+      .then(function (data) {
+        $rootScope.countAcc = data.length;
+      });
+
+    RequestService.getRequests()
+      .then(function (data) {
+        $rootScope.countTran = data.length;
+      });
+
+
+  })
+
   .controller('LogInCtrl', function ($scope, $state, AuthService, $rootScope) {
 
     // var push = new Ionic.Push({
@@ -106,6 +170,9 @@ angular.module('starter.controllers', ['ionic'])
   })
 
   .controller('ConfirmedCtrl', function ($scope, $http, $state, AuthService, $ionicModal, $rootScope) {
+    $scope.gotoConfirmed = function () {
+      $state.go('tab.confirmed');
+    }
     $scope.init = function () {
       $scope.loadData();
     }
@@ -470,6 +537,7 @@ angular.module('starter.controllers', ['ionic'])
   })
 
   .controller('MoreCtrl', function ($scope, AuthService, $state, $ionicModal, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService) {
+
     if ($stateParams.data) {
       $scope.data = JSON.parse($stateParams.data);
     }
@@ -498,11 +566,11 @@ angular.module('starter.controllers', ['ionic'])
     };
 
     $scope.listaccuralreceipt = function () {
-      $state.go('tab.listar');
+      $state.go('menulistar.listar');
     };
 
     $scope.liststocks = function () {
-      $state.go('tab.liststock');
+      $state.go('menuliststock.liststock');
     };
 
     $scope.liststock = function () {
@@ -531,11 +599,11 @@ angular.module('starter.controllers', ['ionic'])
     //   $rootScope.countOrderReq = 0;
     // };
     $scope.listtransports = function () {
-      $state.go('tab.listtransports');
+      $state.go('menulisttransports.listtransports');
     };
 
     $scope.listtreturn = function () {
-      $state.go('tab.listtreturn');
+      $state.go('menulisttreturn.listtreturn');
     };
 
     $scope.requestsorders = function () {
@@ -618,20 +686,20 @@ angular.module('starter.controllers', ['ionic'])
     }
 
     $scope.returnDetail = function (data) {
-      $state.go('tab.returndetail', { data: JSON.stringify(data) });
+      $state.go('menulisttreturn.returndetail', { data: JSON.stringify(data) });
     }
 
 
     $scope.requestDetail = function (data) {
-      $state.go('tab.requestdetail', { data: JSON.stringify(data) });
+      $state.go('menulisttransports.requestdetail', { data: JSON.stringify(data) });
     }
 
     $scope.detailstock = function (data) {
-      $state.go('tab.detailstock', { data: JSON.stringify(data) });
+      $state.go('menuliststock.detailstock', { data: JSON.stringify(data) });
     }
 
     $scope.arDetail = function (data) {
-      $state.go('tab.detailar', { data: JSON.stringify(data) });
+      $state.go('menulistar.detailar', { data: JSON.stringify(data) });
     }
 
     $scope.doRefresh = function () {
@@ -668,7 +736,7 @@ angular.module('starter.controllers', ['ionic'])
       ReturnService.updateReturnOrder(returnorderId, returnorder)
         .then(function (received) {
           // alert('success'); 
-          $state.go('tab.listtreturn');
+          $state.go('menulisttreturn.listtreturn');
         }, function (error) {
           console.log(error);
           alert('dont success' + " " + error.data.message);
@@ -820,13 +888,13 @@ angular.module('starter.controllers', ['ionic'])
       //$scope.init();
       //alert('');
     });
-    
+
   })
-  
+
   .controller('ProfileDeliverCtrl', function ($scope, $state, $stateParams, AuthService) {
 
     $scope.data = JSON.parse($stateParams.data);
-  console.log($scope.data);
+    console.log($scope.data);
     $scope.tel = function (telnumber) {
       window.location = 'tel:' + telnumber;
     };
