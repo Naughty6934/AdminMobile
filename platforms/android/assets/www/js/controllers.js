@@ -33,12 +33,13 @@ angular.module('starter.controllers', ['ionic'])
       };
       AuthService.saveUserPushNoti(push_usr)
         .then(function (res) {
-          $state.go('tab.confirmed');
+          $state.go('app.tab.confirmed');
         });
     }
     $scope.credentials = {}
 
     $rootScope.$on('userLoggedIn', function (e, response) {
+      $rootScope.userStore = AuthService.getUser();
       console.log(response);
       if (response.roles[0] === 'admin') {
 
@@ -51,7 +52,7 @@ angular.module('starter.controllers', ['ionic'])
         AuthService.saveUserPushNoti(push_usr)
           .then(function (res) {
             $scope.credentials = {}
-            $state.go('tab.confirmed');
+            $state.go('app.tab.confirmed');
             $rootScope.$broadcast('loading:hide');
           });
         // alert('success');
@@ -95,7 +96,7 @@ angular.module('starter.controllers', ['ionic'])
       //       AuthService.saveUserPushNoti(push_usr)
       //         .then(function (res) {
       //           $scope.credentials = {}
-      //           $state.go('tab.confirmed');
+      //           $state.go('app.tab.confirmed');
       //         });
       //       // alert('success');
       //     } else {
@@ -110,7 +111,7 @@ angular.module('starter.controllers', ['ionic'])
 
   .controller('menuCtrl', function ($scope, $ionicHistory, $http, $state, AuthService, $ionicModal, $rootScope, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService, $ionicSideMenuDelegate) {
     $rootScope.userStore = AuthService.getUser();
-    // console.log(userStore);
+    console.log($rootScope.userStore);
 
     $scope.toggleLeftSideMenu = function () {
       $ionicSideMenuDelegate.toggleLeft();
@@ -118,12 +119,12 @@ angular.module('starter.controllers', ['ionic'])
     };
 
     $scope.homes = function () {
-      $state.go('tab.confirmed');
+      $state.go('app.tab.confirmed');
       $scope.toggleLeftSideMenu();
     };
 
     $scope.liststocks = function () {
-      // $state.go('menuliststock.liststock');
+      // $state.go('app.liststock');
       $ionicHistory.nextViewOptions({
         disableBack: true
       });
@@ -132,7 +133,7 @@ angular.module('starter.controllers', ['ionic'])
     };
 
     $scope.listtreturn = function () {
-      // $state.go('menulisttreturn.listtreturn');
+      // $state.go('app.listtreturn');
       $ionicHistory.nextViewOptions({
         disableBack: true
       });
@@ -140,7 +141,7 @@ angular.module('starter.controllers', ['ionic'])
     };
 
     $scope.listaccuralreceipt = function () {
-      // $state.go('menulistar.listar');
+      // $state.go('app.listar');
       $ionicHistory.nextViewOptions({
         disableBack: true
       });
@@ -148,7 +149,7 @@ angular.module('starter.controllers', ['ionic'])
     };
 
     $scope.listtransports = function () {
-      // $state.go('menulisttransports.listtransports');
+      // $state.go('app.listtransports');
       $ionicHistory.nextViewOptions({
         disableBack: true
       });
@@ -157,6 +158,10 @@ angular.module('starter.controllers', ['ionic'])
 
     $scope.logOut = function () {
       AuthService.signOut();
+      $rootScope.userStore = AuthService.getUser();
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
       $state.go('login');
       $scope.toggleLeftSideMenu();
     };
@@ -189,7 +194,7 @@ angular.module('starter.controllers', ['ionic'])
     $rootScope.userStore = AuthService.getUser();
 
     $scope.gotoConfirmed = function () {
-      $state.go('tab.confirmed');
+      $state.go('app.tab.confirmed');
     }
     $scope.init = function () {
       $scope.loadData();
@@ -250,13 +255,13 @@ angular.module('starter.controllers', ['ionic'])
     $scope.gotoDetail = function (data) {
       //alert('go to detail');
 
-      $state.go('tab.detailorder', { data: JSON.stringify(data) });
+      $state.go('app.tab.detailorder', { data: JSON.stringify(data) });
     }
 
     $scope.gotoDetail2 = function (data) {
       //alert('go to detail');
 
-      $state.go('tab.detailorder2', { data: JSON.stringify(data) });
+      $state.go('app.tab.detailorder2', { data: JSON.stringify(data) });
     }
 
     $scope.doRefresh = function () {
@@ -586,11 +591,11 @@ angular.module('starter.controllers', ['ionic'])
     };
 
     $scope.listaccuralreceipt = function () {
-      $state.go('menulistar.listar');
+      $state.go('app.listar');
     };
 
     $scope.liststocks = function () {
-      $state.go('menuliststock.liststock');
+      $state.go('app.liststock');
     };
 
     $scope.liststock = function () {
@@ -619,11 +624,11 @@ angular.module('starter.controllers', ['ionic'])
     //   $rootScope.countOrderReq = 0;
     // };
     $scope.listtransports = function () {
-      $state.go('menulisttransports.listtransports');
+      $state.go('app.listtransports');
     };
 
     $scope.listtreturn = function () {
-      $state.go('menulisttreturn.listtreturn');
+      $state.go('app.listtreturn');
     };
 
     $scope.requestsorders = function () {
@@ -706,20 +711,20 @@ angular.module('starter.controllers', ['ionic'])
     }
 
     $scope.returnDetail = function (data) {
-      $state.go('menulisttreturn.returndetail', { data: JSON.stringify(data) });
+      $state.go('app.returndetail', { data: JSON.stringify(data) });
     }
 
 
     $scope.requestDetail = function (data) {
-      $state.go('menulisttransports.requestdetail', { data: JSON.stringify(data) });
+      $state.go('app.requestdetail', { data: JSON.stringify(data) });
     }
 
     $scope.detailstock = function (data) {
-      $state.go('menuliststock.detailstock', { data: JSON.stringify(data) });
+      $state.go('app.detailstock', { data: JSON.stringify(data) });
     }
 
     $scope.arDetail = function (data) {
-      $state.go('menulistar.detailar', { data: JSON.stringify(data) });
+      $state.go('app.detailar', { data: JSON.stringify(data) });
     }
 
     $scope.doRefresh = function () {
@@ -758,7 +763,7 @@ angular.module('starter.controllers', ['ionic'])
       ReturnService.updateReturnOrder(returnorderId, returnorder)
         .then(function (received) {
           // alert('success'); 
-          $state.go('menulisttreturn.listtreturn');
+          $state.go('app.listtreturn');
         }, function (error) {
           console.log(error);
           alert('dont success' + " " + error.data.message);
@@ -834,7 +839,7 @@ angular.module('starter.controllers', ['ionic'])
 
     $scope.btnGoProfile = function (data) {
       console.log(data);
-      $state.go('tab.deliver-profile', { data: JSON.stringify(data) });
+      $state.go('app.tab.deliver-profile', { data: JSON.stringify(data) });
     };
 
     // console.log(JSON.parse($stateParams.data));
@@ -894,12 +899,12 @@ angular.module('starter.controllers', ['ionic'])
         .then(function (response) {
           //alert('Success');
           if (oldStatus == 'confirmed') {
-            $state.go('tab.confirmed');
+            $state.go('app.tab.confirmed');
           } else {
-            $state.go('tab.detailaccept');
+            $state.go('app.tab.detailaccept');
           }
 
-          //tab.confirmed
+          //app.tab.confirmed
         }, function (error) {
           console.log(error);
           //alert('dont success' + " " + error.data.message);

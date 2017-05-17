@@ -9,7 +9,7 @@ navigation history that also transitions its views in and out.
 
   <!-- Dashboard Tab -->
   <div ng-controller="ConfirmedCtrl" ng-init="init()">
-    <ion-tab title="สั่งจอง" badge="countOrder" icon-off="ion-ios-paper-outline" icon-on="ion-ios-paper" ng-click="gotoConfirmed()" href="#/tab/confirmed">
+    <ion-tab title="สั่งจอง" badge="countOrder" icon-off="ion-ios-paper-outline" icon-on="ion-ios-paper" ng-click="gotoConfirmed()" href="#/app/tab/confirmed">
       <ion-nav-view name="tab-confirmed"></ion-nav-view>
     </ion-tab>
   </div>
@@ -20,7 +20,7 @@ navigation history that also transitions its views in and out.
 
   <div ng-controller="ConfirmedCtrl" ng-init="init()">
     <ion-tab title="คนส่งข้าว" badge="countOrderApt + countOrderRjt + countOrderWt" badge-style="color:red;" icon-off="ion-ios-people-outline"
-      icon-on="ion-ios-people" href="#/tab/detailaccept">
+      icon-on="ion-ios-people" href="#/app/tab/detailaccept">
       <ion-nav-view name="tab-detailaccept"></ion-nav-view>
       </ion-tab>
   </div>
@@ -28,14 +28,14 @@ navigation history that also transitions its views in and out.
 
   <!-- Maps Tab -->
   <div ng-controller="MapCtrl" ng-init="init()">
-    <ion-tab title="แผนที่" icon-off="ion-ios-location-outline" on-select="readService()" icon-on="ion-ios-location" href="#/tab/map">
+    <ion-tab title="แผนที่" icon-off="ion-ios-location-outline" on-select="readService()" icon-on="ion-ios-location" href="#/app/tab/map">
       <ion-nav-view name="tab-map"></ion-nav-view>
     </ion-tab>
   </div>
 
   <!-- More Tab -->
   <!--<div ng-controller="MoreCtrl" ng-init="init()">
-    <ion-tab title="ตั้งค่า" icon-off="ion-ios-more-outline" icon-on="ion-ios-more" href="#/tab/more">
+    <ion-tab title="ตั้งค่า" icon-off="ion-ios-more-outline" icon-on="ion-ios-more" href="#/app/tab/more">
       <ion-nav-view name="tab-more"></ion-nav-view>
     </ion-tab>
   </div>-->

@@ -24,9 +24,9 @@
                     </label>
             </label>
 
-            <label class="item item-input">
+            <label class="item item-input" ng-click="tel({{data.shipping.tel}})">
                 <span class="input-label">เบอร์โทร : </span>
-                <input style="background-color: white" type="text" ng-model="data.shipping.tel" readonly>
+                <label style="background-color: white" type="text" ng-model="data.shipping.tel">{{data.shipping.tel}}</label>
             </label>
             
             <a class="item item-icon-left" ng-hide="data.deliverystatus === 'confirmed' || data.deliverystatus === 'reject'" ng-click="btnGoProfile(data)">

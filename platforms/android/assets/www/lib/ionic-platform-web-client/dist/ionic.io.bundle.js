@@ -5192,7 +5192,7 @@ if (typeof angular === 'object' && angular.module) {
          *
          * Attempts to navigate to a new view if a push notification payload contains:
          *
-         *   - $state {String} The state name (e.g 'tab.chats')
+         *   - $state {String} The state name (e.g 'app.tab.chats')
          *   - $stateParams {Object} Provided state (url) params
          *
          * Find more info about state navigation and params:

@@ -85,18 +85,18 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         controller: 'LogInCtrl'
       })
 
-      .state('tab.confirmed', {
+      .state('app.tab.confirmed', {
         url: '/confirmed',
         views: {
-          'tab-confirmed': {
-            templateUrl: 'templates/tab-confirmed.html',
+          'menuContent-confirmed': {
+            templateUrl: 'templates/menuContent-confirmed.html',
             controller: 'ConfirmedCtrl'
           }
         }
       })
 
 
-      .state('tab.more', {
+      .state('app.tab.more', {
         url: '/more',
         views: {
           'tab-more': {
@@ -113,7 +113,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
       })
 
 
-      .state('menuliststock.liststock', {
+      .state('app.liststock', {
         url: '/liststock',
         views: {
           'menuliststock-liststock': {
@@ -123,7 +123,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('menuliststock.detailstock', {
+      .state('app.detailstock', {
         url: '/detailstock:{data}',
         views: {
           'menuliststock-liststock': {
@@ -133,7 +133,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('tab.map', {
+      .state('app.tab.map', {
         url: '/map',
         views: {
           'tab-map': {
@@ -143,7 +143,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('tab.detailaccept', {
+      .state('app.tab.detailaccept', {
         url: '/detailaccept',
         views: {
           'tab-detailaccept': {
@@ -155,17 +155,17 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
 
 
 
-      .state('tab.detailorder', {
+      .state('app.tab.detailorder', {
         url: '/detailorder:{data}',
         views: {
-          'tab-confirmed': {
+          'menuContent-confirmed': {
             templateUrl: 'templates/detailorder.html',
             controller: 'OrderCtrl'
           }
         }
       })
 
-      .state('tab.detailorder2', {
+      .state('app.tab.detailorder2', {
         url: '/detailorder:{data}',
         views: {
           'tab-detailaccept': {
@@ -174,7 +174,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
           }
         }
       })
-      .state('tab.deliver-profile', {
+      .state('app.tab.deliver-profile', {
         url: '/deliver-profile:{data}',
         views: {
           'tab-detailaccept': {
@@ -184,7 +184,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('tab.chat', {
+      .state('app.tab.chat', {
         url: '/chat',
         views: {
           'tab-detailaccept': {
@@ -202,7 +202,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         templateUrl: 'templates/menulistar.html'
       })
 
-      .state('menulistar.listar', {
+      .state('app.listar', {
         url: '/listar',
         views: {
           'menulistar-listar': {
@@ -212,7 +212,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('menulistar.detailar', {
+      .state('app.detailar', {
         url: '/detailar:{data}',
         views: {
           'menulistar-listar': {
@@ -228,7 +228,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         templateUrl: 'templates/menulisttreturn.html'
       })
 
-      .state('menulisttreturn.listtreturn', {
+      .state('app.listtreturn', {
         url: '/listtreturn',
         views: {
           'menulisttreturn-listtreturn': {
@@ -238,7 +238,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('menulisttreturn.returndetail', {
+      .state('app.returndetail', {
         url: '/returndetail:{data}',
         views: {
           'menulisttreturn-listtreturn': {
@@ -254,7 +254,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         templateUrl: 'templates/menulisttransports.html'
       })
 
-      .state('menulisttransports.listtransports', {
+      .state('app.listtransports', {
         url: '/listtransports',
         views: {
           'menulisttransports-listtransports': {
@@ -264,7 +264,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('menulisttransports.requestdetail', {
+      .state('app.requestdetail', {
         url: '/requestdetail:{data}',
         views: {
           'menulisttransports-listtransports': {
