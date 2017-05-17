@@ -159,6 +159,9 @@ angular.module('starter.controllers', ['ionic'])
     $scope.logOut = function () {
       AuthService.signOut();
       $rootScope.userStore = AuthService.getUser();
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
       $state.go('login');
       $scope.toggleLeftSideMenu();
     };
