@@ -27,8 +27,8 @@ navigation history that also transitions its views in and out.
 
 
   <!-- Maps Tab -->
-  <div ng-controller="MapCtrl" ng-init="init()">
-    <ion-tab title="แผนที่" icon-off="ion-ios-location-outline" on-select="readService()" icon-on="ion-ios-location" href="#/app/tab/map">
+  <div ng-controller="MapCtrl">
+    <ion-tab title="แผนที่" icon-off="ion-ios-location-outline" ng-click="clearItem()" icon-on="ion-ios-location">
       <ion-nav-view name="tab-map"></ion-nav-view>
     </ion-tab>
   </div>
