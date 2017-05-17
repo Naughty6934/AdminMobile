@@ -19,14 +19,14 @@
 
                 <div class="list card">
                     <div class="row">
-                        <div class="col col-50">
+                        <!--<div class="col col-50">
                             <a ui-sref="app.tab.chat" class="item item-icon-left">
                                 <i class="icon ion-ios-chatbubble"></i> พูดคุย
                             </a>
-                        </div>
-                        <div class="col col-50">
+                        </div>-->
+                        <div class="col">
                             <a ng-click="tel({{data.shipping.tel}})" class="item item-icon-left">
-                                <i class="icon ion-ios-telephone"></i> โทร
+                                <i class="icon ion-ios-telephone"></i> โทร {{data.shipping.tel}}
                             </a>
                         </div>
                     </div>

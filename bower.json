@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "angular-moment": "^1.0.1",
-    "satellizer": "^0.15.5"
+    "satellizer": "^0.15.5",
+    "angular-socket-io": "^0.7.0"
   }
 }

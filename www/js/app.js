@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.controllers', 'starter.services', 'satellizer'])
+angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.controllers', 'starter.services', 'satellizer', 'btford.socket-io'])
 
   .run(function ($ionicPlatform, AuthService) {
     $ionicPlatform.ready(function () {
@@ -193,15 +193,15 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('app.tab.chat', {
-        url: '/chat',
-        views: {
-          'tab-detailaccept': {
-            templateUrl: 'templates/chat.html',
-            controller: 'ChatCtrl'
-          }
-        }
-      })
+      // .state('app.tab.chat', {
+      //   url: '/chat',
+      //   views: {
+      //     'tab-detailaccept': {
+      //       templateUrl: 'templates/chat.html',
+      //       controller: 'ChatCtrl'
+      //     }
+      //   }
+      // })
 
 
 
@@ -281,7 +281,38 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
             controller: 'MoreDetailCtrl'
           }
         }
-      });
+      })
+
+      .state('app.tab.chat', {
+        url: "/chat",
+        views: {
+          'tab-chat': {
+            templateUrl: "templates/tab-chat.html",
+            controller: 'ChatCtrl'
+          }
+        }
+      })
+
+      .state('app.tab.chat-detail', {
+        url: "/chat/:chatId",
+        views: {
+          'tab-chat': {
+            templateUrl: "templates/chat-detail.html",
+            controller: 'ChatDetailCtrl'
+          }
+        }
+      })
+
+      .state('app.tab.listfriend', {
+        url: "/listfriend",
+        views: {
+          'tab-chat': {
+            templateUrl: "templates/listfriend.html",
+            controller: 'FriendsCtrl'
+          }
+        }
+      })
+      ;
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/login');

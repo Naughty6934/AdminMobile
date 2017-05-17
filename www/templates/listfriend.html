@@ -1,0 +1,21 @@
+<ion-view view-title="เพิ่มเพื่อน">
+
+    <ion-content>
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon" id="sizing-addon3"><i class="fa fa-search" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" placeholder="ค้นหา..." ng-model="topsearch" aria-describedby="sizing-addon3">
+        </div>
+        <ion-list>
+            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="account in accounts | filter: {_id : '!'+user._id} | filter:topsearch"
+                type="item-text-wrap" ng-click="addFriend(account)" ui-sref="app.tab.chat">
+                <img ng-src="{{account.profileImageURL}}">
+                <h2>{{account.displayName}}</h2>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+
+                <!--<ion-option-button class="button-assertive" ng-click="remove(chat)">
+          Delete
+        </ion-option-button>-->
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
