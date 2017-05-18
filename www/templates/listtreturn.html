@@ -3,13 +3,22 @@
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
 
-        <div class="row">
+        <div class="row badge-buttonnoti">
             <div class="col"></div>
             <div class="col col-90">
                 <div class="button-bar">
-                    <a class="button button-outline button-positive {{Returns === true ? 'active' : ''}}" ng-click="Returns = true ;Received = false; Response = false ;">แจ้งคืน</a>
-                    <a class="button button-outline button-positive {{Response === true ? 'active' : ''}}" ng-click="Response = true;Returns = false ;Received=false">ตอบกลับ</a>
-                    <a class="button button-outline button-positive {{Received === true ? 'active' : ''}}" ng-click="Received = true; Returns= false ;Response=false">ได้รับ</a>
+                    <a class="button button-outline button-positive {{Returns === true ? 'active' : ''}}" ng-click="Returns = true ;Received = false; Response = false ;">
+                        แจ้งคืน
+                        <span class="badge badge-assertive badge-notify">{{countReturnRet || 0}}</span>
+                        </a>
+                    <a class="button button-outline button-positive {{Response === true ? 'active' : ''}}" ng-click="Response = true;Returns = false ;Received=false">
+                        ตอบกลับ
+                        <span class="badge badge-assertive badge-notify">{{countReturnRes || 0}}</span>
+                    </a>
+                    <a class="button button-outline button-positive {{Received === true ? 'active' : ''}}" ng-click="Received = true; Returns= false ;Response=false">
+                        ได้รับ
+                        <span class="badge badge-assertive badge-notify">{{countReturnRec || 0}}</span>
+                    </a>
                 </div>
             </div>
             <div class="col"></div>

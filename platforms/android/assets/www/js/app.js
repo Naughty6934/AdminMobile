@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.controllers', 'starter.services', 'satellizer'])
+angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.controllers', 'starter.services', 'satellizer', 'btford.socket-io'])
 
   .run(function ($ionicPlatform, AuthService) {
     $ionicPlatform.ready(function () {
@@ -60,21 +60,34 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
     })
   })
 
-  .config(function ($stateProvider, $urlRouterProvider) {
-
+  .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+    $ionicConfigProvider.tabs.position("bottom")
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
     // Set up the various states which the app can be in.
     // Each state's controller can be found in controllers.js
     $stateProvider
-
+      .state('app', {
+        url: '/app',
+        abstract: true,
+        templateUrl: 'templates/menu.html'
+      })
       // setup an abstract state for the tabs directive
-      .state('tab', {
+      // .state('tab', {
+      //   url: '/tab',
+      //   abstract: true,
+      //   templateUrl: 'templates/tabs.html'
+      // })
+
+      .state('app.tab', {
         url: '/tab',
         abstract: true,
-        templateUrl: 'templates/tabs.html'
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/tabs.html'
+          }
+        }
       })
-
 
 
       // Each tab has its own nav history stack:
@@ -88,13 +101,12 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
       .state('app.tab.confirmed', {
         url: '/confirmed',
         views: {
-          'menuContent-confirmed': {
-            templateUrl: 'templates/menuContent-confirmed.html',
+          'tab-confirmed': {
+            templateUrl: 'templates/tab-confirmed.html',
             controller: 'ConfirmedCtrl'
           }
         }
       })
-
 
       .state('app.tab.more', {
         url: '/more',
@@ -106,17 +118,10 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('menuliststock', {
-        url: '/menuliststock',
-        controller: 'MoreCtrl',
-        templateUrl: 'templates/menuliststock.html'
-      })
-
-
       .state('app.liststock', {
         url: '/liststock',
         views: {
-          'menuliststock-liststock': {
+          'menuContent': {
             templateUrl: 'templates/liststock.html',
             controller: 'MoreCtrl'
           }
@@ -126,7 +131,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
       .state('app.detailstock', {
         url: '/detailstock:{data}',
         views: {
-          'menuliststock-liststock': {
+          'menuContent': {
             templateUrl: 'templates/detailstock.html',
             controller: 'MoreCtrl'
           }
@@ -153,12 +158,10 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-
-
       .state('app.tab.detailorder', {
         url: '/detailorder:{data}',
         views: {
-          'menuContent-confirmed': {
+          'tab-confirmed': {
             templateUrl: 'templates/detailorder.html',
             controller: 'OrderCtrl'
           }
@@ -184,28 +187,20 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('app.tab.chat', {
-        url: '/chat',
-        views: {
-          'tab-detailaccept': {
-            templateUrl: 'templates/chat.html',
-            controller: 'ChatCtrl'
-          }
-        }
-      })
-
-
-
-      .state('menulistar', {
-        url: '/menulistar',
-        controller: 'MoreCtrl',
-        templateUrl: 'templates/menulistar.html'
-      })
+      // .state('app.tab.chat', {
+      //   url: '/chat',
+      //   views: {
+      //     'tab-detailaccept': {
+      //       templateUrl: 'templates/chat.html',
+      //       controller: 'ChatCtrl'
+      //     }
+      //   }
+      // })
 
       .state('app.listar', {
         url: '/listar',
         views: {
-          'menulistar-listar': {
+          'menuContent': {
             templateUrl: 'templates/listar.html',
             controller: 'MoreCtrl'
           }
@@ -215,23 +210,17 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
       .state('app.detailar', {
         url: '/detailar:{data}',
         views: {
-          'menulistar-listar': {
+          'menuContent': {
             templateUrl: 'templates/detailar.html',
             controller: 'MoreDetailCtrl'
           }
         }
       })
 
-      .state('menulisttreturn', {
-        url: '/menulisttreturn',
-        controller: 'MoreCtrl',
-        templateUrl: 'templates/menulisttreturn.html'
-      })
-
       .state('app.listtreturn', {
         url: '/listtreturn',
         views: {
-          'menulisttreturn-listtreturn': {
+          'menuContent': {
             templateUrl: 'templates/listtreturn.html',
             controller: 'MoreCtrl'
           }
@@ -241,23 +230,17 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
       .state('app.returndetail', {
         url: '/returndetail:{data}',
         views: {
-          'menulisttreturn-listtreturn': {
+          'menuContent': {
             templateUrl: 'templates/returndetail.html',
             controller: 'MoreDetailCtrl'
           }
         }
       })
 
-      .state('menulisttransports', {
-        url: '/menulisttransports',
-        controller: 'MoreCtrl',
-        templateUrl: 'templates/menulisttransports.html'
-      })
-
       .state('app.listtransports', {
         url: '/listtransports',
         views: {
-          'menulisttransports-listtransports': {
+          'menuContent': {
             templateUrl: 'templates/listtransports.html',
             controller: 'MoreCtrl'
           }
@@ -267,12 +250,43 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
       .state('app.requestdetail', {
         url: '/requestdetail:{data}',
         views: {
-          'menulisttransports-listtransports': {
+          'menuContent': {
             templateUrl: 'templates/requestdetail.html',
             controller: 'MoreDetailCtrl'
           }
         }
-      });
+      })
+
+      .state('app.tab.chat', {
+        url: "/chat",
+        views: {
+          'tab-chat': {
+            templateUrl: "templates/tab-chat.html",
+            controller: 'ChatCtrl'
+          }
+        }
+      })
+
+      .state('app.tab.chat-detail', {
+        url: "/chat/:chatId",
+        views: {
+          'tab-chat': {
+            templateUrl: "templates/chat-detail.html",
+            controller: 'ChatDetailCtrl'
+          }
+        }
+      })
+
+      .state('app.tab.listfriend', {
+        url: "/listfriend",
+        views: {
+          'tab-chat': {
+            templateUrl: "templates/listfriend.html",
+            controller: 'FriendsCtrl'
+          }
+        }
+      })
+      ;
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/login');

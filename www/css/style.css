@@ -110,3 +110,34 @@ span1 {
     text-align: left !important;
     max-width: 180px !important;
 }
+
+.badge-buttonnoti{
+    margin-top: 15px
+}
+.badge-notify{
+   position: fixed !important;
+   top: 0px !important;
+}
+
+.badge-notifyAccu{
+   position: fixed !important;
+   top: 0px !important;
+   margin-left: -30px !important;
+}
+
+.fixProfileimg {
+    margin-top: -40px;
+}
+
+.profile-image {
+        display: block;
+        border-radius: 100px;
+        border: 1px solid #fff;
+        width: 60%;
+        /*height: 50%;*/
+        margin: 30px auto 0;
+        box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+}
+.tapbuttonNone {
+    border: none;
+}

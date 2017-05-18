@@ -3,13 +3,22 @@
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
 
-        <div class="row">
+        <div class="row badge-buttonnoti">
             <div class="col"></div>
             <div class="col col-90">
                 <div class="button-bar">
-                    <a class="button button-outline button-positive {{Request === true ? 'active' : ''}}" ng-click="Request = true ;Received = false; Response = false ;">ร้องขอ</a>
-                    <a class="button button-outline button-positive {{Response === true ? 'active' : ''}}" ng-click="Response = true;Request = false ;Received=false">ตอบกลับ</a>
-                    <a class="button button-outline button-positive {{Received === true ? 'active' : ''}}" ng-click="Received = true; Request= false ;Response=false">ได้รับ</a>
+                    <a class="button button-outline button-positive {{Request === true ? 'active' : ''}}" ng-click="Request = true ;Received = false; Response = false ;">
+                        ร้องขอ
+                        <span class="badge badge-assertive badge-notify">{{countRequest || 0}}</span>
+                        </a>
+                    <a class="button button-outline button-positive {{Response === true ? 'active' : ''}}" ng-click="Response = true;Request = false ;Received=false">
+                        ตอบกลับ
+                        <span class="badge badge-assertive badge-notify">{{countResponse || 0}}</span>
+                        </a>
+                    <a class="button button-outline button-positive {{Received === true ? 'active' : ''}}" ng-click="Received = true; Request= false ;Response=false">
+                        ได้รับ
+                        <span class="badge badge-assertive badge-notify">{{countReceived || 0}}</span>
+                        </a>
                 </div>
             </div>
             <div class="col"></div>

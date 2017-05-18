@@ -10,7 +10,7 @@ navigation history that also transitions its views in and out.
   <!-- Dashboard Tab -->
   <div ng-controller="ConfirmedCtrl" ng-init="init()">
     <ion-tab title="สั่งจอง" badge="countOrder" icon-off="ion-ios-paper-outline" icon-on="ion-ios-paper" ng-click="gotoConfirmed()" href="#/app/tab/confirmed">
-      <ion-nav-view name="menuContent-confirmed"></ion-nav-view>
+      <ion-nav-view name="tab-confirmed"></ion-nav-view>
     </ion-tab>
   </div>
 
@@ -27,8 +27,8 @@ navigation history that also transitions its views in and out.
 
 
   <!-- Maps Tab -->
-  <div ng-controller="MapCtrl" ng-init="init()">
-    <ion-tab title="แผนที่" icon-off="ion-ios-location-outline" on-select="readService()" icon-on="ion-ios-location" href="#/app/tab/map">
+  <div ng-controller="MapCtrl">
+    <ion-tab title="แผนที่" icon-off="ion-ios-location-outline" ng-click="clearItem()" icon-on="ion-ios-location">
       <ion-nav-view name="tab-map"></ion-nav-view>
     </ion-tab>
   </div>
@@ -41,9 +41,9 @@ navigation history that also transitions its views in and out.
   </div>-->
 
   <!-- chat Tab-->
-  <div>
-    <ion-tab title="แชท" icon-off="ion-ios-more-outline" icon-on="ion-ios-more">
-      <ion-nav-view name="tab-xxx"></ion-nav-view>
+  <div ng-controller="ChatCtrl">
+    <ion-tab title="แชท" icon-off="ion-ios-chatbubble-outline" icon-on="ion-ios-chatbubble" href="#/app/tab/chat">
+      <ion-nav-view name="tab-chat"></ion-nav-view>
     </ion-tab>
   </div>
 

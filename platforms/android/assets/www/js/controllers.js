@@ -110,8 +110,10 @@ angular.module('starter.controllers', ['ionic'])
   })
 
   .controller('menuCtrl', function ($scope, $ionicHistory, $http, $state, AuthService, $ionicModal, $rootScope, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $rootScope.userStore = AuthService.getUser();
-    console.log($rootScope.userStore);
 
     $scope.toggleLeftSideMenu = function () {
       $ionicSideMenuDelegate.toggleLeft();
@@ -190,7 +192,10 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('ConfirmedCtrl', function ($scope, $http, $state, AuthService, $ionicModal, $rootScope) {
+  .controller('ConfirmedCtrl', function ($scope, $http, $state, AuthService, $ionicModal, $rootScope, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $rootScope.userStore = AuthService.getUser();
 
     $scope.gotoConfirmed = function () {
@@ -232,11 +237,14 @@ angular.module('starter.controllers', ['ionic'])
               $scope.ordersConfirmed.push(order);
             } else if (order.deliverystatus === 'accept') {
               $scope.ordersAccept.push(order);
+              $scope.countAccept = $scope.ordersAccept.length;
             }
             else if (order.deliverystatus === 'reject') {
               $scope.ordersReject.push(order);
+              $scope.countReject = $scope.ordersReject.length;
             } else if (order.deliverystatus === 'wait deliver') {
               $scope.ordersWait.push(order);
+              $scope.countWait = $scope.ordersWait.length;
             }
           })
           $rootScope.countOrder = $scope.ordersConfirmed.length;
@@ -278,289 +286,736 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('MapCtrl', function ($scope, $http, $state, AuthService, $stateParams, $cordovaGeolocation, $rootScope) {
+  .controller('MapCtrl', function ($scope, $http, $state, AuthService, $stateParams, $cordovaGeolocation, $rootScope, $ionicSideMenuDelegate, $ionicHistory) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicHistory.clearHistory();
+      $ionicSideMenuDelegate.canDragContent(false);
+    });
     $rootScope.userStore = AuthService.getUser();
+    var lat = null;
+    var long = null;
+    var map;
 
     console.log('ok');
     $scope.init = function () {
-      $scope.readService();
-    }
-    $scope.readService = function () {
-      AuthService.getOrder()
-        .then(function (data) {
-          $scope.locationConfirmed = [];
-          $scope.locationWait = [];
-          $scope.locationAccept = [];
-          $scope.locationReject = [];
-          data.forEach(function (order) {
-            if (order.deliverystatus === 'confirmed') {
-              //  $scope.mapConfirmed.push(order); 
-              if (order.shipping.sharelocation) {
-                $scope.locationConfirmed.push(order);
-              }
-            } else if (order.deliverystatus === 'wait deliver') {
-              if (order.shipping.sharelocation) {
-                $scope.locationWait.push(order);
-              }
-            } else if (order.deliverystatus === 'accept') {
-              if (order.shipping.sharelocation) {
-                $scope.locationAccept.push(order);
-              }
-            } else if (order.deliverystatus === 'reject') {
-              if (order.shipping.sharelocation) {
-                $scope.locationReject.push(order);
-              }
-            }
-          });
-        });
-      AuthService.getDeliver()
-        .then(function (data) {
-          var Deliverlist = data;
-          $scope.locationDeliver = [];
-          angular.forEach(Deliverlist, function (deliver) {
-            if (deliver.roles[0] === 'deliver') {
-              $scope.locationDeliver.push(deliver);
-            }
-            //console.log($scope.delivers);
-          })
-
-        });
       $scope.readMap();
     }
+
+    $scope.clearItem = function () {
+      window.localStorage.removeItem("point");
+      $state.go('app.tab.map');
+    }
+    // $scope.readService = function () {
+    //   AuthService.getOrder()
+    //     .then(function (data) {
+    //       $scope.locationConfirmed = [];
+    //       $scope.locationWait = [];
+    //       $scope.locationAccept = [];
+    //       $scope.locationReject = [];
+    //       data.forEach(function (order) {
+    //         if (order.deliverystatus === 'confirmed') {
+    //           //  $scope.mapConfirmed.push(order); 
+    //           if (order.shipping.sharelocation) {
+    //             $scope.locationConfirmed.push(order);
+    //           }
+    //         } else if (order.deliverystatus === 'wait deliver') {
+    //           if (order.shipping.sharelocation) {
+    //             $scope.locationWait.push(order);
+    //           }
+    //         } else if (order.deliverystatus === 'accept') {
+    //           if (order.shipping.sharelocation) {
+    //             $scope.locationAccept.push(order);
+    //           }
+    //         } else if (order.deliverystatus === 'reject') {
+    //           if (order.shipping.sharelocation) {
+    //             $scope.locationReject.push(order);
+    //           }
+    //         }
+    //       });
+    //     });
+    //   AuthService.getDeliver()
+    //     .then(function (data) {
+    //       var Deliverlist = data;
+    //       $scope.locationDeliver = [];
+    //       angular.forEach(Deliverlist, function (deliver) {
+    //         if (deliver.roles[0] === 'deliver') {
+    //           $scope.locationDeliver.push(deliver);
+    //         }
+    //         //console.log($scope.delivers);
+    //       })
+
+    //     });
+    //   $scope.readMap();
+    // }
+    // $scope.readMap = function () {
+
+    //   var posOptions = { timeout: 10000, enableHighAccuracy: false };
+    //   $cordovaGeolocation
+    //     .getCurrentPosition(posOptions)
+    //     .then(function (position) {
+    //       var lat = position.coords.latitude
+    //       var long = position.coords.longitude
+
+    //       // alert(lat + ':' + long); 
+    //       var map = new google.maps.Map(document.getElementById('map'), {
+    //         zoom: 15,
+    //         center: new google.maps.LatLng(lat, long), //เปลี่ยนตามต้องการ 
+    //         mapTypeId: google.maps.MapTypeId.ROADMAP
+    //       });
+
+    //       //////ตำแหน่งที่ mark ปัจจุบัน/////////// 
+    //       var marker = new google.maps.Marker({
+    //         position: map.getCenter(),
+    //         icon: {
+    //           path: google.maps.SymbolPath.CIRCLE,
+    //           scale: 15,
+    //           fillColor: 'blue',
+    //           fillOpacity: 0.2,
+    //           strokeColor: 'blue',
+    //           strokeWeight: 0
+    //         },
+    //         draggable: true,
+    //         map: map
+    //       });
+    //       var marker = new google.maps.Marker({
+    //         position: map.getCenter(),
+    //         icon: {
+    //           path: google.maps.SymbolPath.CIRCLE,
+    //           scale: 10,
+    //           fillColor: '#1c90f3',
+    //           fillOpacity: 0.5,
+    //           strokeColor: 'white',
+    //           strokeWeight: 1
+    //         },
+    //         draggable: true,
+    //         map: map
+    //       });
+    //       $scope.locationDeliver.forEach(function (locations) {
+    //         var contentString = '<div>'
+    //           + '<label>' + locations.displayName + '</label><br>'
+    //           + 'โทร : ' + '<a href="tel:' + locations.address.tel + '">' + locations.address.tel + '</a>'
+    //           + '</div>';
+    //         var location = locations.address.sharelocation;
+    //         if (location) {
+    //           var marker = new google.maps.Marker({
+    //             icon: {
+    //               url: 'http://res.cloudinary.com/hflvlav04/image/upload/v1486371430/rbxhgg4rwbionmqfusxc.png',
+    //               scaledSize: new google.maps.Size(28, 36),
+    //               // The origin for this image is (0, 0). 
+    //               origin: new google.maps.Point(0, 0),
+    //               // The anchor for this image is the base of the flagpole at (0, 32). 
+    //               // anchor: new google.maps.Point(0, 32)
+    //             },
+    //             position: new google.maps.LatLng(location.latitude, location.longitude),
+    //             map: map
+    //           });
+    //           var infowindow = new google.maps.InfoWindow({
+    //             content: contentString
+    //           });
+    //           marker.addListener('click', function () {
+    //             console.log('click');
+    //             infowindow.open($scope.map, this);
+    //           });
+    //         }
+    //       });
+    //       $scope.locationConfirmed.forEach(function (locations) {
+    //         var product = '';
+    //         var price = null;
+    //         locations.items.forEach(function (pro) {
+    //           product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
+    //         })
+    //         var contentString = '<div>'
+    //           + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
+    //           + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
+    //           + '<p>' + product + '</p>'
+    //           + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
+    //           + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
+    //           + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
+    //           + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
+    //           + '</div>';
+    //         var location = locations.shipping.sharelocation;
+    //         // console.log($scope.locationConfirmed.length);
+    //         var marker = new google.maps.Marker({
+    //           icon: {
+    //             url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371637/zfx1xml50sn5rn8bu26h.png',
+    //             scaledSize: new google.maps.Size(32, 51),
+    //             // The origin for this image is (0, 0). 
+    //             origin: new google.maps.Point(0, 0),
+    //             // The anchor for this image is the base of the flagpole at (0, 32). 
+    //             // anchor: new google.maps.Point(0, 32)
+    //           },
+    //           position: new google.maps.LatLng(location.latitude, location.longitude),
+    //           map: map
+    //         });
+    //         var infowindow = new google.maps.InfoWindow({
+    //           content: contentString
+    //         });
+    //         marker.addListener('click', function () {
+    //           console.log('click');
+    //           infowindow.open($scope.map, this);
+    //         });
+    //       });
+
+    //       $scope.locationWait.forEach(function (locations) {
+    //         var product = '';
+    //         var price = null;
+    //         locations.items.forEach(function (pro) {
+    //           product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
+    //         })
+    //         var contentString = '<div>'
+    //           + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
+    //           + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
+    //           + '<p>' + product + '</p>'
+    //           + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
+    //           + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
+    //           + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
+    //           + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
+    //           + '</div>';
+    //         var location = locations.shipping.sharelocation;
+    //         // console.log($scope.locationConfirmed.length);
+    //         var marker = new google.maps.Marker({
+    //           icon: {
+    //             url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371643/riwxnxtjdfjganurw46m.png',
+    //             scaledSize: new google.maps.Size(32, 51),
+    //             // The origin for this image is (0, 0). 
+    //             origin: new google.maps.Point(0, 0),
+    //             // The anchor for this image is the base of the flagpole at (0, 32). 
+    //             // anchor: new google.maps.Point(0, 32)
+    //           },
+    //           position: new google.maps.LatLng(location.latitude, location.longitude),
+    //           map: map
+    //         });
+    //         var infowindow = new google.maps.InfoWindow({
+    //           content: contentString
+    //         });
+    //         marker.addListener('click', function () {
+    //           console.log('click');
+    //           infowindow.open($scope.map, this);
+    //         });
+    //       });
+
+    //       $scope.locationAccept.forEach(function (locations) {
+    //         var product = '';
+    //         var price = null;
+    //         locations.items.forEach(function (pro) {
+    //           product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
+    //         })
+    //         var contentString = '<div>'
+    //           + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
+    //           + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
+    //           + '<p>' + product + '</p>'
+    //           + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
+    //           + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
+    //           + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
+    //           + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
+    //           + '</div>';
+    //         var location = locations.shipping.sharelocation;
+    //         // console.log($scope.locationConfirmed.length);
+    //         var marker = new google.maps.Marker({
+    //           icon: {
+    //             url: 'http://res.cloudinary.com/hflvlav04/image/upload/v1486371632/sj4niz8oykdqfadnwhbo.png',
+    //             scaledSize: new google.maps.Size(30, 48),
+    //             // The origin for this image is (0, 0). 
+    //             origin: new google.maps.Point(0, 0),
+    //             // The anchor for this image is the base of the flagpole at (0, 32). 
+    //             // anchor: new google.maps.Point(0, 0)
+    //           },
+    //           position: new google.maps.LatLng(location.latitude, location.longitude),
+    //           map: map
+    //         });
+    //         var infowindow = new google.maps.InfoWindow({
+    //           content: contentString
+    //         });
+    //         marker.addListener('click', function () {
+    //           console.log('click');
+    //           infowindow.open($scope.map, this);
+    //         });
+    //       });
+
+    //       $scope.locationReject.forEach(function (locations) {
+    //         var product = '';
+    //         var price = null;
+    //         locations.items.forEach(function (pro) {
+    //           product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
+    //         })
+    //         var contentString = '<div>'
+    //           + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
+    //           + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
+    //           + '<p>' + product + '</p>'
+    //           + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
+    //           + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
+    //           + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
+    //           + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
+    //           + '</div>';
+    //         var location = locations.shipping.sharelocation;
+    //         // console.log($scope.locationConfirmed.length);
+    //         var marker = new google.maps.Marker({
+    //           icon: {
+    //             url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371639/igflklgols9u1kflmmkh.png',
+    //             scaledSize: new google.maps.Size(28, 45),
+    //             // The origin for this image is (0, 0). 
+    //             origin: new google.maps.Point(0, 0),
+    //             // The anchor for this image is the base of the flagpole at (0, 32). 
+    //             // anchor: new google.maps.Point(0, 32)
+    //           },
+    //           position: new google.maps.LatLng(location.latitude, location.longitude),
+    //           map: map
+    //         });
+    //         var infowindow = new google.maps.InfoWindow({
+    //           content: contentString
+    //         });
+    //         marker.addListener('click', function () {
+    //           console.log('click');
+    //           infowindow.open($scope.map, this);
+    //         });
+    //       });
+
+    //       $scope.map = map;
+    //     }, function (err) {
+    //       // error 
+    //     });
+
+
+    // }
+
     $scope.readMap = function () {
+      // console.log('ok');
+      $scope.locationOrders = [];
+      $scope.locationOrdersApt = [];
 
       var posOptions = { timeout: 10000, enableHighAccuracy: false };
       $cordovaGeolocation
         .getCurrentPosition(posOptions)
         .then(function (position) {
-          var lat = position.coords.latitude
-          var long = position.coords.longitude
-
-          // alert(lat + ':' + long); 
-          var map = new google.maps.Map(document.getElementById('map'), {
+          lat = position.coords.latitude
+          long = position.coords.longitude
+          map = new google.maps.Map(document.getElementById('map'), {
             zoom: 15,
-            center: new google.maps.LatLng(lat, long), //เปลี่ยนตามต้องการ 
+            center: new google.maps.LatLng(lat, long), //เปลี่ยนตามต้องการ
             mapTypeId: google.maps.MapTypeId.ROADMAP
           });
-
-          //////ตำแหน่งที่ mark ปัจจุบัน/////////// 
-          var marker = new google.maps.Marker({
-            position: map.getCenter(),
-            icon: {
-              path: google.maps.SymbolPath.CIRCLE,
-              scale: 15,
-              fillColor: 'blue',
-              fillOpacity: 0.2,
-              strokeColor: 'blue',
-              strokeWeight: 0
-            },
-            draggable: true,
-            map: map
-          });
-          var marker = new google.maps.Marker({
-            position: map.getCenter(),
-            icon: {
-              path: google.maps.SymbolPath.CIRCLE,
-              scale: 10,
-              fillColor: '#1c90f3',
-              fillOpacity: 0.5,
-              strokeColor: 'white',
-              strokeWeight: 1
-            },
-            draggable: true,
-            map: map
-          });
-          $scope.locationDeliver.forEach(function (locations) {
-            var contentString = '<div>'
-              + '<label>' + locations.displayName + '</label><br>'
-              + 'โทร : ' + '<a href="tel:' + locations.address.tel + '">' + locations.address.tel + '</a>'
-              + '</div>';
-            var location = locations.address.sharelocation;
-            if (location) {
-              var marker = new google.maps.Marker({
-                icon: {
-                  url: 'http://res.cloudinary.com/hflvlav04/image/upload/v1486371430/rbxhgg4rwbionmqfusxc.png',
-                  scaledSize: new google.maps.Size(28, 36),
-                  // The origin for this image is (0, 0). 
-                  origin: new google.maps.Point(0, 0),
-                  // The anchor for this image is the base of the flagpole at (0, 32). 
-                  // anchor: new google.maps.Point(0, 32)
-                },
-                position: new google.maps.LatLng(location.latitude, location.longitude),
-                map: map
-              });
-              var infowindow = new google.maps.InfoWindow({
-                content: contentString
-              });
-              marker.addListener('click', function () {
-                console.log('click');
-                infowindow.open($scope.map, this);
-              });
-            }
-          });
-          $scope.locationConfirmed.forEach(function (locations) {
-            var product = '';
-            var price = null;
-            locations.items.forEach(function (pro) {
-              product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
-            })
-            var contentString = '<div>'
-              + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
-              + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
-              + '<p>' + product + '</p>'
-              + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
-              + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
-              + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
-              + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
-              + '</div>';
-            var location = locations.shipping.sharelocation;
-            // console.log($scope.locationConfirmed.length);
-            var marker = new google.maps.Marker({
-              icon: {
-                url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371637/zfx1xml50sn5rn8bu26h.png',
-                scaledSize: new google.maps.Size(32, 51),
-                // The origin for this image is (0, 0). 
-                origin: new google.maps.Point(0, 0),
-                // The anchor for this image is the base of the flagpole at (0, 32). 
-                // anchor: new google.maps.Point(0, 32)
-              },
-              position: new google.maps.LatLng(location.latitude, location.longitude),
-              map: map
-            });
-            var infowindow = new google.maps.InfoWindow({
-              content: contentString
-            });
-            marker.addListener('click', function () {
-              console.log('click');
-              infowindow.open($scope.map, this);
-            });
-          });
-
-          $scope.locationWait.forEach(function (locations) {
-            var product = '';
-            var price = null;
-            locations.items.forEach(function (pro) {
-              product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
-            })
-            var contentString = '<div>'
-              + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
-              + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
-              + '<p>' + product + '</p>'
-              + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
-              + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
-              + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
-              + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
-              + '</div>';
-            var location = locations.shipping.sharelocation;
-            // console.log($scope.locationConfirmed.length);
-            var marker = new google.maps.Marker({
-              icon: {
-                url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371643/riwxnxtjdfjganurw46m.png',
-                scaledSize: new google.maps.Size(32, 51),
-                // The origin for this image is (0, 0). 
-                origin: new google.maps.Point(0, 0),
-                // The anchor for this image is the base of the flagpole at (0, 32). 
-                // anchor: new google.maps.Point(0, 32)
-              },
-              position: new google.maps.LatLng(location.latitude, location.longitude),
-              map: map
-            });
-            var infowindow = new google.maps.InfoWindow({
-              content: contentString
-            });
-            marker.addListener('click', function () {
-              console.log('click');
-              infowindow.open($scope.map, this);
-            });
-          });
-
-          $scope.locationAccept.forEach(function (locations) {
-            var product = '';
-            var price = null;
-            locations.items.forEach(function (pro) {
-              product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
-            })
-            var contentString = '<div>'
-              + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
-              + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
-              + '<p>' + product + '</p>'
-              + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
-              + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
-              + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
-              + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
-              + '</div>';
-            var location = locations.shipping.sharelocation;
-            // console.log($scope.locationConfirmed.length);
-            var marker = new google.maps.Marker({
-              icon: {
-                url: 'http://res.cloudinary.com/hflvlav04/image/upload/v1486371632/sj4niz8oykdqfadnwhbo.png',
-                scaledSize: new google.maps.Size(30, 48),
-                // The origin for this image is (0, 0). 
-                origin: new google.maps.Point(0, 0),
-                // The anchor for this image is the base of the flagpole at (0, 32). 
-                // anchor: new google.maps.Point(0, 0)
-              },
-              position: new google.maps.LatLng(location.latitude, location.longitude),
-              map: map
-            });
-            var infowindow = new google.maps.InfoWindow({
-              content: contentString
-            });
-            marker.addListener('click', function () {
-              console.log('click');
-              infowindow.open($scope.map, this);
-            });
-          });
-
-          $scope.locationReject.forEach(function (locations) {
-            var product = '';
-            var price = null;
-            locations.items.forEach(function (pro) {
-              product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
-            })
-            var contentString = '<div>'
-              + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
-              + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
-              + '<p>' + product + '</p>'
-              + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
-              + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
-              + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
-              + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
-              + '</div>';
-            var location = locations.shipping.sharelocation;
-            // console.log($scope.locationConfirmed.length);
-            var marker = new google.maps.Marker({
-              icon: {
-                url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371639/igflklgols9u1kflmmkh.png',
-                scaledSize: new google.maps.Size(28, 45),
-                // The origin for this image is (0, 0). 
-                origin: new google.maps.Point(0, 0),
-                // The anchor for this image is the base of the flagpole at (0, 32). 
-                // anchor: new google.maps.Point(0, 32)
-              },
-              position: new google.maps.LatLng(location.latitude, location.longitude),
-              map: map
-            });
-            var infowindow = new google.maps.InfoWindow({
-              content: contentString
-            });
-            marker.addListener('click', function () {
-              console.log('click');
-              infowindow.open($scope.map, this);
-            });
-          });
-
           $scope.map = map;
+
+          if (!window.localStorage.point || window.localStorage.point === "") {
+
+            AuthService.getOrder()
+              .then(function (data) {
+                $scope.locationConfirmed = [];
+                $scope.locationWait = [];
+                $scope.locationAccept = [];
+                $scope.locationReject = [];
+                data.forEach(function (order) {
+                  if (order.deliverystatus === 'confirmed') {
+                    //  $scope.mapConfirmed.push(order); 
+                    if (order.shipping.sharelocation) {
+                      $scope.locationConfirmed.push(order);
+                    }
+                  } else if (order.deliverystatus === 'wait deliver') {
+                    if (order.shipping.sharelocation) {
+                      $scope.locationWait.push(order);
+                    }
+                  } else if (order.deliverystatus === 'accept') {
+                    if (order.shipping.sharelocation) {
+                      $scope.locationAccept.push(order);
+                    }
+                  } else if (order.deliverystatus === 'reject') {
+                    if (order.shipping.sharelocation) {
+                      $scope.locationReject.push(order);
+                    }
+                  }
+                });
+
+
+                AuthService.getDeliver()
+                  .then(function (data) {
+                    var Deliverlist = data;
+                    $scope.locationDeliver = [];
+                    angular.forEach(Deliverlist, function (deliver) {
+                      if (deliver.roles[0] === 'deliver') {
+                        $scope.locationDeliver.push(deliver);
+                      }
+                      //console.log($scope.delivers);
+
+                    })
+
+                    //////ตำแหน่งที่ mark ปัจจุบัน/////////// 
+                    var marker = new google.maps.Marker({
+                      position: map.getCenter(),
+                      icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 15,
+                        fillColor: 'blue',
+                        fillOpacity: 0.2,
+                        strokeColor: 'blue',
+                        strokeWeight: 0
+                      },
+                      draggable: true,
+                      map: map
+                    });
+                    var marker = new google.maps.Marker({
+                      position: map.getCenter(),
+                      icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10,
+                        fillColor: '#1c90f3',
+                        fillOpacity: 0.5,
+                        strokeColor: 'white',
+                        strokeWeight: 1
+                      },
+                      draggable: true,
+                      map: map
+                    });
+                    $scope.locationDeliver.forEach(function (locations) {
+                      var contentString = '<div>'
+                        + '<label>' + locations.displayName + '</label><br>'
+                        + 'โทร : ' + '<a href="tel:' + locations.address.tel + '">' + locations.address.tel + '</a>'
+                        + '</div>';
+                      var location = locations.address.sharelocation;
+                      if (location) {
+                        var marker = new google.maps.Marker({
+                          icon: {
+                            url: 'http://res.cloudinary.com/hflvlav04/image/upload/v1486371430/rbxhgg4rwbionmqfusxc.png',
+                            scaledSize: new google.maps.Size(28, 36),
+                            // The origin for this image is (0, 0). 
+                            origin: new google.maps.Point(0, 0),
+                            // The anchor for this image is the base of the flagpole at (0, 32). 
+                            // anchor: new google.maps.Point(0, 32)
+                          },
+                          position: new google.maps.LatLng(location.latitude, location.longitude),
+                          map: map
+                        });
+                        var infowindow = new google.maps.InfoWindow({
+                          content: contentString
+                        });
+                        marker.addListener('click', function () {
+                          console.log('click');
+                          infowindow.open($scope.map, this);
+                        });
+                      }
+                    });
+                    $scope.locationConfirmed.forEach(function (locations) {
+                      var product = '';
+                      var price = null;
+                      locations.items.forEach(function (pro) {
+                        product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
+                      })
+                      var contentString = '<div>'
+                        + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
+                        + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
+                        + '<p>' + product + '</p>'
+                        + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
+                        + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
+                        + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
+                        + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
+                        + '</div>';
+                      var location = locations.shipping.sharelocation;
+                      // console.log($scope.locationConfirmed.length);
+                      var marker = new google.maps.Marker({
+                        icon: {
+                          url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371637/zfx1xml50sn5rn8bu26h.png',
+                          scaledSize: new google.maps.Size(32, 51),
+                          // The origin for this image is (0, 0). 
+                          origin: new google.maps.Point(0, 0),
+                          // The anchor for this image is the base of the flagpole at (0, 32). 
+                          // anchor: new google.maps.Point(0, 32)
+                        },
+                        position: new google.maps.LatLng(location.latitude, location.longitude),
+                        map: map
+                      });
+                      var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                      });
+                      marker.addListener('click', function () {
+                        console.log('click');
+                        infowindow.open($scope.map, this);
+                      });
+                    });
+
+                    $scope.locationWait.forEach(function (locations) {
+                      var product = '';
+                      var price = null;
+                      locations.items.forEach(function (pro) {
+                        product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
+                      })
+                      var contentString = '<div>'
+                        + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
+                        + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
+                        + '<p>' + product + '</p>'
+                        + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
+                        + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
+                        + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
+                        + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
+                        + '</div>';
+                      var location = locations.shipping.sharelocation;
+                      // console.log($scope.locationConfirmed.length);
+                      var marker = new google.maps.Marker({
+                        icon: {
+                          url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371643/riwxnxtjdfjganurw46m.png',
+                          scaledSize: new google.maps.Size(32, 51),
+                          // The origin for this image is (0, 0). 
+                          origin: new google.maps.Point(0, 0),
+                          // The anchor for this image is the base of the flagpole at (0, 32). 
+                          // anchor: new google.maps.Point(0, 32)
+                        },
+                        position: new google.maps.LatLng(location.latitude, location.longitude),
+                        map: map
+                      });
+                      var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                      });
+                      marker.addListener('click', function () {
+                        console.log('click');
+                        infowindow.open($scope.map, this);
+                      });
+                    });
+
+                    $scope.locationAccept.forEach(function (locations) {
+                      var product = '';
+                      var price = null;
+                      locations.items.forEach(function (pro) {
+                        product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
+                      })
+                      var contentString = '<div>'
+                        + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
+                        + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
+                        + '<p>' + product + '</p>'
+                        + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
+                        + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
+                        + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
+                        + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
+                        + '</div>';
+                      var location = locations.shipping.sharelocation;
+                      // console.log($scope.locationConfirmed.length);
+                      var marker = new google.maps.Marker({
+                        icon: {
+                          url: 'http://res.cloudinary.com/hflvlav04/image/upload/v1486371632/sj4niz8oykdqfadnwhbo.png',
+                          scaledSize: new google.maps.Size(30, 48),
+                          // The origin for this image is (0, 0). 
+                          origin: new google.maps.Point(0, 0),
+                          // The anchor for this image is the base of the flagpole at (0, 32). 
+                          // anchor: new google.maps.Point(0, 0)
+                        },
+                        position: new google.maps.LatLng(location.latitude, location.longitude),
+                        map: map
+                      });
+                      var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                      });
+                      marker.addListener('click', function () {
+                        console.log('click');
+                        infowindow.open($scope.map, this);
+                      });
+                    });
+
+                    $scope.locationReject.forEach(function (locations) {
+                      var product = '';
+                      var price = null;
+                      locations.items.forEach(function (pro) {
+                        product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
+                      })
+                      var contentString = '<div>'
+                        + '<label>' + locations.shipping.firstname + ' ' + locations.shipping.lastname + '</label><br>'
+                        + '<p>' + locations.shipping.address + ' ' + locations.shipping.subdistrict + ' ' + locations.shipping.district + ' ' + locations.shipping.province + ' ' + locations.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + locations.shipping.tel + '">' + locations.shipping.tel + '</a>' + '</p>'
+                        + '<p>' + product + '</p>'
+                        + '<label>' + 'ราคารวม : ' + locations.amount + ' บาท' + '</label><br>'
+                        + '<label>' + 'ค่าจัดส่ง : ' + locations.deliveryamount + ' บาท' + '</label><br>'
+                        + '<label>' + 'ส่วนลด : ' + locations.discountpromotion + ' บาท' + '</label><br>'
+                        + '<label>' + 'รวมสุทธิ : ' + locations.totalamount + ' บาท' + '</label>'
+                        + '</div>';
+                      var location = locations.shipping.sharelocation;
+                      // console.log($scope.locationConfirmed.length);
+                      var marker = new google.maps.Marker({
+                        icon: {
+                          url: ' http://res.cloudinary.com/hflvlav04/image/upload/v1486371639/igflklgols9u1kflmmkh.png',
+                          scaledSize: new google.maps.Size(28, 45),
+                          // The origin for this image is (0, 0). 
+                          origin: new google.maps.Point(0, 0),
+                          // The anchor for this image is the base of the flagpole at (0, 32). 
+                          // anchor: new google.maps.Point(0, 32)
+                        },
+                        position: new google.maps.LatLng(location.latitude, location.longitude),
+                        map: map
+                      });
+                      var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                      });
+                      marker.addListener('click', function () {
+                        console.log('click');
+                        infowindow.open($scope.map, this);
+                      });
+                    });
+
+                  });
+              });
+          } else {
+            AuthService.getDeliver()
+              .then(function (data) {
+                var Deliverlist = data;
+                $scope.locationDeliver = [];
+                var Deliver = [];
+                var count = 0;
+                var item = JSON.parse(window.localStorage.point);
+                angular.forEach(Deliverlist, function (deliver) {
+                  if (deliver.roles[0] === 'deliver') {
+                    if (deliver.address.sharelocation) {
+                      // console.log(deliver);
+                      Deliver.push(deliver);
+                      $http.get('https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=' + deliver.address.sharelocation.latitude + ',' + deliver.address.sharelocation.longitude + '&destinations=' + item.shipping.sharelocation.latitude + ',' + item.shipping.sharelocation.longitude + '&key=AIzaSyBY4B67oPlLL9AdfXNTQl6JP_meTTzq8xY').success(function (distance) {
+                        // alert(JSON.stringify(distance.rows[0].elements[0].distance.value));
+                        count++;
+                        if (distance.rows[0].elements[0].distance.value) {
+                          deliver.distance = distance.rows[0].elements[0].distance.value;
+                          $scope.locationDeliver.push(deliver);
+
+                          if (count === Deliver.length) {
+
+                            $scope.locationDeliver.sort(function (a, b) {
+                              if (a.distance < b.distance)
+                                return -1;
+                              if (a.distance > b.distance)
+                                return 1;
+                              return 0;
+                            });
+
+                            var nearBy = $scope.locationDeliver.slice(0, 3);
+                            // console.log(nearBy);
+                            nearBy.forEach(function (near) {
+
+                              var pointStart = {
+                                deliver: near,
+                                lat: parseFloat(near.address.sharelocation.latitude),
+                                lng: parseFloat(near.address.sharelocation.longitude)
+                              }
+                              $scope.calcRoute(pointStart);
+                            });
+
+                          }
+                        }
+                      }).error(function (err) {
+                        console.log(err);
+                      });
+
+                    }
+
+                  }
+
+                })
+
+
+              });
+
+          }
+
         }, function (err) {
-          // error 
+          // error
         });
+    }
+    $scope.calcRoute = function (pointStart) {
+      var directionsDisplay = new google.maps.DirectionsRenderer();
+      var directionsService = new google.maps.DirectionsService();
+      var item = JSON.parse(window.localStorage.point);
 
+      if (item) {
+        if (item.shipping.firstname) {
+          $scope.firstname = item.shipping.firstname;
+        }
+        if (item.shipping.lastname) {
+          $scope.lastname = item.shipping.lastname;
+        }
+        if (item.shipping.firstName) {
+          $scope.firstname = item.shipping.firstName;
+        }
+        if (item.shipping.lastName) {
+          $scope.lastname = item.shipping.lastName;
+        }
+      }
+      if (item) {
+        var pointEnd = {
+          lat: parseFloat(item.shipping.sharelocation.latitude),
+          lng: parseFloat(item.shipping.sharelocation.longitude)
+        }
+        var routePoints = {
+          start: { lat: pointStart.lat, lng: pointStart.lng },
+          end: { lat: pointEnd.lat, lng: pointEnd.lng }
+        }
+        // directionsDisplay.setDirections({ routes: [] });
+        directionsDisplay.setMap($scope.map);
 
+        var start = routePoints.start;
+        var end = routePoints.end;
+        var request = {
+          origin: start,
+          destination: end,
+          travelMode: google.maps.DirectionsTravelMode.DRIVING
+        };
+        directionsService.route(request, function (response, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+            var step = 1;
+            var infowindow2 = new google.maps.InfoWindow();
+            var infowindoworder = new google.maps.InfoWindow();
+            var distantText = (pointStart.deliver.distance / 1000).toFixed(0) + ' กม.';
+            infowindow2.setContent(distantText
+              + "<br>"
+              + pointStart.deliver.displayName
+              + "<br>"
+              + 'โทร : ' + '<a href="tel:' + pointStart.deliver.address.tel + '">' + pointStart.deliver.address.tel + '</a>');
+            infowindow2.setPosition(response.routes[0].legs[0].steps[step].end_location);
+            infowindow2.open($scope.map);
+
+            var product = '';
+            var price = null;
+            item.items.forEach(function (pro) {
+              product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
+            })
+
+            infowindoworder.setContent('<label>' + $scope.firstname + ' ' + $scope.lastname + '</label><br>'
+              + '<p>' + item.shipping.address + ' ' + item.shipping.subdistrict + ' ' + item.shipping.district + ' ' + item.shipping.province + ' ' + item.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + item.shipping.tel + '">' + item.shipping.tel + '</a>' + '</p>'
+              + '<p>' + product + '</p>'
+              + '<label>' + 'ราคารวม : ' + item.amount + ' บาท' + '</label><br>'
+              + '<label>' + 'ค่าจัดส่ง : ' + item.deliveryamount + ' บาท' + '</label><br>'
+              + '<label>' + 'ส่วนลด : ' + item.discountpromotion + ' บาท' + '</label><br>'
+              + '<label>' + 'รวมสุทธิ : ' + item.totalamount + ' บาท' + '</label>'
+            );
+            infowindoworder.setPosition({ lat: pointEnd.lat, lng: pointEnd.lng });
+            infowindoworder.open($scope.map);
+          }
+        });
+      }
+
+      // window.localStorage.removeItem("point");
+      return;
+
+    }
+    $scope.pinDirection = function (lati, lngi) {
+      var routePoints = {
+        start: { lat: lat, lng: long },
+        end: { lat: parseFloat(lati), lng: parseFloat(lngi) }
+      }
+
+      directionsDisplay.setDirections({ routes: [] });
+      directionsDisplay.setMap($scope.map);
+
+      var start = routePoints.start;
+      var end = routePoints.end;
+      var request = {
+        origin: start,
+        destination: end,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+      };
+      directionsService.route(request, function (response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        }
+      });
     }
 
   })
 
-  .controller('MoreCtrl', function ($scope, $rootScope, AuthService, $state, $ionicModal, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService) {
+  .controller('MoreCtrl', function ($scope, $rootScope, AuthService, $state, $ionicModal, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $rootScope.userStore = AuthService.getUser();
 
     if ($stateParams.data) {
@@ -642,12 +1097,15 @@ angular.module('starter.controllers', ['ionic'])
           requestlist.forEach(function (request) {
             if (request.deliverystatus === 'request') {
               $scope.listRequest.push(request);
+              $scope.countRequest = $scope.listRequest.length;
             }
             else if (request.deliverystatus === 'response') {
               $scope.listResponse.push(request);
+              $scope.countResponse = $scope.listResponse.length;
             }
             else if (request.deliverystatus === 'received') {
               $scope.listReceived.push(request);
+              $scope.countReceived = $scope.listReceived.length;
             }
           })
           console.log($scope.listRequest.length);
@@ -668,21 +1126,25 @@ angular.module('starter.controllers', ['ionic'])
           Arlist.forEach(function (waitOr) {
             if (waitOr.arstatus === 'wait for review') {
               $scope.listWaitforreview.push(waitOr);
+              $scope.countWaitforreview = $scope.listWaitforreview.length;
             }
             else if (waitOr.arstatus === 'wait for confirmed') {
               $scope.listWaitforconfirmed.push(waitOr);
+              $scope.countWaitforconfirmed = $scope.listWaitforconfirmed.length;
             }
             else if (waitOr.arstatus === 'confirmed') {
               $scope.listConfirmed.push(waitOr);
+              $scope.countConfirmed = $scope.listConfirmed.length;
             }
             else if (waitOr.arstatus === 'receipt') {
               $scope.listReceipt.push(waitOr);
+              $scope.countReceipt = $scope.listReceipt.length;
             }
           })
-          console.log($scope.listWaitforreview.length);
-          console.log($scope.listWaitforconfirmed.length);
-          console.log($scope.listConfirmed.length);
-          console.log($scope.listReceipt.length);
+          // console.log($scope.listWaitforreview.length);
+          // console.log($scope.listWaitforconfirmed.length);
+          // console.log($scope.listConfirmed.length);
+          // console.log($scope.listReceipt.length);
         })
     }
 
@@ -696,17 +1158,17 @@ angular.module('starter.controllers', ['ionic'])
           returnlist.forEach(function (returnOr) {
             if (returnOr.deliverystatus === 'return') {
               $scope.listReturnRet.push(returnOr);
+              $scope.countReturnRet = $scope.listReturnRet.length;
             }
             else if (returnOr.deliverystatus === 'response') {
               $scope.listReturnRes.push(returnOr);
+              $scope.countReturnRes = $scope.listReturnRes.length;
             }
             else if (returnOr.deliverystatus === 'received') {
               $scope.listReturnRec.push(returnOr);
+              $scope.countReturnRec = $scope.listReturnRec.length;
             }
           })
-          console.log($scope.listReturnRet.length);
-          console.log($scope.listReturnRes.length);
-          console.log($scope.listReturnRec.length);
         })
     }
 
@@ -736,7 +1198,10 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('MoreDetailCtrl', function ($scope, $rootScope, $stateParams, AuthService, $state, $ionicModal, RequestService, ReturnService, AccuralreceiptsService) {
+  .controller('MoreDetailCtrl', function ($scope, $rootScope, $stateParams, AuthService, $state, $ionicModal, RequestService, ReturnService, AccuralreceiptsService, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $rootScope.userStore = AuthService.getUser();
 
     $scope.data = JSON.parse($stateParams.data);
@@ -828,8 +1293,15 @@ angular.module('starter.controllers', ['ionic'])
     };
 
   })
-  .controller('OrderCtrl', function ($scope, $rootScope, AuthService, $state, $stateParams, $ionicModal) {
+  .controller('OrderCtrl', function ($scope, $rootScope, AuthService, $state, $stateParams, $ionicModal, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $rootScope.userStore = AuthService.getUser();
+
+    $scope.setItem = function () {
+      window.localStorage.point = $stateParams.data;
+    }
 
     $ionicModal.fromTemplateUrl('templates/modal.html', {
       scope: $scope
@@ -916,16 +1388,227 @@ angular.module('starter.controllers', ['ionic'])
       //$scope.init();
       //alert('');
     });
+    $scope.tel = function (telnumber) {
+      window.location = 'tel:' + '0' + telnumber;
+    };
 
   })
 
-  .controller('ProfileDeliverCtrl', function ($scope, $rootScope, $state, $stateParams, AuthService) {
+  .controller('ProfileDeliverCtrl', function ($scope, $rootScope, $state, $stateParams, AuthService, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $rootScope.userStore = AuthService.getUser();
 
     $scope.data = JSON.parse($stateParams.data);
     console.log($scope.data);
     $scope.tel = function (telnumber) {
-      window.location = 'tel:' + telnumber;
+      window.location = 'tel:' + '0' + telnumber;
     };
 
-  });
+  })
+
+  .controller('ChatCtrl', function ($scope, $state, $ionicModal, AuthService, $rootScope, roomService, Socket, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
+    $scope.user = AuthService.getUser();
+    //  alert(JSON.stringify($scope.user));
+    $scope.listRoom = function () {
+      roomService.getrooms().then(function (res) {
+        // alert(JSON.stringify(res));
+        $scope.chats = res;
+      }, function (err) {
+        // alert(JSON.stringify(err));
+        console.log(err);
+      });
+    };
+    $scope.listRoom();
+    $scope.createRoom = function (data) {
+      roomService.createRoom(data).then(function (res) {
+        $scope.listRoom();
+      }, function (err) {
+        console.log(err);
+      });
+    };
+
+    Socket.on('invite', function (res) {
+      $scope.listRoom();
+    });
+
+  })
+
+  .controller('ChatDetailCtrl', function ($scope, $state, $ionicModal, AuthService, $rootScope, roomService, $stateParams, Socket, $ionicScrollDelegate, $timeout, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
+    $scope.user = AuthService.getUser();
+    $scope.messages = [];
+    $scope.chat = null;
+    $scope.room = {};
+    Socket.connect();
+    // ทดสอบ mobile connect
+    // Socket.on('mobile', function (message) {
+    //   $scope.messages.unshift(message);
+    // });
+    $scope.loadRoom = function () {
+      var roomId = $stateParams.chatId;
+      roomService.getRoom(roomId).then(function (res) {
+        res.users.forEach(function (user) {
+          if ($scope.user._id != user._id) {
+            $scope.title = user.displayName;
+          }
+        });
+        $scope.chat = res;
+        Socket.emit('join', $scope.chat);
+      }, function (err) {
+        console.log(err);
+      });
+    };
+
+    // Add an event listener to the 'invite' event
+    Socket.on('invite', function (res) {
+      // alert('invite : ' + JSON.stringify(data));
+      Socket.emit('join', res);
+    });
+
+    // Add an event listener to the 'joinsuccess' event
+    Socket.on('joinsuccess', function (data) {
+      $scope.room = data;
+      $scope.pageDown();
+      // alert('joinsuccess : ' + JSON.stringify(data));
+    });
+
+    // Add an event listener to the 'chatMessage' event
+    Socket.on('chatMessage', function (data) {
+      // alert(JSON.stringify(data));
+      $scope.room = data;
+    });
+    $scope.hideTime = true;
+    var alternate,
+      isIOS = ionic.Platform.isWebView() && ionic.Platform.isIOS();
+    // Create a controller method for sending messages
+    $scope.sendMessage = function () {
+      // alternate = !alternate
+      // if (!$scope.room.messages) {
+      //     $scope.room.messages = [];
+      $scope.room.messages.unshift({
+        type: 'message',
+        created: Date.now(),
+        profileImageURL: $scope.user.profileImageURL,
+        username: $scope.user.displayName,
+        text: this.message
+      });
+      // } else {
+      //     $scope.room.messages.unshift({
+      //         type: 'message',
+      //         created: Date.now(),
+      //         profileImageURL: $scope.user.profileImageURL,
+      //         username: $scope.user.username,
+      //         text: this.message
+      //     });
+      // }
+      $ionicScrollDelegate.scrollBottom(true);
+
+      Socket.emit('chatMessage', $scope.room);
+      this.message = '';
+    };
+
+
+    $scope.pageDown = function () {
+      $timeout(function () {
+        $ionicScrollDelegate.scrollBottom(true);
+      }, 300);
+    };
+
+
+
+
+
+
+
+    // $scope.sendMessage = function () {
+    //     alternate = !alternate;
+
+    //     // var d = new Date();
+    //     // d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
+    //     // $scope.room.messages.forEach(function(message){
+
+    //     // });
+    //     $scope.messages.push({
+    //         userId: alternate ? '12345' : '54321',
+    //         text: $scope.room.message,
+    //         time: d
+    //     });
+
+    //     delete $scope.room.message;
+    //     $ionicScrollDelegate.scrollBottom(true);
+
+    // };
+
+    $scope.inputUp = function () {
+      // if (isIOS) $scope.room.keyboardHeight = 216;
+      $timeout(function () {
+        $ionicScrollDelegate.scrollBottom(true);
+      }, 300);
+
+    };
+
+    $scope.inputDown = function () {
+      // if (isIOS) $scope.room.keyboardHeight = 0;
+      $ionicScrollDelegate.resize();
+    };
+
+    $scope.closeKeyboard = function () {
+      // cordova.plugins.Keyboard.close();
+    };
+
+
+    $scope.data = {};
+    $scope.myId = $scope.user.displayName;
+  })
+
+  .controller('FriendsCtrl', function ($scope, $state, $ionicModal, AuthService, $rootScope, roomService, Socket, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
+    $scope.user = AuthService.getUser();
+    $scope.listAccount = function () {
+      $scope.listRoom = [];
+      $scope.friends = [];
+      roomService.getrooms().then(function (rooms) {
+        rooms.forEach(function (room) {
+          room.users.forEach(function (user) {
+            if ($scope.user._id === user._id) {
+              $scope.listRoom.push(room);
+            }
+          });
+        });
+        if ($scope.listRoom.length > 0) {
+          $scope.listRoom.forEach(function (room) {
+            room.users.forEach(function (user) {
+              if ($scope.user._id !== user._id) {
+                $scope.friends.push(user);
+              }
+            });
+          });
+        }
+        AuthService.getusers().then(function (accounts) {
+          $scope.accounts = accounts;
+        }, function (err) {
+          console.log(err);
+        });
+      });
+    };
+    $scope.listAccount();
+    $scope.addFriend = function (user) {
+      var data = {
+        name: $scope.user.username + '' + user.username,
+        type: 'P',
+        users: [$scope.user, user],
+        user: $scope.user
+      };
+      Socket.emit('createroom', data);
+    };
+  })
+  ;

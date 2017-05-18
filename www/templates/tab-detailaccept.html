@@ -3,13 +3,22 @@
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
 
-        <div class="row">
+        <div class="row badge-buttonnoti">
             <div class="col"></div>
             <div class="col col-90">
                 <div class="button-bar">
-                    <a class="button button-outline button-positive {{Wait === true ? 'active' : ''}}" ng-click="Wait = true ;Accept = false;Reject = false ;">ไม่รับรู้</a>
-                    <a class="button button-outline button-positive {{Accept === true ? 'active' : ''}}" ng-click="Accept = true;Reject = false ;Wait=false">ยอมรับ</a>
-                    <a class="button button-outline button-positive {{Reject === true ? 'active' : ''}}" ng-click="Reject = true; Accept= false ;Wait=false">ปฎิเสธ</a>
+                    <a class="button button-outline button-positive {{Wait === true ? 'active' : ''}}" ng-click="Wait = true ;Accept = false;Reject = false ;">
+                        ไม่รับรู้
+                        <span class="badge badge-assertive badge-notify">{{countWait || 0}}</span>
+                        </a>
+                    <a class="button button-outline button-positive {{Accept === true ? 'active' : ''}}" ng-click="Accept = true;Reject = false ;Wait=false">
+                        ยอมรับ
+                        <span class="badge badge-assertive badge-notify">{{countAccept || 0}}</span>
+                        </a>
+                    <a class="button button-outline button-positive {{Reject === true ? 'active' : ''}}" ng-click="Reject = true; Accept= false ;Wait=false">
+                        ปฎิเสธ
+                        <span class="badge badge-assertive badge-notify">{{countReject || 0}}</span>
+                        </a>
                 </div>
             </div>
             <div class="col"></div>
@@ -29,7 +38,7 @@
                 <h2>{{data.user.displayName}}</h2>
                 <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
                 <p class="product10">{{data.shipping.district}} {{data.shipping.province}}</p>
-                <p ng-show="data.namedeliver" >
+                <p ng-show="data.namedeliver">
                     <label>คนส่งข้าว : </label>
                     <label>{{data.namedeliver.displayName}}</label>
                 </p>
@@ -61,7 +70,7 @@
                 <h2>{{data.user.displayName}}</h2>
                 <p class="product10">{{data.shipping.address}} {{data.shipping.subdistrict}}</p>
                 <p class="product10">{{data.shipping.district}} {{data.shipping.province}}</p>
-                <p ng-show="data.namedeliver" >
+                <p ng-show="data.namedeliver">
                     <label>คนส่งข้าว : </label>
                     <label>{{data.namedeliver.displayName}}</label>
                 </p>
