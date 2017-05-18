@@ -43,7 +43,7 @@
             </a>
 
         </div>
-        <div ng-if="data.shipping.sharelocation">
+        <div ng-show="data.shipping.sharelocation && !data.namedeliver">
             <button class="button button-block button-outline button-positive icon-left ion-ios-location" ui-sref="app.tab.map">
                                 ค้นหาเส้นทาง
                 </button>

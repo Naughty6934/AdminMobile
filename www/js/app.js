@@ -118,12 +118,6 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('menuliststock', {
-        url: '/menuliststock',
-        controller: 'MoreCtrl',
-        templateUrl: 'templates/menuliststock.html'
-      })
-
       .state('app.liststock', {
         url: '/liststock',
         views: {
@@ -203,14 +197,6 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
       //   }
       // })
 
-
-
-      .state('menulistar', {
-        url: '/menulistar',
-        controller: 'MoreCtrl',
-        templateUrl: 'templates/menulistar.html'
-      })
-
       .state('app.listar', {
         url: '/listar',
         views: {
@@ -231,12 +217,6 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-      .state('menulisttreturn', {
-        url: '/menulisttreturn',
-        controller: 'MoreCtrl',
-        templateUrl: 'templates/menulisttreturn.html'
-      })
-
       .state('app.listtreturn', {
         url: '/listtreturn',
         views: {
@@ -255,12 +235,6 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
             controller: 'MoreDetailCtrl'
           }
         }
-      })
-
-      .state('menulisttransports', {
-        url: '/menulisttransports',
-        controller: 'MoreCtrl',
-        templateUrl: 'templates/menulisttransports.html'
       })
 
       .state('app.listtransports', {
