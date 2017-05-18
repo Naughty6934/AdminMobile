@@ -111,7 +111,6 @@ angular.module('starter.controllers', ['ionic'])
 
   .controller('menuCtrl', function ($scope, $ionicHistory, $http, $state, AuthService, $ionicModal, $rootScope, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService, $ionicSideMenuDelegate) {
     $rootScope.userStore = AuthService.getUser();
-    console.log($rootScope.userStore);
 
     $scope.toggleLeftSideMenu = function () {
       $ionicSideMenuDelegate.toggleLeft();
@@ -846,7 +845,7 @@ angular.module('starter.controllers', ['ionic'])
                 angular.forEach(Deliverlist, function (deliver) {
                   if (deliver.roles[0] === 'deliver') {
                     if (deliver.address.sharelocation) {
-                      console.log(deliver);
+                      // console.log(deliver);
                       Deliver.push(deliver);
                       $http.get('https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=' + deliver.address.sharelocation.latitude + ',' + deliver.address.sharelocation.longitude + '&destinations=' + item.shipping.sharelocation.latitude + ',' + item.shipping.sharelocation.longitude + '&key=AIzaSyBY4B67oPlLL9AdfXNTQl6JP_meTTzq8xY').success(function (distance) {
                         // alert(JSON.stringify(distance.rows[0].elements[0].distance.value));
@@ -866,7 +865,7 @@ angular.module('starter.controllers', ['ionic'])
                             });
 
                             var nearBy = $scope.locationDeliver.slice(0, 3);
-                            console.log(nearBy);
+                            // console.log(nearBy);
                             nearBy.forEach(function (near) {
 
                               var pointStart = {

@@ -178,7 +178,7 @@ angular.module('starter.services', [])
     this.getRequests = function () {
       var dfd = $q.defer();
       $http.get(apiURL + '/requestorders').success(function (requestsorders) {
-        console.log(requestsorders);
+        // console.log(requestsorders);
 
         dfd.resolve(requestsorders);
       });
@@ -190,7 +190,7 @@ angular.module('starter.services', [])
     this.getReturns = function () {
       var dfd = $q.defer();
       $http.get(apiURL + '/returnorders').success(function (returnorders) {
-        console.log(returnorders);
+        // console.log(returnorders);
 
         dfd.resolve(returnorders);
       });
@@ -211,7 +211,7 @@ angular.module('starter.services', [])
     this.getStocks = function () {
       var dfd = $q.defer();
       $http.get(apiURL + '/stocks').success(function (stocks) {
-        console.log(stocks);
+        // console.log(stocks);
 
         dfd.resolve(stocks);
       });
