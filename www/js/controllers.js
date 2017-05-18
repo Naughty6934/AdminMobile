@@ -110,6 +110,9 @@ angular.module('starter.controllers', ['ionic'])
   })
 
   .controller('menuCtrl', function ($scope, $ionicHistory, $http, $state, AuthService, $ionicModal, $rootScope, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $rootScope.userStore = AuthService.getUser();
 
     $scope.toggleLeftSideMenu = function () {
@@ -189,7 +192,10 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('ConfirmedCtrl', function ($scope, $http, $state, AuthService, $ionicModal, $rootScope) {
+  .controller('ConfirmedCtrl', function ($scope, $http, $state, AuthService, $ionicModal, $rootScope, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $rootScope.userStore = AuthService.getUser();
 
     $scope.gotoConfirmed = function () {
@@ -231,11 +237,14 @@ angular.module('starter.controllers', ['ionic'])
               $scope.ordersConfirmed.push(order);
             } else if (order.deliverystatus === 'accept') {
               $scope.ordersAccept.push(order);
+              $scope.countAccept = $scope.ordersAccept.length;
             }
             else if (order.deliverystatus === 'reject') {
               $scope.ordersReject.push(order);
+              $scope.countReject = $scope.ordersReject.length;
             } else if (order.deliverystatus === 'wait deliver') {
               $scope.ordersWait.push(order);
+              $scope.countWait = $scope.ordersWait.length;
             }
           })
           $rootScope.countOrder = $scope.ordersConfirmed.length;
@@ -277,7 +286,11 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('MapCtrl', function ($scope, $http, $state, AuthService, $stateParams, $cordovaGeolocation, $rootScope) {
+  .controller('MapCtrl', function ($scope, $http, $state, AuthService, $stateParams, $cordovaGeolocation, $rootScope, $ionicSideMenuDelegate, $ionicHistory) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicHistory.clearHistory();
+      $ionicSideMenuDelegate.canDragContent(false);
+    });
     $rootScope.userStore = AuthService.getUser();
     var lat = null;
     var long = null;
@@ -901,6 +914,21 @@ angular.module('starter.controllers', ['ionic'])
       var directionsDisplay = new google.maps.DirectionsRenderer();
       var directionsService = new google.maps.DirectionsService();
       var item = JSON.parse(window.localStorage.point);
+
+      if (item) {
+        if (item.shipping.firstname) {
+          $scope.firstname = item.shipping.firstname;
+        }
+        if (item.shipping.lastname) {
+          $scope.lastname = item.shipping.lastname;
+        }
+        if (item.shipping.firstName) {
+          $scope.firstname = item.shipping.firstName;
+        }
+        if (item.shipping.lastName) {
+          $scope.lastname = item.shipping.lastName;
+        }
+      }
       if (item) {
         var pointEnd = {
           lat: parseFloat(item.shipping.sharelocation.latitude),
@@ -941,7 +969,7 @@ angular.module('starter.controllers', ['ionic'])
               product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
             })
 
-            infowindoworder.setContent('<label>' + item.shipping.firstName + ' ' + item.shipping.lastName + '</label><br>'
+            infowindoworder.setContent('<label>' + $scope.firstname + ' ' + $scope.lastname + '</label><br>'
               + '<p>' + item.shipping.address + ' ' + item.shipping.subdistrict + ' ' + item.shipping.district + ' ' + item.shipping.province + ' ' + item.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + item.shipping.tel + '">' + item.shipping.tel + '</a>' + '</p>'
               + '<p>' + product + '</p>'
               + '<label>' + 'ราคารวม : ' + item.amount + ' บาท' + '</label><br>'
@@ -984,7 +1012,10 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('MoreCtrl', function ($scope, $rootScope, AuthService, $state, $ionicModal, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService) {
+  .controller('MoreCtrl', function ($scope, $rootScope, AuthService, $state, $ionicModal, RequestService, ReturnService, StockService, $stateParams, AccuralreceiptsService, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $rootScope.userStore = AuthService.getUser();
 
     if ($stateParams.data) {
@@ -1066,12 +1097,15 @@ angular.module('starter.controllers', ['ionic'])
           requestlist.forEach(function (request) {
             if (request.deliverystatus === 'request') {
               $scope.listRequest.push(request);
+              $scope.countRequest = $scope.listRequest.length;
             }
             else if (request.deliverystatus === 'response') {
               $scope.listResponse.push(request);
+              $scope.countResponse = $scope.listResponse.length;
             }
             else if (request.deliverystatus === 'received') {
               $scope.listReceived.push(request);
+              $scope.countReceived = $scope.listReceived.length;
             }
           })
           console.log($scope.listRequest.length);
@@ -1092,21 +1126,25 @@ angular.module('starter.controllers', ['ionic'])
           Arlist.forEach(function (waitOr) {
             if (waitOr.arstatus === 'wait for review') {
               $scope.listWaitforreview.push(waitOr);
+              $scope.countWaitforreview = $scope.listWaitforreview.length;
             }
             else if (waitOr.arstatus === 'wait for confirmed') {
               $scope.listWaitforconfirmed.push(waitOr);
+              $scope.countWaitforconfirmed = $scope.listWaitforconfirmed.length;
             }
             else if (waitOr.arstatus === 'confirmed') {
               $scope.listConfirmed.push(waitOr);
+              $scope.countConfirmed = $scope.listConfirmed.length;
             }
             else if (waitOr.arstatus === 'receipt') {
               $scope.listReceipt.push(waitOr);
+              $scope.countReceipt = $scope.listReceipt.length;
             }
           })
-          console.log($scope.listWaitforreview.length);
-          console.log($scope.listWaitforconfirmed.length);
-          console.log($scope.listConfirmed.length);
-          console.log($scope.listReceipt.length);
+          // console.log($scope.listWaitforreview.length);
+          // console.log($scope.listWaitforconfirmed.length);
+          // console.log($scope.listConfirmed.length);
+          // console.log($scope.listReceipt.length);
         })
     }
 
@@ -1120,17 +1158,17 @@ angular.module('starter.controllers', ['ionic'])
           returnlist.forEach(function (returnOr) {
             if (returnOr.deliverystatus === 'return') {
               $scope.listReturnRet.push(returnOr);
+              $scope.countReturnRet = $scope.listReturnRet.length;
             }
             else if (returnOr.deliverystatus === 'response') {
               $scope.listReturnRes.push(returnOr);
+              $scope.countReturnRes = $scope.listReturnRes.length;
             }
             else if (returnOr.deliverystatus === 'received') {
               $scope.listReturnRec.push(returnOr);
+              $scope.countReturnRec = $scope.listReturnRec.length;
             }
           })
-          console.log($scope.listReturnRet.length);
-          console.log($scope.listReturnRes.length);
-          console.log($scope.listReturnRec.length);
         })
     }
 
@@ -1160,7 +1198,10 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('MoreDetailCtrl', function ($scope, $rootScope, $stateParams, AuthService, $state, $ionicModal, RequestService, ReturnService, AccuralreceiptsService) {
+  .controller('MoreDetailCtrl', function ($scope, $rootScope, $stateParams, AuthService, $state, $ionicModal, RequestService, ReturnService, AccuralreceiptsService, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $rootScope.userStore = AuthService.getUser();
 
     $scope.data = JSON.parse($stateParams.data);
@@ -1252,7 +1293,10 @@ angular.module('starter.controllers', ['ionic'])
     };
 
   })
-  .controller('OrderCtrl', function ($scope, $rootScope, AuthService, $state, $stateParams, $ionicModal) {
+  .controller('OrderCtrl', function ($scope, $rootScope, AuthService, $state, $stateParams, $ionicModal, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $rootScope.userStore = AuthService.getUser();
 
     $scope.setItem = function () {
@@ -1350,7 +1394,10 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('ProfileDeliverCtrl', function ($scope, $rootScope, $state, $stateParams, AuthService) {
+  .controller('ProfileDeliverCtrl', function ($scope, $rootScope, $state, $stateParams, AuthService, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $rootScope.userStore = AuthService.getUser();
 
     $scope.data = JSON.parse($stateParams.data);
@@ -1361,8 +1408,10 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('ChatCtrl', function ($scope, $state, $ionicModal, AuthService, $rootScope, roomService, Socket) {
-
+  .controller('ChatCtrl', function ($scope, $state, $ionicModal, AuthService, $rootScope, roomService, Socket, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $scope.user = AuthService.getUser();
     //  alert(JSON.stringify($scope.user));
     $scope.listRoom = function () {
@@ -1389,7 +1438,10 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('ChatDetailCtrl', function ($scope, $state, $ionicModal, AuthService, $rootScope, roomService, $stateParams, Socket, $ionicScrollDelegate, $timeout) {
+  .controller('ChatDetailCtrl', function ($scope, $state, $ionicModal, AuthService, $rootScope, roomService, $stateParams, Socket, $ionicScrollDelegate, $timeout, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $scope.user = AuthService.getUser();
     $scope.messages = [];
     $scope.chat = null;
@@ -1516,7 +1568,10 @@ angular.module('starter.controllers', ['ionic'])
     $scope.myId = $scope.user.displayName;
   })
 
-  .controller('FriendsCtrl', function ($scope, $state, $ionicModal, AuthService, $rootScope, roomService, Socket) {
+  .controller('FriendsCtrl', function ($scope, $state, $ionicModal, AuthService, $rootScope, roomService, Socket, $ionicSideMenuDelegate) {
+    $scope.$on('$ionicView.enter', function () {
+      $ionicSideMenuDelegate.canDragContent(true);
+    });
     $scope.user = AuthService.getUser();
     $scope.listAccount = function () {
       $scope.listRoom = [];

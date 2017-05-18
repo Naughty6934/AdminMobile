@@ -37,7 +37,7 @@
                     <a class="item item-icon-left settings-option" href="#/app/liststock" ng-click="liststocks()">
               <i class="icon ion-ios-list-outline"></i>
                 คลังสินค้า
-                <span class="badge badge-assertive">{{countStocks}}</span>
+                <span class="badge badge-assertive">{{countStocks || 0}}</span>
             </a>
                 </div>
 
@@ -45,7 +45,7 @@
                     <a class="item item-icon-left settings-option" href="#/app/listtreturn" ng-click="listtreturn()">
               <i class="icon ion-ios-list-outline"></i>
                 รายการใบแจ้งคืน
-                <span class="badge badge-assertive">{{countReturns}}</span>
+                <span class="badge badge-assertive">{{countReturns || 0}}</span>
             </a>
                 </div>
 
@@ -53,7 +53,7 @@
                     <a class="item item-icon-left settings-option" href="#/app/listar" ng-click="listaccuralreceipt()">
              <i class="icon ion-ios-list-outline"></i>
                 รายการใบแจ้งหนี้
-                <span class="badge badge-assertive">{{countAcc}}</span>
+                <span class="badge badge-assertive">{{countAcc || 0}}</span>
             </a>
                 </div>
 
@@ -61,7 +61,7 @@
                     <a class="item item-icon-left settings-option" href="#/app/listtransports" ng-click="listtransports()">
               <i class="icon ion-android-bus"></i>
                 รายการขนส่งข้าว
-                <span class="badge badge-assertive">{{countTran}}</span>
+                <span class="badge badge-assertive">{{countTran || 0}}</span>
             </a>
                 </div>
 

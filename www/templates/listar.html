@@ -3,14 +3,26 @@
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
 
-        <div class="row">
+        <div class="row badge-buttonnoti">
             <div class="col"></div>
             <div class="col col-90">
                 <div class="button-bar">
-                    <a class="button button-outline button-positive {{waitforreview === true ? 'active' : ''}}" ng-click="waitforreview = true ;confirmed = false; waitforconfirmed = false ;  receipt = false ;">รอตรวจสอบ</a>
-                    <a class="button button-outline button-positive {{waitforconfirmed === true ? 'active' : ''}}" ng-click="waitforconfirmed = true;waitforreview = false ;confirmed=false ; receipt = false ;">รอยืนยัน</a>
-                    <a class="button button-outline button-positive {{confirmed === true ? 'active' : ''}}" ng-click="confirmed = true; waitforreview= false ;waitforconfirmed=false ; receipt = false ;">ยืนยันแล้ว</a>
-                    <a class="button button-outline button-positive {{receipt === true ? 'active' : ''}}" ng-click="receipt = true; waitforreview= false ;waitforconfirmed=false ; confirmed = false ;">ได้รับ</a>
+                    <a class="button button-outline button-positive {{waitforreview === true ? 'active' : ''}}" ng-click="waitforreview = true ;confirmed = false; waitforconfirmed = false ;  receipt = false ;">
+                        รอตรวจสอบ
+                        <span class="badge badge-assertive badge-notifyAccu">{{countWaitforreview || 0}}</span>
+                        </a>
+                    <a class="button button-outline button-positive {{waitforconfirmed === true ? 'active' : ''}}" ng-click="waitforconfirmed = true;waitforreview = false ;confirmed=false ; receipt = false ;">
+                        รอยืนยัน
+                        <span class="badge badge-assertive badge-notifyAccu">{{countWaitforconfirmed || 0}}</span>
+                        </a>
+                    <a class="button button-outline button-positive {{confirmed === true ? 'active' : ''}}" ng-click="confirmed = true; waitforreview= false ;waitforconfirmed=false ; receipt = false ;">
+                        ยืนยันแล้ว
+                        <span class="badge badge-assertive badge-notifyAccu">{{countConfirmed || 0}}</span>
+                        </a>
+                    <a class="button button-outline button-positive {{receipt === true ? 'active' : ''}}" ng-click="receipt = true; waitforreview= false ;waitforconfirmed=false ; confirmed = false ;">
+                        ได้รับ
+                        <span class="badge badge-assertive badge-notify">{{countReceipt || 0}}</span>
+                        </a>
                 </div>
             </div>
             <div class="col"></div>
