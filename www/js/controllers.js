@@ -206,14 +206,14 @@ angular.module('starter.controllers', ['ionic'])
     }
 
     $scope.gotoChat = function (user) {
-      // console.log(user.username);
+
       var data = {
         name: $scope.userStore.username + '' + user.username,
         type: 'P',
         users: [$scope.userStore, user],
         user: $scope.userStore
       };
-      console.log(data);
+
       Socket.emit('createroom', data);
     }
 
@@ -291,12 +291,21 @@ angular.module('starter.controllers', ['ionic'])
       //alert('go to detail');
 
       $state.go('app.tab.detailorder', { data: JSON.stringify(data) });
+      AuthService.getDeliverNearBy(data)
+        .then(function (order) {
+          console.log(order);
+          $rootScope.delivers = order;
+        });
     }
 
     $scope.gotoDetail2 = function (data) {
       //alert('go to detail');
-
       $state.go('app.tab.detailorder2', { data: JSON.stringify(data) });
+      AuthService.getDeliverNearBy(data)
+        .then(function (order) {
+          console.log(order);
+          $rootScope.delivers = order;
+        });
     }
 
     $scope.doRefresh = function () {
@@ -974,9 +983,14 @@ angular.module('starter.controllers', ['ionic'])
 
         var start = routePoints.start;
         var end = routePoints.end;
+        // var journeyLeg = {
+        //   "location": item.shipping.postcode,
+        //   "stopover": true
+        // };
         var request = {
           origin: start,
           destination: end,
+          // waypoints: [journeyLeg],
           travelMode: google.maps.DirectionsTravelMode.DRIVING
         };
         directionsService.route(request, function (response, status) {
@@ -1353,9 +1367,15 @@ angular.module('starter.controllers', ['ionic'])
       scope: $scope
     }).then(function (modal) {
       $scope.modal = modal;
+
     });
 
     $scope.btnGoProfile = function (data) {
+      console.log(data);
+      $state.go('app.tab.deliver-profile3', { data: JSON.stringify(data) });
+    };
+
+    $scope.btnGoProfileAccept = function (data) {
       console.log(data);
       $state.go('app.tab.deliver-profile', { data: JSON.stringify(data) });
     };
@@ -1368,18 +1388,18 @@ angular.module('starter.controllers', ['ionic'])
     // $scope.data = JSON.parse($stateParams.data);
     // $scope._id = $scope.data._id
 
-    AuthService.getDeliver()
-      .then(function (data) {
-        var Deliverlist = data;
-        $scope.delivers = [];
-        angular.forEach(Deliverlist, function (deliver) {
-          if (deliver.roles[0] === 'deliver') {
-            $scope.delivers.push(deliver);
-          }
-          //console.log($scope.delivers);
-        })
 
-      });
+    // AuthService.getDeliver()
+    //   .then(function (data) {
+    //     var Deliverlist = data;
+    //     $scope.delivers = [];
+    //     angular.forEach(Deliverlist, function (deliver) {
+    //       if (deliver.roles[0] === 'deliver') {
+    //         $scope.delivers.push(deliver);
+    //       }
+    //     })
+
+    //   });
 
 
 

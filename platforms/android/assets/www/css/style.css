@@ -119,8 +119,54 @@ span1 {
    top: 0px !important;
 }
 
+<<<<<<< HEAD
+=======
+.badge-notify-menu{
+   position: fixed !important;
+   top: 2px !important;
+   margin-left: 15px !important;
+}
+
+
+
+>>>>>>> 5da532decb9bd0cdc58edcca93e1a08365e06bd7
 .badge-notifyAccu{
    position: fixed !important;
    top: 0px !important;
    margin-left: -30px !important;
+<<<<<<< HEAD
 }
+=======
+}
+
+.fixProfileimg {
+    margin-top: -15px;
+}
+.fixProfilerow {
+    margin-top: 20px;
+}
+
+/*.profile-image {
+        display: block;
+        border-radius: 100%;
+        border: 1px solid #fff;
+        width: 60%;
+        margin: 30px auto 0;
+        box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+}*/
+
+.tapbuttonNone {
+    border: none;
+}
+
+.profile-image {
+        position: absolute;
+        /*position: fixed;*/
+        left: 16px;
+        max-width: 50px;
+        max-height: 50px;
+        width: 50%;
+        height: 50%;
+        border-radius: 50%;
+      }
+>>>>>>> 5da532decb9bd0cdc58edcca93e1a08365e06bd7

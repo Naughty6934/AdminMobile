@@ -12,35 +12,134 @@
                 <input style="background-color: white" type="text" ng-value="data.docdate | date:'dd/MM/yyyy'" readonly>
             </label>
 
-            <label class="item item-input">
-                <span class="input-label">ชื่อ : </span>
-                <input style="background-color: white" type="text" ng-model="data.user.displayName" readonly>
-            </label>
+        </div>
+        <!---->
+        <ion-list>
+            <div class="list" ng-show="data.deliverystatus === 'confirmed'">
+                <div ng-click="btnGoProfile(data)">
+                    <div class="row">
+                        <div class="col-20 fixProfileimg">
+                            <img class="profile-image" src="{{data.user.profileImageURL}}">
+                        </div>
+                        <div class="col-80">
+                            <div class="row">
+                                <div class="col-20">
+                                    <label>ชื่อ : </label>
+                                </div>
+                                <div class="col-80">
+                                    <label>{{data.user.displayName}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-20">
+                                    <label>ที่อยู่ : </label>
+                                </div>
+                                <div class="col-80">
+                                    <label>{{data.shipping.address +' '+data.shipping.subdistrict+' '+data.shipping.district+' '+data.shipping.province+' '+data.shipping.postcode}}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-20">
+                                    <label>โทร : </label>
+                                </div>
+                                <div class="col-80">
+                                    <label>{{data.shipping.tel}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="list" ng-show="data.deliverystatus !== 'confirmed'">
+                <div ng-click="btnGoProfileAccept(data)">
+                    <div class="row">
+                        <div class="col-20 fixProfileimg">
+                            <img class="profile-image" src="{{data.user.profileImageURL}}">
+                        </div>
+                        <div class="col-80">
+                            <div class="row">
+                                <div class="col-20">
+                                    <label>ชื่อ : </label>
+                                </div>
+                                <div class="col-80">
+                                    <label>{{data.user.displayName}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-20">
+                                    <label>ที่อยู่ : </label>
+                                </div>
+                                <div class="col-80">
+                                    <label>{{data.shipping.address +' '+data.shipping.subdistrict+' '+data.shipping.district+' '+data.shipping.province+' '+data.shipping.postcode}}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-20">
+                                    <label>โทร : </label>
+                                </div>
+                                <div class="col-80">
+                                    <label>{{data.shipping.tel}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ion-list>
+        <ion-list>
+            <div class="list">
+                <div class="row">
+                    <div class="col">
+                        <a class="item item-icon-left tapbuttonNone" ng-click="gotoChat(data.user)">
+                        <i class="icon ion-ios-chatbubble"></i> พูดคุย 
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a ng-click="tel({{data.shipping.tel}})" class="item item-icon-left tapbuttonNone">
+                        <i class="icon ion-ios-telephone"></i> โทร 
+                    </a>
+                    </div>
+                    <div class="col">
+                        <a class="item item-icon-left tapbuttonNone" ui-sref="app.tab.map">
+                        <i class="icon ion-ios-location"></i> นำทาง 
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </ion-list>
 
-            <label class="item item-input item-text-wrap">
-                <span class="input-label ">ที่อยู่ : </span>
-                <label style="background-color: white;padding-right: 2cm;color:black" type="text" readonly>{{data.shipping.address +''+data.shipping.subdistrict+''+data.shipping.district+''+data.shipping.province+''+data.shipping.postcode}}
-                    </label>
-            </label>
 
+<<<<<<< HEAD
             <label class="item item-input" ng-click="tel({{data.shipping.tel}})">
                 <span class="input-label">เบอร์โทร : </span>
                 <label style="background-color: white" type="text" ng-model="data.shipping.tel">{{data.shipping.tel}}</label>
             </label>
 
             <a class="item item-icon-left" ng-hide="data.deliverystatus === 'confirmed' || data.deliverystatus === 'reject'" ng-click="btnGoProfile(data)">
+=======
+        <a class="item item-icon-left" ng-hide="data.deliverystatus === 'confirmed' || data.deliverystatus === 'reject'">
+>>>>>>> 5da532decb9bd0cdc58edcca93e1a08365e06bd7
               <i class="icon ion-person-stalker"></i>
                 คนส่งข้าว
               <span class="input-label" ng-show="data.namedeliver" >{{data.namedeliver.displayName}}</span>
               <span class="input-label" ng-hide="data.namedeliver">ยังไม่ได้ระบุคนส่งข้าว</span>
             </a>
 
-            <a class="item item-icon-left" ng-show="data.deliverystatus === 'confirmed' || data.deliverystatus === 'reject'" ng-click="modal.show()">
+        <a class="item item-icon-left" ng-show="data.deliverystatus === 'confirmed' || data.deliverystatus === 'reject'" ng-click="modal.show()">
               <i class="icon ion-person-stalker"></i>
                 คนส่งข้าว
               <span class="input-label" ng-show="data.namedeliver">{{data.namedeliver.displayName}}</span>
               <span class="input-label" ng-hide="data.namedeliver">ยังไม่ได้ระบุคนส่งข้าว</span>
             </a>
+<<<<<<< HEAD
 
         </div>
         <div ng-show="data.shipping.sharelocation && !data.namedeliver">
@@ -48,6 +147,15 @@
                                 ค้นหาเส้นทาง
                 </button>
         </div>
+=======
+        <!---->
+
+        <!--<div ng-show="data.shipping.sharelocation && !data.namedeliver">
+            <button class="button button-block button-outline button-positive icon-left ion-ios-location" ui-sref="app.tab.map">
+                                ค้นหาเส้นทาง
+                </button>
+        </div>-->
+>>>>>>> 5da532decb9bd0cdc58edcca93e1a08365e06bd7
         <button class="button button-block button-positive" ng-show="(data.deliverystatus === 'confirmed' || data.deliverystatus === 'reject') && data.namedeliver"
             ng-click="save()">
             บันทึกข้อมูล
@@ -95,7 +203,16 @@
                     <input type="text" class="form-control" placeholder="ค้นหา..." ng-model="topsearch" aria-describedby="sizing-addon3">
                 </div>
                 <div class="list">
+<<<<<<< HEAD
                     <a ng-repeat="deli in delivers | filter:topsearch" ng-click="chooseDeliver(deli)" class="item">{{deli.displayName}}</a>
+=======
+                    <a ng-repeat="deli in delivers | filter:topsearch" ng-click="chooseDeliver(deli)" class="item">
+                            {{deli.displayName}}
+                        <span class="item-note">
+                            {{deli.distanceText}}
+                        </span>
+                    </a>
+>>>>>>> 5da532decb9bd0cdc58edcca93e1a08365e06bd7
                 </div>
             </ion-content>
         </ion-modal-view>

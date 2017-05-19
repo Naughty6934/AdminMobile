@@ -1,7 +1,7 @@
 <ion-view view-title="โปรไฟล์">
-<div ng-repeat="itm in data">
-    <img src={{itm.user.profileImageURL}}>
-</div>
+    <div ng-repeat="itm in data">
+        <img src={{itm.user.profileImageURL}}>
+    </div>
     <ion-content has-header="true">
         <img id="profile-image" src="{{data.user.profileImageURL}}">
         <ion-list>
@@ -24,11 +24,19 @@
                                 <i class="icon ion-ios-chatbubble"></i> พูดคุย
                             </a>
                         </div>-->
-                        <div class="col">
+                        <div class="col-50" ng-controller="ConfirmedCtrl">
+                            <a class="item item-icon-left tapbuttonNone" ng-click="gotoChat(data.user)">
+                        <i class="icon ion-ios-chatbubble"></i> พูดคุย 
+                    </a>
+                        </div>
+                        <div class="col-50">
                             <a ng-click="tel({{data.shipping.tel}})" class="item item-icon-left">
                                 <i class="icon ion-ios-telephone"></i> โทร {{data.shipping.tel}}
                             </a>
                         </div>
+
+
+
                     </div>
                 </div>
         </ion-list>
