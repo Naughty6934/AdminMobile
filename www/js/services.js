@@ -36,16 +36,16 @@ angular.module('starter.services', [])
     };
 
     this.getusers = function () {
-            var dfd = $q.defer();
-            var user = this.getUser();
-            $http.get(apiURL + '/users').success(function (data) {
-                // window.localStorage.setItem("storage", JSON.stringify(data));
-                dfd.resolve(data);
-            }).error(function (err) {
-                dfd.reject(err);
-            })
-            return dfd.promise;
-        }
+      var dfd = $q.defer();
+      var user = this.getUser();
+      $http.get(apiURL + '/users').success(function (data) {
+        // window.localStorage.setItem("storage", JSON.stringify(data));
+        dfd.resolve(data);
+      }).error(function (err) {
+        dfd.reject(err);
+      })
+      return dfd.promise;
+    }
 
     this.successAuth = function (data) {
       // console.log(data.data);
@@ -141,6 +141,49 @@ angular.module('starter.services', [])
 
 
       return dfd.promise;
+
+    };
+
+    this.getDeliverNearBy = function (item) {
+      var dfd = $q.defer();
+      var deliverOnly = [];
+      var count = 0;
+      $http.get(apiURL + '/users').success(function (delivers) {
+
+        angular.forEach(delivers, function (deliver) {
+          if (deliver.roles[0] === 'deliver') {
+            if (deliver.address.sharelocation) {
+              deliverOnly.push(deliver);
+              $http.get('https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=' + deliver.address.sharelocation.latitude + ',' + deliver.address.sharelocation.longitude + '&destinations=' + item.shipping.sharelocation.latitude + ',' + item.shipping.sharelocation.longitude + '&key=AIzaSyBY4B67oPlLL9AdfXNTQl6JP_meTTzq8xY').success(function (distance) {
+                // alert(JSON.stringify(distance.rows[0].elements[0].distance.value));
+                count++;
+                if (distance.rows[0].elements[0].distance.value) {
+                  deliver.distanceText = (distance.rows[0].elements[0].distance.value / 1000) + ' กม.';
+                  if (count === deliverOnly.length) {
+
+                    deliverOnly.sort(function (a, b) {
+                      if (a.distanceText < b.distanceText)
+                        return -1;
+                      if (a.distanceText > b.distanceText)
+                        return 1;
+                      return 0;
+                    });
+
+                    dfd.resolve(deliverOnly);
+
+                  }
+                }
+              });
+
+
+            }
+          }
+        });
+      });
+
+
+      return dfd.promise;
+
 
     };
 

@@ -263,14 +263,11 @@ angular.module('starter.controllers', ['ionic'])
               $scope.ordersConfirmed.push(order);
             } else if (order.deliverystatus === 'accept') {
               $scope.ordersAccept.push(order);
-              $scope.countAccept = $scope.ordersAccept.length;
             }
             else if (order.deliverystatus === 'reject') {
               $scope.ordersReject.push(order);
-              $scope.countReject = $scope.ordersReject.length;
             } else if (order.deliverystatus === 'wait deliver') {
               $scope.ordersWait.push(order);
-              $scope.countWait = $scope.ordersWait.length;
             }
           })
           $rootScope.countOrder = $scope.ordersConfirmed.length;
@@ -290,12 +287,21 @@ angular.module('starter.controllers', ['ionic'])
       //alert('go to detail');
 
       $state.go('app.tab.detailorder', { data: JSON.stringify(data) });
+      AuthService.getDeliverNearBy(data)
+        .then(function (order) {
+          console.log(order);
+          $rootScope.delivers = order;
+        });
     }
 
     $scope.gotoDetail2 = function (data) {
       //alert('go to detail');
-
       $state.go('app.tab.detailorder2', { data: JSON.stringify(data) });
+      AuthService.getDeliverNearBy(data)
+        .then(function (order) {
+          console.log(order);
+          $rootScope.delivers = order;
+        });
     }
 
     $scope.doRefresh = function () {
@@ -973,9 +979,14 @@ angular.module('starter.controllers', ['ionic'])
 
         var start = routePoints.start;
         var end = routePoints.end;
+        // var journeyLeg = {
+        //   "location": item.shipping.postcode,
+        //   "stopover": true
+        // };
         var request = {
           origin: start,
           destination: end,
+          // waypoints: [journeyLeg],
           travelMode: google.maps.DirectionsTravelMode.DRIVING
         };
         directionsService.route(request, function (response, status) {
@@ -1171,19 +1182,15 @@ angular.module('starter.controllers', ['ionic'])
           Arlist.forEach(function (waitOr) {
             if (waitOr.arstatus === 'wait for review') {
               $scope.listWaitforreview.push(waitOr);
-              $scope.countWaitforreview = $scope.listWaitforreview.length;
             }
             else if (waitOr.arstatus === 'wait for confirmed') {
               $scope.listWaitforconfirmed.push(waitOr);
-              $scope.countWaitforconfirmed = $scope.listWaitforconfirmed.length;
             }
             else if (waitOr.arstatus === 'confirmed') {
               $scope.listConfirmed.push(waitOr);
-              $scope.countConfirmed = $scope.listConfirmed.length;
             }
             else if (waitOr.arstatus === 'receipt') {
               $scope.listReceipt.push(waitOr);
-              $scope.countReceipt = $scope.listReceipt.length;
             }
           })
           // console.log($scope.listWaitforreview.length);
@@ -1352,9 +1359,15 @@ angular.module('starter.controllers', ['ionic'])
       scope: $scope
     }).then(function (modal) {
       $scope.modal = modal;
+
     });
 
     $scope.btnGoProfile = function (data) {
+      console.log(data);
+      $state.go('app.tab.deliver-profile3', { data: JSON.stringify(data) });
+    };
+
+    $scope.btnGoProfileAccept = function (data) {
       console.log(data);
       $state.go('app.tab.deliver-profile', { data: JSON.stringify(data) });
     };
@@ -1367,18 +1380,18 @@ angular.module('starter.controllers', ['ionic'])
     // $scope.data = JSON.parse($stateParams.data);
     // $scope._id = $scope.data._id
 
-    AuthService.getDeliver()
-      .then(function (data) {
-        var Deliverlist = data;
-        $scope.delivers = [];
-        angular.forEach(Deliverlist, function (deliver) {
-          if (deliver.roles[0] === 'deliver') {
-            $scope.delivers.push(deliver);
-          }
-          //console.log($scope.delivers);
-        })
 
-      });
+    // AuthService.getDeliver()
+    //   .then(function (data) {
+    //     var Deliverlist = data;
+    //     $scope.delivers = [];
+    //     angular.forEach(Deliverlist, function (deliver) {
+    //       if (deliver.roles[0] === 'deliver') {
+    //         $scope.delivers.push(deliver);
+    //       }
+    //     })
+
+    //   });
 
 
 

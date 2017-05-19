@@ -119,6 +119,14 @@ span1 {
    top: 0px !important;
 }
 
+.badge-notify-menu{
+   position: fixed !important;
+   top: 2px !important;
+   margin-left: 15px !important;
+}
+
+
+
 .badge-notifyAccu{
    position: fixed !important;
    top: 0px !important;
@@ -126,18 +134,32 @@ span1 {
 }
 
 .fixProfileimg {
-    margin-top: -40px;
+    margin-top: -15px;
+}
+.fixProfilerow {
+    margin-top: 20px;
 }
 
-.profile-image {
+/*.profile-image {
         display: block;
-        border-radius: 100px;
+        border-radius: 100%;
         border: 1px solid #fff;
         width: 60%;
-        /*height: 50%;*/
         margin: 30px auto 0;
         box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
-}
+}*/
+
 .tapbuttonNone {
     border: none;
 }
+
+.profile-image {
+        position: absolute;
+        /*position: fixed;*/
+        left: 16px;
+        max-width: 50px;
+        max-height: 50px;
+        width: 50%;
+        height: 50%;
+        border-radius: 50%;
+      }

@@ -187,6 +187,16 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
+      .state('app.tab.deliver-profile3', {
+        url: '/deliver-profile:{data}',
+        views: {
+          'tab-confirmed': {
+            templateUrl: 'templates/deliver-profile.html',
+            controller: 'ProfileDeliverCtrl'
+          }
+        }
+      })
+
       // .state('app.tab.chat', {
       //   url: '/chat',
       //   views: {

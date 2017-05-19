@@ -15,7 +15,7 @@
         </div>
         <!---->
         <ion-list>
-            <div class="list">
+            <div class="list" ng-show="data.deliverystatus === 'confirmed'">
                 <div ng-click="btnGoProfile(data)">
                     <div class="row">
                         <div class="col-20 fixProfileimg">
@@ -53,6 +53,46 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="list" ng-show="data.deliverystatus !== 'confirmed'">
+                <div ng-click="btnGoProfileAccept(data)">
+                    <div class="row">
+                        <div class="col-20 fixProfileimg">
+                            <img class="profile-image" src="{{data.user.profileImageURL}}">
+                        </div>
+                        <div class="col-80">
+                            <div class="row">
+                                <div class="col-20">
+                                    <label>ชื่อ : </label>
+                                </div>
+                                <div class="col-80">
+                                    <label>{{data.user.displayName}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-20">
+                                    <label>ที่อยู่ : </label>
+                                </div>
+                                <div class="col-80">
+                                    <label>{{data.shipping.address +' '+data.shipping.subdistrict+' '+data.shipping.district+' '+data.shipping.province+' '+data.shipping.postcode}}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-20">
+                                    <label>โทร : </label>
+                                </div>
+                                <div class="col-80">
+                                    <label>{{data.shipping.tel}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </ion-list>
         <ion-list>
             <div class="list">
@@ -144,7 +184,12 @@
                     <input type="text" class="form-control" placeholder="ค้นหา..." ng-model="topsearch" aria-describedby="sizing-addon3">
                 </div>
                 <div class="list">
-                    <a ng-repeat="deli in delivers | filter:topsearch" ng-click="chooseDeliver(deli)" class="item">{{deli.displayName}}</a>
+                    <a ng-repeat="deli in delivers | filter:topsearch" ng-click="chooseDeliver(deli)" class="item">
+                            {{deli.displayName}}
+                        <span class="item-note">
+                            {{deli.distanceText}}
+                        </span>
+                    </a>
                 </div>
             </ion-content>
         </ion-modal-view>

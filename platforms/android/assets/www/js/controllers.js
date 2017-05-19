@@ -192,11 +192,11 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('ConfirmedCtrl', function ($scope, $http, $state, AuthService, $ionicModal, $rootScope, $ionicSideMenuDelegate) {
+  .controller('ConfirmedCtrl', function ($scope, $http, $state, AuthService, $ionicModal, $rootScope, $ionicSideMenuDelegate, Socket) {
     $scope.$on('$ionicView.enter', function () {
       $ionicSideMenuDelegate.canDragContent(true);
     });
-    $rootScope.userStore = AuthService.getUser();
+    $scope.userStore = AuthService.getUser();
 
     $scope.gotoConfirmed = function () {
       $state.go('app.tab.confirmed');
@@ -205,6 +205,32 @@ angular.module('starter.controllers', ['ionic'])
       $scope.loadData();
     }
 
+    $scope.gotoChat = function (user) {
+      console.log(user.username);
+      var data = {
+        name: $scope.userStore.username + '' + user.username,
+        type: 'P',
+        users: [$scope.userStore, user],
+        user: $scope.userStore
+      };
+      Socket.emit('createroom', data);
+    }
+
+    // Add an event listener to the 'invite' event
+    Socket.on('invite', function (res) {
+      console.log('invite ConfirmedCtrl');
+      // alert('invite : ' + JSON.stringify(data));
+      Socket.emit('join', res);
+    });
+
+    // Add an event listener to the 'joinsuccess' event
+    Socket.on('joinsuccess', function (data) {
+      console.log('joinsuccess ConfirmedCtrl');
+      $scope.room = data;
+      $state.go('app.tab.chat-detail', { chatId: data._id });
+      // $scope.pageDown();
+      // alert('joinsuccess : ' + JSON.stringify(data));
+    });
 
 
     $scope.loadData = function () {
@@ -237,14 +263,11 @@ angular.module('starter.controllers', ['ionic'])
               $scope.ordersConfirmed.push(order);
             } else if (order.deliverystatus === 'accept') {
               $scope.ordersAccept.push(order);
-              $scope.countAccept = $scope.ordersAccept.length;
             }
             else if (order.deliverystatus === 'reject') {
               $scope.ordersReject.push(order);
-              $scope.countReject = $scope.ordersReject.length;
             } else if (order.deliverystatus === 'wait deliver') {
               $scope.ordersWait.push(order);
-              $scope.countWait = $scope.ordersWait.length;
             }
           })
           $rootScope.countOrder = $scope.ordersConfirmed.length;
@@ -264,12 +287,21 @@ angular.module('starter.controllers', ['ionic'])
       //alert('go to detail');
 
       $state.go('app.tab.detailorder', { data: JSON.stringify(data) });
+      AuthService.getDeliverNearBy(data)
+        .then(function (order) {
+          console.log(order);
+          $rootScope.delivers = order;
+        });
     }
 
     $scope.gotoDetail2 = function (data) {
       //alert('go to detail');
-
       $state.go('app.tab.detailorder2', { data: JSON.stringify(data) });
+      AuthService.getDeliverNearBy(data)
+        .then(function (order) {
+          console.log(order);
+          $rootScope.delivers = order;
+        });
     }
 
     $scope.doRefresh = function () {
@@ -878,6 +910,9 @@ angular.module('starter.controllers', ['ionic'])
                             });
 
                             var nearBy = $scope.locationDeliver.slice(0, 3);
+                            nearBy[0].isShow = true;
+                            nearBy[1].isShow = false;
+                            nearBy[2].isShow = false;
                             // console.log(nearBy);
                             nearBy.forEach(function (near) {
 
@@ -886,6 +921,7 @@ angular.module('starter.controllers', ['ionic'])
                                 lat: parseFloat(near.address.sharelocation.latitude),
                                 lng: parseFloat(near.address.sharelocation.longitude)
                               }
+
                               $scope.calcRoute(pointStart);
                             });
 
@@ -943,42 +979,62 @@ angular.module('starter.controllers', ['ionic'])
 
         var start = routePoints.start;
         var end = routePoints.end;
+        // var journeyLeg = {
+        //   "location": item.shipping.postcode,
+        //   "stopover": true
+        // };
         var request = {
           origin: start,
           destination: end,
+          // waypoints: [journeyLeg],
           travelMode: google.maps.DirectionsTravelMode.DRIVING
         };
         directionsService.route(request, function (response, status) {
           if (status == google.maps.DirectionsStatus.OK) {
-            directionsDisplay.setDirections(response);
             var step = 1;
-            var infowindow2 = new google.maps.InfoWindow();
-            var infowindoworder = new google.maps.InfoWindow();
+            var infoDeliver;
+            var infowindoworder;
             var distantText = (pointStart.deliver.distance / 1000).toFixed(0) + ' กม.';
-            infowindow2.setContent(distantText
+            infoDeliver = distantText
               + "<br>"
               + pointStart.deliver.displayName
               + "<br>"
-              + 'โทร : ' + '<a href="tel:' + pointStart.deliver.address.tel + '">' + pointStart.deliver.address.tel + '</a>');
-            infowindow2.setPosition(response.routes[0].legs[0].steps[step].end_location);
-            infowindow2.open($scope.map);
+              + 'โทร : ' + '<a href="tel:' + pointStart.deliver.address.tel + '">' + pointStart.deliver.address.tel + '</a>'
+              + "<br>"
+              + pointStart.deliver.address.address + ' ' + pointStart.deliver.address.district + ' ' + pointStart.deliver.address.subdistrict + ' ' + pointStart.deliver.address.province + ' ' + pointStart.deliver.address.postcode;
+            // infoDeliver.setPosition(response.routes[0].legs[0].steps[step].end_location);
+            // infoDeliver.open($scope.map);
 
             var product = '';
             var price = null;
             item.items.forEach(function (pro) {
               product += 'ชื่อสินค้า : ' + pro.product.name + '<br> ราคา : ' + pro.product.price + ' บาท จำนวน : ' + pro.qty + ' ชิ้น<br>';
             })
-
-            infowindoworder.setContent('<label>' + $scope.firstname + ' ' + $scope.lastname + '</label><br>'
+            // 
+            if (pointStart.deliver.isShow) {
+              var nearDeliver = new google.maps.InfoWindow();
+              nearDeliver.setContent(infoDeliver);
+              nearDeliver.setPosition(response.routes[0].legs[0].steps[step].start_location);
+              nearDeliver.open($scope.map);
+            }
+            // 
+            infowindoworder = '<label>' + $scope.firstname + ' ' + $scope.lastname + '</label><br>'
               + '<p>' + item.shipping.address + ' ' + item.shipping.subdistrict + ' ' + item.shipping.district + ' ' + item.shipping.province + ' ' + item.shipping.postcode + '<br>โทร : ' + '<a href="tel:' + item.shipping.tel + '">' + item.shipping.tel + '</a>' + '</p>'
               + '<p>' + product + '</p>'
               + '<label>' + 'ราคารวม : ' + item.amount + ' บาท' + '</label><br>'
               + '<label>' + 'ค่าจัดส่ง : ' + item.deliveryamount + ' บาท' + '</label><br>'
               + '<label>' + 'ส่วนลด : ' + item.discountpromotion + ' บาท' + '</label><br>'
               + '<label>' + 'รวมสุทธิ : ' + item.totalamount + ' บาท' + '</label>'
-            );
-            infowindoworder.setPosition({ lat: pointEnd.lat, lng: pointEnd.lng });
-            infowindoworder.open($scope.map);
+              ;
+            // infowindoworder.setPosition({ lat: pointEnd.lat, lng: pointEnd.lng });
+            // infowindoworder.open($scope.map);
+
+            response.routes[0].legs[0].start_address = infoDeliver;
+            response.routes[0].legs[0].end_address = infowindoworder;
+            response.routes[0].legs[0].start_address
+            directionsDisplay.setDirections(response);
+
+
           }
         });
       }
@@ -1126,19 +1182,15 @@ angular.module('starter.controllers', ['ionic'])
           Arlist.forEach(function (waitOr) {
             if (waitOr.arstatus === 'wait for review') {
               $scope.listWaitforreview.push(waitOr);
-              $scope.countWaitforreview = $scope.listWaitforreview.length;
             }
             else if (waitOr.arstatus === 'wait for confirmed') {
               $scope.listWaitforconfirmed.push(waitOr);
-              $scope.countWaitforconfirmed = $scope.listWaitforconfirmed.length;
             }
             else if (waitOr.arstatus === 'confirmed') {
               $scope.listConfirmed.push(waitOr);
-              $scope.countConfirmed = $scope.listConfirmed.length;
             }
             else if (waitOr.arstatus === 'receipt') {
               $scope.listReceipt.push(waitOr);
-              $scope.countReceipt = $scope.listReceipt.length;
             }
           })
           // console.log($scope.listWaitforreview.length);
@@ -1307,9 +1359,15 @@ angular.module('starter.controllers', ['ionic'])
       scope: $scope
     }).then(function (modal) {
       $scope.modal = modal;
+
     });
 
     $scope.btnGoProfile = function (data) {
+      console.log(data);
+      $state.go('app.tab.deliver-profile3', { data: JSON.stringify(data) });
+    };
+
+    $scope.btnGoProfileAccept = function (data) {
       console.log(data);
       $state.go('app.tab.deliver-profile', { data: JSON.stringify(data) });
     };
@@ -1322,18 +1380,18 @@ angular.module('starter.controllers', ['ionic'])
     // $scope.data = JSON.parse($stateParams.data);
     // $scope._id = $scope.data._id
 
-    AuthService.getDeliver()
-      .then(function (data) {
-        var Deliverlist = data;
-        $scope.delivers = [];
-        angular.forEach(Deliverlist, function (deliver) {
-          if (deliver.roles[0] === 'deliver') {
-            $scope.delivers.push(deliver);
-          }
-          //console.log($scope.delivers);
-        })
 
-      });
+    // AuthService.getDeliver()
+    //   .then(function (data) {
+    //     var Deliverlist = data;
+    //     $scope.delivers = [];
+    //     angular.forEach(Deliverlist, function (deliver) {
+    //       if (deliver.roles[0] === 'deliver') {
+    //         $scope.delivers.push(deliver);
+    //       }
+    //     })
+
+    //   });
 
 
 
@@ -1468,12 +1526,16 @@ angular.module('starter.controllers', ['ionic'])
 
     // Add an event listener to the 'invite' event
     Socket.on('invite', function (res) {
+      console.log('invite Chat');
+
       // alert('invite : ' + JSON.stringify(data));
       Socket.emit('join', res);
     });
 
     // Add an event listener to the 'joinsuccess' event
     Socket.on('joinsuccess', function (data) {
+      console.log('joinsuccess Chat');
+
       $scope.room = data;
       $scope.pageDown();
       // alert('joinsuccess : ' + JSON.stringify(data));

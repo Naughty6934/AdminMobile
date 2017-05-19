@@ -7,7 +7,10 @@
 
             <ion-nav-buttons side="left">
                 <button class="button button-icon ion-navicon" menu-toggle="left">
+                    <span class="badge badge-assertive badge-notify-menu">{{(countStocks || 0) + (countReturns || 0) + (countAcc || 0) + (countTran || 0)}}</span>
               </button>
+            
+              
             </ion-nav-buttons>
         </ion-nav-bar>
 
