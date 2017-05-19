@@ -115,6 +115,7 @@ angular.module('starter.controllers', ['ionic'])
     });
     $rootScope.userStore = AuthService.getUser();
 
+    $scope.Platform = window.localStorage.adminAppPlatform;
     $scope.toggleLeftSideMenu = function () {
       $ionicSideMenuDelegate.toggleLeft();
       // alert('menuCtrl');

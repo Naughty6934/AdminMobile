@@ -119,13 +119,21 @@ span1 {
    top: 0px !important;
 }
 
-.badge-notify-menu{
+/*.badge-notify-menu{
    position: fixed !important;
    top: 2px !important;
    margin-left: 15px !important;
+}*/
+
+.badge-notify-ios{
+   position: fixed !important;
+   top: 15px !important;
 }
 
-
+.badge-notify-android{
+   position: fixed !important;
+   top: 0px !important;
+}
 
 .badge-notifyAccu{
    position: fixed !important;
