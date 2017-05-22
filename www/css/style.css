@@ -184,4 +184,18 @@ span1 {
         width: 50%;
         height: 50%;
         border-radius: 50%;
-      }
+}
+
+.show-hide-input
+  {
+    display: inherit;
+    width: 100%;
+  }
+.toggle-view-anchor {
+    color: #cccccc !important;
+    display: block;
+    font-size: 24px;
+    width: 45px;
+    text-align: center;
+    font-weight: 500;
+}
