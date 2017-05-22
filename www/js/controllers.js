@@ -65,7 +65,8 @@ angular.module('starter.controllers', ['ionic'])
       console.log(response);
       // alert(response.message);
       if (response["message"]) {
-        $scope.credentials = {}
+        // $scope.credentials = {}
+        $scope.credentials.password = '';
         $rootScope.$broadcast('loading:hide');
         alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
       }
