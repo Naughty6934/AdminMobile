@@ -36,18 +36,6 @@ angular.module('starter.services', [])
     };
 
     this.getusers = function () {
-<<<<<<< HEAD
-            var dfd = $q.defer();
-            var user = this.getUser();
-            $http.get(apiURL + '/users').success(function (data) {
-                // window.localStorage.setItem("storage", JSON.stringify(data));
-                dfd.resolve(data);
-            }).error(function (err) {
-                dfd.reject(err);
-            })
-            return dfd.promise;
-        }
-=======
       var dfd = $q.defer();
       var user = this.getUser();
       $http.get(apiURL + '/users').success(function (data) {
@@ -58,7 +46,6 @@ angular.module('starter.services', [])
       })
       return dfd.promise;
     }
->>>>>>> 5da532decb9bd0cdc58edcca93e1a08365e06bd7
 
     this.successAuth = function (data) {
       // console.log(data.data);

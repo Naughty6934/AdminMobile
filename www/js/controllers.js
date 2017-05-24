@@ -1457,7 +1457,15 @@ angular.module('starter.controllers', ['ionic'])
       //alert('');
     });
     $scope.tel = function (telnumber) {
-      window.location = 'tel:' + '0' + telnumber;
+      var reNumber = '';
+      var regex = /(\d+)/g;
+      var reNum = telnumber.match(regex);
+      reNum.forEach(function (item) {
+        reNumber += item
+      });
+      // alert(reNumber);
+      window.location = 'tel:' + reNumber;
+
     };
 
   })
@@ -1470,8 +1478,18 @@ angular.module('starter.controllers', ['ionic'])
 
     $scope.data = JSON.parse($stateParams.data);
     console.log($scope.data);
+
+
     $scope.tel = function (telnumber) {
-      window.location = 'tel:' + '0' + telnumber;
+      var reNumber = '';
+      var regex = /(\d+)/g;
+      var reNum = telnumber.match(regex);
+      reNum.forEach(function (item) {
+        reNumber += item
+      });
+      // alert(reNumber);
+      window.location = 'tel:' + reNumber;
+
     };
 
   })

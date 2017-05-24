@@ -9,11 +9,14 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
 
   .run(function ($ionicPlatform, AuthService) {
     $ionicPlatform.ready(function () {
+      var devicePlatform = device.platform;
+      window.localStorage.adminAppPlatform = devicePlatform;
+
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
       if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-        cordova.plugins.Keyboard.disableScroll(true);
+        // cordova.plugins.Keyboard.disableScroll(true);
 
       }
       if (window.StatusBar) {
@@ -187,8 +190,6 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
-<<<<<<< HEAD
-=======
       .state('app.tab.deliver-profile3', {
         url: '/deliver-profile:{data}',
         views: {
@@ -199,7 +200,6 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         }
       })
 
->>>>>>> 5da532decb9bd0cdc58edcca93e1a08365e06bd7
       // .state('app.tab.chat', {
       //   url: '/chat',
       //   views: {
@@ -304,4 +304,56 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/login');
 
+  })
+
+  .directive('showHideContainer', function () {
+    return {
+      scope: {
+
+      },
+      controller: function ($scope, $element, $attrs) {
+        $scope.show = false;
+
+        $scope.toggleType = function ($event) {
+          $event.stopPropagation();
+          $event.preventDefault();
+
+          $scope.show = !$scope.show;
+
+          // Emit event
+          $scope.$broadcast("toggle-type", $scope.show);
+        };
+      },
+      templateUrl: 'templates/show-hide-password.html',
+      restrict: 'A',
+      replace: false,
+      transclude: true
+    };
+  })
+
+  .directive('showHideInput', function () {
+    return {
+      scope: {
+
+      },
+      link: function (scope, element, attrs) {
+        // listen to event
+        scope.$on("toggle-type", function (event, show) {
+          var password_input = element[0],
+            input_type = password_input.getAttribute('type');
+
+          if (!show) {
+            password_input.setAttribute('type', 'password');
+          }
+
+          if (show) {
+            password_input.setAttribute('type', 'text');
+          }
+        });
+      },
+      require: '^showHideContainer',
+      restrict: 'A',
+      replace: false,
+      transclude: false
+    };
   });

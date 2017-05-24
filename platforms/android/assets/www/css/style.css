@@ -119,29 +119,45 @@ span1 {
    top: 0px !important;
 }
 
-<<<<<<< HEAD
-=======
-.badge-notify-menu{
+/*.badge-notify-menu{
    position: fixed !important;
    top: 2px !important;
    margin-left: 15px !important;
+}*/
+
+.badge-notify-ios{
+   position: fixed !important;
+   top: 15px !important;
 }
 
+.badge-notify-android{
+   position: fixed !important;
+   top: 0px !important;
+}
 
-
->>>>>>> 5da532decb9bd0cdc58edcca93e1a08365e06bd7
 .badge-notifyAccu{
    position: fixed !important;
    top: 0px !important;
    margin-left: -30px !important;
-<<<<<<< HEAD
-}
-=======
 }
 
 .fixProfileimg {
-    margin-top: -15px;
+    margin-top: -40px;
 }
+
+.profile-image {
+        display: block;
+        border-radius: 100px;
+        border: 1px solid #fff;
+        width: 60%;
+        /*height: 50%;*/
+        margin: 30px auto 0;
+        box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+}
+.tapbuttonNone {
+    border: none;
+}
+
 .fixProfilerow {
     margin-top: 20px;
 }
@@ -168,5 +184,18 @@ span1 {
         width: 50%;
         height: 50%;
         border-radius: 50%;
-      }
->>>>>>> 5da532decb9bd0cdc58edcca93e1a08365e06bd7
+}
+
+.show-hide-input
+  {
+    display: inherit;
+    width: 100%;
+  }
+.toggle-view-anchor {
+    color: #cccccc !important;
+    display: block;
+    font-size: 24px;
+    width: 45px;
+    text-align: center;
+    font-weight: 500;
+}
