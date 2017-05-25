@@ -166,7 +166,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         views: {
           'tab-confirmed': {
             templateUrl: 'templates/detailorder.html',
-            controller: 'OrderCtrl'
+            controller: 'OrderconCtrl'
           }
         }
       })
@@ -176,16 +176,57 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         views: {
           'tab-detailaccept': {
             templateUrl: 'templates/detailorder.html',
-            controller: 'OrderCtrl'
+            controller: 'OrderaccCtrl'
           }
         }
       })
+
+      .state('app.tab.chat-detailconfirm', {
+        url: "/detailorder/:chatId",
+        views: {
+          'tab-confirmed': {
+            templateUrl: "templates/chat-detail.html",
+            controller: 'ChatDetailCtrl'
+          }
+        }
+      })
+
+      .state('app.tab.chat-detailproconfirm', {
+        url: "/deliver-profile/:chatId",
+        views: {
+          'tab-confirmed': {
+            templateUrl: "templates/chat-detail.html",
+            controller: 'ChatDetailCtrl'
+          }
+        }
+      })
+
+      .state('app.tab.chat-detailproaccept', {
+        url: "/deliver-profile/:chatId",
+        views: {
+          'tab-detailaccept': {
+            templateUrl: "templates/chat-detail.html",
+            controller: 'ChatDetailCtrl'
+          }
+        }
+      })
+
+      .state('app.tab.chat-detailaccept', {
+        url: "/detailorder/:chatId",
+        views: {
+          'tab-detailaccept': {
+            templateUrl: "templates/chat-detail.html",
+            controller: 'ChatDetailCtrl'
+          }
+        }
+      })
+
       .state('app.tab.deliver-profile', {
         url: '/deliver-profile:{data}',
         views: {
           'tab-detailaccept': {
             templateUrl: 'templates/deliver-profile.html',
-            controller: 'ProfileDeliverCtrl'
+            controller: 'ProfileDeliveracceptCtrl'
           }
         }
       })
@@ -195,7 +236,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
         views: {
           'tab-confirmed': {
             templateUrl: 'templates/deliver-profile.html',
-            controller: 'ProfileDeliverCtrl'
+            controller: 'ProfileDeliverconfirmCtrl'
           }
         }
       })
