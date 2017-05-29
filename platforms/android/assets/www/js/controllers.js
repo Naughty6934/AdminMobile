@@ -1338,7 +1338,7 @@ angular.module('starter.controllers', ['ionic'])
       if ($rootScope.chattype === 'normal' || $rootScope.chattype === 'accept') {
         $rootScope.chattype = 'confirm';
       }
-      alert($rootScope.chattype);
+      // alert($rootScope.chattype);
       var data = {
         name: $scope.userStore.username + '' + user.username,
         type: 'P',
@@ -1490,7 +1490,7 @@ angular.module('starter.controllers', ['ionic'])
       if ($rootScope.chattype === 'normal' || $rootScope.chattype === 'confirm') {
         $rootScope.chattype = 'accept';
       }
-      alert($rootScope.chattype);
+      // alert($rootScope.chattype);
       var data = {
         name: $scope.userStore.username + '' + user.username,
         type: 'P',
@@ -1641,7 +1641,7 @@ angular.module('starter.controllers', ['ionic'])
       if ($rootScope.chattype === 'normal') {
         $rootScope.chattype = 'Proconfirm';
       }
-      alert($rootScope.chattype);
+      // alert($rootScope.chattype);
       var data = {
         name: $scope.userStore.username + '' + user.username,
         type: 'P',
@@ -1690,7 +1690,7 @@ angular.module('starter.controllers', ['ionic'])
   })
 
   .controller('ProfileDeliveracceptCtrl', function ($scope, $rootScope, $state, $stateParams, AuthService, $ionicSideMenuDelegate, Socket) {
-    alert('ProfileDeliveracceptCtrl');
+    // alert('ProfileDeliveracceptCtrl');
     $scope.$on('$ionicView.enter', function () {
       $ionicSideMenuDelegate.canDragContent(true);
     });
@@ -1702,7 +1702,7 @@ angular.module('starter.controllers', ['ionic'])
       if ($rootScope.chattype === 'normal') {
         $rootScope.chattype = 'Proaccept';
       }
-      alert($rootScope.chattype);
+      // alert($rootScope.chattype);
       var data = {
         name: $scope.userStore.username + '' + user.username,
         type: 'P',
