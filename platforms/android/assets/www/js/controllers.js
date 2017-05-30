@@ -228,16 +228,15 @@ angular.module('starter.controllers', ['ionic'])
           $rootScope.ordersCancel = data.cancel;
           $rootScope.ordersComplete = data.complete;
           var orders = [];
-          orders = orders.concat($rootScope.ordersConfirmed, $rootScope.ordersWait, $rootScope.ordersReject);
+          orders = orders.concat($rootScope.ordersConfirmed, $rootScope.ordersReject);
           $rootScope.orders = orders;
-
-          $rootScope.countOrder = $scope.orders.length;
-          $rootScope.countOrderApt = $scope.ordersAccept.length;
-          $rootScope.countOrderRjt = $scope.ordersReject.length;
-          $rootScope.countOrderWt = $scope.ordersWait.length;
-          $rootScope.countAccept = $scope.ordersAccept.length;
-          $rootScope.countReject = $scope.ordersReject.length;
-          $rootScope.countWait = $scope.ordersWait.length;
+          $rootScope.countOrder = orders.length;
+          $rootScope.countOrderApt = $rootScope.ordersAccept.length;
+          $rootScope.countOrderRjt = $rootScope.ordersReject.length;
+          $rootScope.countOrderWt = $rootScope.ordersWait.length;
+          $rootScope.countAccept = $rootScope.ordersAccept.length;
+          $rootScope.countReject = $rootScope.ordersReject.length;
+          $rootScope.countWait = $rootScope.ordersWait.length;
           // $scope เดิม
           $rootScope.orderApt = $rootScope.ordersAccept;
           $rootScope.orderRjt = $rootScope.ordersReject;
