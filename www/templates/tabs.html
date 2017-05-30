@@ -8,8 +8,8 @@ navigation history that also transitions its views in and out.
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
 
   <!-- Dashboard Tab -->
-  <div ng-controller="ConfirmedCtrl" ng-init="init()">
-    <ion-tab title="สั่งจอง" badge="countOrder" icon-off="ion-ios-paper-outline" icon-on="ion-ios-paper" ng-click="gotoConfirmed()" href="#/app/tab/confirmed">
+  <div ng-controller="ConfirmedCtrl">
+    <ion-tab title="สั่งจอง" badge="countOrder" icon-off="ion-ios-paper-outline" icon-on="ion-ios-paper" href="#/app/tab/confirmed">
       <ion-nav-view name="tab-confirmed"></ion-nav-view>
     </ion-tab>
   </div>
@@ -18,7 +18,7 @@ navigation history that also transitions its views in and out.
   <!-- Accept Tab on-select="loadData()" -->
   
 
-  <div ng-controller="ConfirmedCtrl" ng-init="init()">
+  <div ng-controller="ConfirmedCtrl" >
     <ion-tab title="คนส่งข้าว" badge="countOrderApt + countOrderRjt + countOrderWt" badge-style="color:red;" icon-off="ion-ios-people-outline"
       icon-on="ion-ios-people" href="#/app/tab/detailaccept">
       <ion-nav-view name="tab-detailaccept"></ion-nav-view>
