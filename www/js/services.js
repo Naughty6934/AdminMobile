@@ -108,7 +108,7 @@ angular.module('starter.services', [])
 
     this.getOrder = function () {
       var dfd = $q.defer();
-      $http.get(apiURL + '/listorder').success(function (orders) {
+      $http.get(apiURL + '/listorder/v2').success(function (orders) {
         // var order = [];
         // console.log(getUser);
         // angular.forEach(db, function (user) {
