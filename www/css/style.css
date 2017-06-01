@@ -191,6 +191,9 @@ span1 {
     display: inherit;
     width: 100%;
   }
+.topsearchinput {
+    width: 100%
+  }
 .toggle-view-anchor {
     color: #cccccc !important;
     display: block;

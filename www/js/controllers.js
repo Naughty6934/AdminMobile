@@ -194,7 +194,7 @@ angular.module('starter.controllers', ['ionic'])
 
   })
 
-  .controller('ConfirmedCtrl', function ($scope, $http, $state, AuthService, $ionicModal, $rootScope, $ionicSideMenuDelegate, Socket) {
+  .controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $timeout, $state, AuthService, $ionicModal, $stateParams, $rootScope, $ionicSideMenuDelegate, Socket) {
 
     $rootScope.ordersConfirmed = [];
     $rootScope.ordersWait = [];
@@ -203,6 +203,16 @@ angular.module('starter.controllers', ['ionic'])
     $rootScope.ordersCancel = [];
     $rootScope.ordersComplete = [];
     $scope.Wait = true;
+    $scope.limitTo = 20;
+    $scope.leftMoreConfirmed = 0;
+    $scope.leftMoreWait = 0;
+    $scope.leftMoreReject = 0;
+    $scope.leftMoreAccept = 0;
+    $scope.showInfiniteConfirmed = true;
+    $scope.showInfiniteWait = true;
+    $scope.showInfiniteReject = true;
+    $scope.showInfiniteAccept = true;
+
     $scope.$on('$ionicView.enter', function () {
       $ionicSideMenuDelegate.canDragContent(true);
     });
@@ -214,8 +224,15 @@ angular.module('starter.controllers', ['ionic'])
     $scope.init = function () {
       $rootScope.loadData();
     }
+    
     $rootScope.loadData = function () {
+      $ionicLoading.show({ template: 'กรุณารอสักครู่' });
+      $scope.limitTo = 0;
       $rootScope.orders = [];
+      $scope.showInfiniteConfirmed = true;
+      $scope.showInfiniteWait = true;
+      $scope.showInfiniteReject = true;
+      $scope.showInfiniteAccept = true;
       AuthService.getOrder()
         .then(function (data) {
 
@@ -241,8 +258,64 @@ angular.module('starter.controllers', ['ionic'])
           $rootScope.orderApt = $rootScope.ordersAccept;
           $rootScope.orderRjt = $rootScope.ordersReject;
           $rootScope.orderWt = $rootScope.ordersWait;
+
+          // loadmore 
+          $scope.limitTo = 20;
+          $scope.leftMoreConfirmed = $rootScope.orders.length > 20 ? $rootScope.orders.length - $scope.limitTo : 0;
+          $scope.leftMoreWait = $rootScope.orderWt.length > 20 ? $rootScope.orderWt.length - $scope.limitTo : 0;
+          $scope.leftMoreReject = $rootScope.orderRjt.length > 20 ? $rootScope.orderRjt.length - $scope.limitTo : 0;
+          $scope.leftMoreAccept = $rootScope.orderApt.length > 20 ? $rootScope.orderApt.length - $scope.limitTo : 0;
+          $ionicLoading.hide();
         });
     }
+
+    $scope.loadMore = function (orders, tab) {
+      $scope.$broadcast('scroll.refreshComplete');
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+      if (orders.length > 0) {
+        $scope.limitTo += 20;
+        $scope.leftMoreConfirmed -= 20;
+        $scope.leftMoreWait -= 20;
+        $scope.leftMoreReject -= 20;
+        $scope.leftMoreAccept -= 20;
+
+        if (tab === 'confirmed' && $scope.leftMoreConfirmed <= 0) {
+          $scope.showInfiniteConfirmed = false;
+        } else if (tab === 'wait' && $scope.leftMoreWait <= 0) {
+          $scope.showInfiniteWait = false;
+        } else if (tab === 'reject' && $scope.leftMoreReject <= 0) {
+          $scope.showInfiniteReject = false;
+        } else if (tab === 'accept' && $scope.leftMoreAccept <= 0) {
+          $scope.showInfiniteAccept = false;
+        } else {
+          if (tab === 'confirmed') {
+            $scope.showInfiniteConfirmed = true;
+          } else if (tab === 'wait') {
+            $scope.showInfiniteWait = true;
+          } else if (tab === 'reject') {
+            $scope.showInfiniteReject = true;
+          } else if (tab === 'accept') {
+            $scope.showInfiniteAccept = true;
+          }
+        }
+      }
+    };
+
+    $scope.filter = function (filter, orders) {
+      if (filter.length > 4) {
+        $scope.limitTo = orders.length;
+        $scope.filterText = filter;
+        $scope.showInfiniteConfirmed = false;
+        $scope.showInfiniteWait = false;
+        $scope.showInfiniteReject = false;
+      } else {
+        $scope.limitTo = 20;
+        $scope.filterText = "";
+        $scope.showInfiniteConfirmed = true;
+        $scope.showInfiniteWait = true;
+        $scope.showInfiniteReject = true;
+      }
+    };
 
     $scope.gotoDetail = function (data) {
       //alert('go to detail');
@@ -275,6 +348,9 @@ angular.module('starter.controllers', ['ionic'])
     $scope.$on('onNotification', function (event, args) {
       // do what you want to do
       $scope.init();
+    });
+    $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
+      $scope.limitTo = 20;
     });
 
   })

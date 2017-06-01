@@ -7,7 +7,7 @@
             <div class="col"></div>
             <div class="col col-90">
                 <div class="button-bar">
-                    <a class="button button-outline button-positive {{Wait === true ? 'active' : ''}}" ng-click="Wait = true ;Accept = false;Reject = false ;">
+                    <a class="button button-outline button-positive {{Wait === true ? 'active' : ''}}" ng-click="Wait = true ;Accept = false;Reject = false">
                         ไม่รับรู้
                         </a>
                     <a class="button button-outline button-positive {{Accept === true ? 'active' : ''}}" ng-click="Accept = true;Reject = false ;Wait=false">
@@ -22,14 +22,15 @@
         </div>
         <div class="input-group input-group-sm">
             <span class="input-group-addon" id="sizing-addon3"><i class="fa fa-search" aria-hidden="true"></i></span>
-            <input type="text" class="form-control" placeholder="ค้นหา..." ng-model="topsearch" aria-describedby="sizing-addon3">
+            <input type="text" class="form-control topsearchinput" placeholder="ค้นหา... (อย่างน้อย 5 ตัวอักษร)" ng-model="topsearch" ng-change="filter(topsearch, orders,limitTo)"
+                aria-describedby="sizing-addon3">
         </div>
 
         <!--<ion-nav-buttons side="primary">
                 <button class="button" ui-sref="app.tab.detailaccept">ย้อนกลับ</button>
             </ion-nav-buttons>-->
 
-        <div ng-show="Accept" ng-repeat="data in orderApt | filter:topsearch">
+        <div ng-show="Accept" ng-repeat="data in orderApt | limitTo: limitTo | filter:filterText">
             <ion-item class='item item-avatar-left item-icon-right' ng-click="gotoDetail2(data)">
                 <img src={{data.user.profileImageURL}}>
                 <h2>{{data.user.displayName}}</h2>
@@ -43,8 +44,16 @@
                 <p class="icon ion-right amount">{{data.totalamount}} ฿</p>
             </ion-item>
         </div>
+        <div ng-show="Accept" ng-if="showInfiniteAccept">
+            <div class="text-center">
+                <ion-spinner icon="spiral"></ion-spinner>
+                <p ng-if="orderApt.length > 0">มีอีก {{leftMoreAccept}}</p>
+            </div>
+            <ion-infinite-scroll on-infinite="loadMore(orderApt,'accept')">
+            </ion-infinite-scroll>
+        </div>
 
-        <div ng-show="Reject" ng-repeat="data in orderRjt | filter:topsearch">
+        <div ng-show="Reject" ng-repeat="data in orderRjt | limitTo: limitTo | filter:filterText">
             <ion-item class='item item-avatar-left item-icon-right' ng-click="gotoDetail2(data)">
                 <img src={{data.user.profileImageURL}}>
                 <h2>{{data.user.displayName}}</h2>
@@ -58,8 +67,15 @@
                 <p class="icon ion-right amount ">{{data.totalamount}} ฿</p>
             </ion-item>
         </div>
-
-        <div ng-show="Wait" ng-repeat="data in orderWt | filter:topsearch">
+        <div ng-show="Reject" ng-if="showInfiniteReject">
+            <div class="text-center">
+                <ion-spinner icon="spiral"></ion-spinner>
+                <p ng-if="orderRjt.length > 0">มีอีก {{leftMoreReject}}</p>
+            </div>
+            <ion-infinite-scroll on-infinite="loadMore(orderRjt,'reject')">
+            </ion-infinite-scroll>
+        </div>
+        <div ng-show="Wait" ng-repeat="data in orderWt | limitTo: limitTo | filter:filterText">
             <ion-item class='item item-avatar-left item-icon-right' ng-click="gotoDetail2(data)">
                 <img src={{data.user.profileImageURL}}>
                 <h2>{{data.user.displayName}}</h2>
@@ -72,6 +88,14 @@
                 <p class="icon ion-right clock  ion-clock" am-time-ago="data.created"></p>
                 <p class="icon ion-right amount">{{data.totalamount}} ฿</p>
             </ion-item>
+        </div>
+        <div ng-show="Wait" ng-if="showInfiniteWait">
+            <div class="text-center">
+                <ion-spinner icon="spiral"></ion-spinner>
+                <p ng-if="orderWt.length > 0">มีอีก {{leftMoreWait}}</p>
+            </div>
+            <ion-infinite-scroll on-infinite="loadMore(orderWt,'wait')">
+            </ion-infinite-scroll>
         </div>
     </ion-content>
 </ion-view>
