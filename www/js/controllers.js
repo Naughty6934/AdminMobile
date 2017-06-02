@@ -224,7 +224,7 @@ angular.module('starter.controllers', ['ionic'])
     $scope.init = function () {
       $rootScope.loadData();
     }
-    
+
     $rootScope.loadData = function () {
       $ionicLoading.show({ template: 'กรุณารอสักครู่' });
       $scope.limitTo = 0;
@@ -261,10 +261,42 @@ angular.module('starter.controllers', ['ionic'])
 
           // loadmore 
           $scope.limitTo = 20;
-          $scope.leftMoreConfirmed = $rootScope.orders.length > 20 ? $rootScope.orders.length - $scope.limitTo : 0;
-          $scope.leftMoreWait = $rootScope.orderWt.length > 20 ? $rootScope.orderWt.length - $scope.limitTo : 0;
-          $scope.leftMoreReject = $rootScope.orderRjt.length > 20 ? $rootScope.orderRjt.length - $scope.limitTo : 0;
-          $scope.leftMoreAccept = $rootScope.orderApt.length > 20 ? $rootScope.orderApt.length - $scope.limitTo : 0;
+          if ($rootScope.orders.length > 20) {
+            $scope.limitTo = 20;
+            $scope.leftMoreConfirmed = $rootScope.orders.length - $scope.limitTo;
+            $scope.showInfiniteNew = true;
+          } else {
+            $scope.limitTo = 20;
+            $scope.leftMoreConfirmed = 0;
+            $scope.showInfiniteNew = false;
+          }
+          if ($rootScope.orderWt.length > 20) {
+            $scope.limitTo = 20;
+            $scope.leftMoreWait = $rootScope.orderWt.length - $scope.limitTo;
+            $scope.showInfiniteMe = true;
+          } else {
+            $scope.limitTo = 20;
+            $scope.leftMoreWait = 0;
+            $scope.showInfiniteMe = false;
+          }
+          if ($rootScope.orderRjt.length > 20) {
+            $scope.limitTo = 20;
+            $scope.leftMoreReject = $rootScope.orderRjt.length - $scope.limitTo;
+            $scope.showInfiniteMe = true;
+          } else {
+            $scope.limitTo = 20;
+            $scope.leftMoreReject = 0;
+            $scope.showInfiniteMe = false;
+          }
+          if ($rootScope.orderApt.length > 20) {
+            $scope.limitTo = 20;
+            $scope.leftMoreAccept = $rootScope.orderApt.length - $scope.limitTo;
+            $scope.showInfiniteMe = true;
+          } else {
+            $scope.limitTo = 20;
+            $scope.leftMoreAccept = 0;
+            $scope.showInfiniteMe = false;
+          }
           $ionicLoading.hide();
         });
     }
@@ -308,12 +340,14 @@ angular.module('starter.controllers', ['ionic'])
         $scope.showInfiniteConfirmed = false;
         $scope.showInfiniteWait = false;
         $scope.showInfiniteReject = false;
+        $scope.showInfiniteAccept = false;
       } else {
         $scope.limitTo = 20;
         $scope.filterText = "";
         $scope.showInfiniteConfirmed = true;
         $scope.showInfiniteWait = true;
         $scope.showInfiniteReject = true;
+        $scope.showInfiniteAccept = true;
       }
     };
 
