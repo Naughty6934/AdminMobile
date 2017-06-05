@@ -84,7 +84,7 @@ adminApp.controller('MoreDetailCtrl', function ($scope, $rootScope, $stateParams
         AccuralreceiptsService.updateaccuralreceipt(accuralreceiptsId, accuralreceipt)
             .then(function (response) {
                 // alert('success');
-                $state.go('tab.listar');
+                $state.go('app.listar');
             }, function (error) {
                 console.log(error);
                 alert('dont success' + " " + error.data.message);
