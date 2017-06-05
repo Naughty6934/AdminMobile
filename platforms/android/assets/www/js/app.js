@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.controllers', 'starter.services', 'satellizer', 'btford.socket-io'])
+var adminApp = angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.controllers', 'starter.services', 'satellizer', 'btford.socket-io']);
 
-  .run(function ($ionicPlatform, AuthService) {
+  adminApp.run(function ($ionicPlatform, AuthService) {
     $ionicPlatform.ready(function () {
       var devicePlatform = device.platform;
       window.localStorage.adminAppPlatform = devicePlatform;
@@ -38,7 +38,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
     });
   })
 
-  .config(function ($httpProvider) {
+  adminApp.config(function ($httpProvider) {
     $httpProvider.interceptors.push(function ($rootScope) {
       return {
         request: function (config) {
@@ -53,7 +53,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
     })
   })
 
-  .run(function ($rootScope, $ionicLoading) {
+  adminApp.run(function ($rootScope, $ionicLoading) {
     $rootScope.$on('loading:show', function () {
       $ionicLoading.show({ template: 'กรุณารอสักครู่' })
     })
@@ -63,7 +63,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
     })
   })
 
-  .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+  adminApp.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $ionicConfigProvider.tabs.position("bottom")
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
@@ -347,7 +347,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
 
   })
 
-  .directive('showHideContainer', function () {
+  adminApp.directive('showHideContainer', function () {
     return {
       scope: {
 
@@ -372,7 +372,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.contr
     };
   })
 
-  .directive('showHideInput', function () {
+  adminApp.directive('showHideInput', function () {
     return {
       scope: {
 
