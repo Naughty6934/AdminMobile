@@ -1,4 +1,4 @@
-<ion-side-menus enable-menu-with-back-views="false">
+<ion-side-menus enable-menu-with-back-views="false" ng-controller="menuCtrl">
 
     <ion-side-menu-content>
         <ion-nav-bar>
@@ -7,7 +7,7 @@
 
             <ion-nav-buttons side="left">
                 <button class="button button-icon ion-navicon" menu-toggle="left">
-                    <div ng-controller="menuCtrl">
+                    <div>
                     <span class="badge badge-assertive badge-notify-{{Platform | lowercase}}">{{(countStocks || 0) + (countReturns || 0) + (countAcc || 0) + (countTran || 0)}}</span>
                     </div>
               </button>
@@ -31,41 +31,41 @@
         </ion-content>-->
         <ion-content>
             <div class="list">
-                <div ng-controller="menuCtrl">
+                <div>
                     <a class="item item-icon-left settings-option" ng-click="homes()">
                         <i class="icon ion-ios-home-outline"></i> หน้าหลัก
                     </a>
                 </div>
 
-                <div ng-controller="menuCtrl" ng-init="init()">
+                <div>
                     <a class="item item-icon-left settings-option" href="#/app/liststock" ng-click="liststocks()">
                         <i class="icon ion-ios-list-outline"></i> คลังสินค้า
                         <span class="badge badge-assertive">{{countStocks || 0}}</span>
                     </a>
                 </div>
 
-                <div ng-controller="menuCtrl" ng-init="init()">
+                <div>
                     <a class="item item-icon-left settings-option" href="#/app/listtreturn" ng-click="listtreturn()">
                         <i class="icon ion-ios-list-outline"></i> รายการใบแจ้งคืน
                         <span class="badge badge-assertive">{{countReturns || 0}}</span>
                     </a>
                 </div>
 
-                <div ng-controller="menuCtrl" ng-init="init()">
+                <div>
                     <a class="item item-icon-left settings-option" href="#/app/listar" ng-click="listaccuralreceipt()">
                         <i class="icon ion-ios-list-outline"></i> รายการใบแจ้งหนี้
                         <span class="badge badge-assertive">{{countAcc || 0}}</span>
                     </a>
                 </div>
 
-                <div ng-controller="menuCtrl" ng-init="init()">
+                <div>
                     <a class="item item-icon-left settings-option" href="#/app/listtransports" ng-click="listtransports()">
                         <i class="icon ion-android-bus"></i> รายการขนส่งข้าว
                         <span class="badge badge-assertive">{{countTran || 0}}</span>
                     </a>
                 </div>
 
-                <div ng-controller="menuCtrl" ng-init="init()">
+                <div>
                     <a class="item item-icon-left settings-option" ng-click="logOut()">
                         <i class="icon ion-ios-close-outline"></i> ออกจากระบบ
                     </a>

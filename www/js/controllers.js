@@ -3,24 +3,24 @@ angular.module('starter.controllers', ['ionic'])
   .controller('LogInCtrl', function ($scope, $state, AuthService, $rootScope) {
     $rootScope.userStore = AuthService.getUser();
 
-    var push = new Ionic.Push({
-      "debug": true,
-      "onNotification": function (notification) {
-        //console.log(notification);
-        if (notification._raw.additionalData.foreground) {
-          // alert(notification.message);
+    // var push = new Ionic.Push({
+    //   "debug": true,
+    //   "onNotification": function (notification) {
+    //     //console.log(notification);
+    //     if (notification._raw.additionalData.foreground) {
+    //       // alert(notification.message);
 
-          $rootScope.$broadcast('onNotification');
-        }
-      }
-    });
+    //       $rootScope.$broadcast('onNotification');
+    //     }
+    //   }
+    // });
 
-    push.register(function (token) {
-      console.log("My Device token:", token.token);
-      // alert(token.token);
-      window.localStorage.token = JSON.stringify(token.token);
-      push.saveToken(token);  // persist the token in the Ionic Platform
-    });
+    // push.register(function (token) {
+    //   console.log("My Device token:", token.token);
+    //   // alert(token.token);
+    //   window.localStorage.token = JSON.stringify(token.token);
+    //   push.saveToken(token);  // persist the token in the Ionic Platform
+    // });
 
     $scope.userStore = AuthService.getUser();
     if ($scope.userStore) {
@@ -169,29 +169,28 @@ angular.module('starter.controllers', ['ionic'])
       $state.go('login');
       $scope.toggleLeftSideMenu();
     };
+    $rootScope.loadMenuService = function () {
+      StockService.getStocks()
+        .then(function (data) {
+          $rootScope.Stocks = data;
+          $rootScope.countStocks = $rootScope.Stocks.length;
+        });
 
-    StockService.getStocks()
-      .then(function (data) {
-        $rootScope.Stocks = data;
-        $rootScope.countStocks = $rootScope.Stocks.length;
-      });
+      ReturnService.getReturns()
+        .then(function (data) {
+          $rootScope.countReturns = data.length;
+        });
 
-    ReturnService.getReturns()
-      .then(function (data) {
-        $rootScope.countReturns = data.length;
-      });
+      AccuralreceiptsService.getAccuralreceipts()
+        .then(function (data) {
+          $rootScope.countAcc = data.length;
+        });
 
-    AccuralreceiptsService.getAccuralreceipts()
-      .then(function (data) {
-        $rootScope.countAcc = data.length;
-      });
-
-    RequestService.getRequests()
-      .then(function (data) {
-        $rootScope.countTran = data.length;
-      });
-
-
+      RequestService.getRequests()
+        .then(function (data) {
+          $rootScope.countTran = data.length;
+        });
+    };
   })
 
   .controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $timeout, $state, AuthService, $ionicModal, $stateParams, $rootScope, $ionicSideMenuDelegate, Socket) {
@@ -202,6 +201,7 @@ angular.module('starter.controllers', ['ionic'])
     $rootScope.ordersReject = [];
     $rootScope.ordersCancel = [];
     $rootScope.ordersComplete = [];
+    $rootScope.orderApt = [];
     $scope.Wait = true;
     $scope.limitTo = 20;
     $scope.leftMoreConfirmed = 0;
@@ -229,13 +229,15 @@ angular.module('starter.controllers', ['ionic'])
       $ionicLoading.show({ template: 'กรุณารอสักครู่' });
       $scope.limitTo = 0;
       $rootScope.orders = [];
+      $rootScope.orderApt = [];
+      $scope.leftMoreReject = 0;
+      $scope.leftMoreAccept = 0;
       $scope.showInfiniteConfirmed = true;
       $scope.showInfiniteWait = true;
       $scope.showInfiniteReject = true;
       $scope.showInfiniteAccept = true;
       AuthService.getOrder()
         .then(function (data) {
-
           var userStore = AuthService.getUser();
 
           $rootScope.ordersConfirmed = data.confirmed;
@@ -297,6 +299,7 @@ angular.module('starter.controllers', ['ionic'])
             $scope.leftMoreAccept = 0;
             $scope.showInfiniteMe = false;
           }
+          $rootScope.loadMenuService();
           $ionicLoading.hide();
         });
     }
@@ -850,7 +853,9 @@ angular.module('starter.controllers', ['ionic'])
       $ionicSideMenuDelegate.canDragContent(true);
     });
     $rootScope.userStore = AuthService.getUser();
-
+    $scope.showInfiniteConfirmed = true;
+    $scope.limitTo = 0;
+    $scope.leftMoreStock = 0;
     if ($stateParams.data) {
       $scope.data = JSON.parse($stateParams.data);
     }
@@ -859,23 +864,43 @@ angular.module('starter.controllers', ['ionic'])
       $state.go('login');
     };
 
-
-    $scope.init = function () {
-      $scope.requestsorders();
-      $scope.returnorders();
+    $scope.initStock = function () {
       $scope.liststock();
-      $scope.listaccuralreceipts();
+    }//1
+    $scope.initReturn = function () {
+      $scope.returnorders();
+      $scope.Returns = true;
 
+    }//2
+    $scope.initAr = function () {
+      $scope.listaccuralreceipts();
       $scope.waitforreview = true;
       $scope.waitforconfirmed = false;
       $scope.confirmed = false;
       $scope.receipt = false;
+    }//3
+    $scope.initTran = function () {
+      $scope.requestsorders();
 
-      $scope.Returns = true;
+      $scope.Request = true;
+
       $scope.Response = false;
       $scope.Received = false;
 
-      $scope.Request = true;
+    };//4
+
+    $scope.doRefresh = function (state) {
+      if (state === 'stock') {
+        $scope.initStock();
+      } else if (state === 'return') {
+        $scope.initReturn();
+      } else if (state === 'ar') {
+        $scope.initAr();
+      } else if (state === 'tran') {
+        $scope.initTran();
+      }
+      $scope.$broadcast('scroll.refreshComplete');
+
     };
 
     $scope.listaccuralreceipt = function () {
@@ -890,27 +915,47 @@ angular.module('starter.controllers', ['ionic'])
       StockService.getStocks()
         .then(function (data) {
           $scope.stocks = data;
+          if ($scope.stocks.length > 20) {
+            $scope.limitTo = 20;
+            $scope.leftMoreStock = $scope.stocks.length - $scope.limitTo;
+            $scope.showInfiniteConfirmed = true;
+          } else {
+            $scope.limitTo = 20;
+            $scope.leftMoreStock = 0;
+            $scope.showInfiniteConfirmed = false;
+          }
         })
     };
-    // $ionicModal.fromTemplateUrl('templates/modal.html', {
-    //   scope: $scope
-    // }).then(function (modal) {
-    //   $scope.modal = modal;
-    // });
-    // $scope.liststock = function () {
-    //   $state.go('liststock');
-    //   $scope.Request = true;
-    //   $scope.Response = false;
-    //   $scope.Received = false;
-    //   $scope.ordersConfirmed = [];
+    $scope.loadMore = function (orders, tab) {
+      $scope.$broadcast('scroll.refreshComplete');
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+      if (orders.length > 0) {
+        $scope.limitTo += 20;
+        $scope.leftMoreStock -= 20;
 
-    //   $scope.ordersResponse = [];
-    //   $scope.ordersReceived = [];
-    //   $scope.ordersRequest = [];
-    //   $rootScope.countOrderRes = 0;
-    //   $rootScope.countOrderRec = 0;
-    //   $rootScope.countOrderReq = 0;
-    // };
+        if ($scope.leftMoreStock <= 0) {
+          $scope.showInfiniteConfirmed = false;
+        }
+      }
+    };
+
+    $scope.filter = function (filter, orders) {
+      if (filter.length > 4) {
+        $scope.limitTo = orders.length;
+        $scope.filterText = filter;
+        $scope.showInfiniteConfirmed = false;
+        $scope.showInfiniteWait = false;
+        $scope.showInfiniteReject = false;
+        $scope.showInfiniteAccept = false;
+      } else {
+        $scope.limitTo = 20;
+        $scope.filterText = "";
+        $scope.showInfiniteConfirmed = true;
+        $scope.showInfiniteWait = true;
+        $scope.showInfiniteReject = true;
+        $scope.showInfiniteAccept = true;
+      }
+    };
     $scope.listtransports = function () {
       $state.go('app.listtransports');
     };
@@ -1021,13 +1066,6 @@ angular.module('starter.controllers', ['ionic'])
     $scope.arDetail = function (data) {
       $state.go('app.detailar', { data: JSON.stringify(data) });
     }
-
-    $scope.doRefresh = function () {
-      $scope.init();
-      // Stop the ion-refresher from spinning
-      $scope.$broadcast('scroll.refreshComplete');
-
-    };
 
   })
 

@@ -1,6 +1,6 @@
-<ion-view view-title="รายการใบแจ้งคืน" ng-init="init()">
+<ion-view view-title="รายการใบแจ้งคืน" ng-init="initReturn()" cache-view="false">
     <ion-content>
-        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh('return')">
         </ion-refresher>
 
         <div class="row badge-buttonnoti">
