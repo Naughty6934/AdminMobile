@@ -1,4 +1,4 @@
-adminApp.controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $timeout, $state, AuthService, $ionicModal, $stateParams, $rootScope, $ionicSideMenuDelegate, Socket) {
+adminApp.controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $timeout, $state, AuthService, $ionicModal, $stateParams, $rootScope, $ionicSideMenuDelegate) {
 
     $rootScope.ordersConfirmed = [];
     $rootScope.ordersWait = [];

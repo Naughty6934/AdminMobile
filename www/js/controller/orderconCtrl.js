@@ -1,4 +1,4 @@
-adminApp.controller('OrderconCtrl', function ($scope, $rootScope, AuthService, $state, $stateParams, $ionicModal, $ionicSideMenuDelegate, Socket) {
+adminApp.controller('OrderconCtrl', function ($scope, $rootScope, AuthService, $state, $stateParams, $ionicModal, $ionicSideMenuDelegate) {
     $scope.$on('$ionicView.enter', function () {
         $ionicSideMenuDelegate.canDragContent(true);
     });
@@ -6,38 +6,38 @@ adminApp.controller('OrderconCtrl', function ($scope, $rootScope, AuthService, $
 
     $rootScope.chattype = 'confirm';
 
-    $scope.gotoChat = function (user) {
-        if ($rootScope.chattype === 'normal' || $rootScope.chattype === 'accept') {
-            $rootScope.chattype = 'confirm';
-        }
-        // alert($rootScope.chattype);
-        var data = {
-            name: $scope.userStore.username + '' + user.username,
-            type: 'P',
-            users: [$scope.userStore, user],
-            user: $scope.userStore
-        };
+    // $scope.gotoChat = function (user) {
+    //     if ($rootScope.chattype === 'normal' || $rootScope.chattype === 'accept') {
+    //         $rootScope.chattype = 'confirm';
+    //     }
+    //     // alert($rootScope.chattype);
+    //     var data = {
+    //         name: $scope.userStore.username + '' + user.username,
+    //         type: 'P',
+    //         users: [$scope.userStore, user],
+    //         user: $scope.userStore
+    //     };
 
-        Socket.emit('createroom', data);
-        // Add an event listener to the 'invite' event
-        Socket.on('invite', function (res) {
-            console.log('invite ConfirmedCtrl');
-            // alert('invite : ' + JSON.stringify(data));
-            Socket.emit('join', res);
-        });
+    //     Socket.emit('createroom', data);
+    //     // Add an event listener to the 'invite' event
+    //     Socket.on('invite', function (res) {
+    //         console.log('invite ConfirmedCtrl');
+    //         // alert('invite : ' + JSON.stringify(data));
+    //         Socket.emit('join', res);
+    //     });
 
-        // Add an event listener to the 'joinsuccess' event
-        Socket.on('joinsuccess', function (data) {
-            console.log('joinsuccess ConfirmedCtrl');
-            $scope.room = data;
-            if ($rootScope.chattype === 'confirm') {
-                $state.go('app.tab.chat-detailconfirm', { chatId: data._id });
-            }
-            // $state.go('app.tab.chat-detail', { chatId: data._id });
-            // $scope.pageDown();
-            // alert('joinsuccess : ' + JSON.stringify(data));
-        });
-    }
+    //     // Add an event listener to the 'joinsuccess' event
+    //     Socket.on('joinsuccess', function (data) {
+    //         console.log('joinsuccess ConfirmedCtrl');
+    //         $scope.room = data;
+    //         if ($rootScope.chattype === 'confirm') {
+    //             $state.go('app.tab.chat-detailconfirm', { chatId: data._id });
+    //         }
+    //         // $state.go('app.tab.chat-detail', { chatId: data._id });
+    //         // $scope.pageDown();
+    //         // alert('joinsuccess : ' + JSON.stringify(data));
+    //     });
+    // }
 
 
     $scope.setItem = function () {

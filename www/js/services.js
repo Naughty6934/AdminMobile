@@ -282,73 +282,73 @@ angular.module('starter.services', [])
       return dfd.promise;
     };
   }])
-  .service('roomService', function ($http, $q, config) {
-    var apiURL = config.apiServiceUrl;
-    this.getrooms = function () {
-      var dfd = $q.defer();
-      var user = (window.localStorage.user) ? JSON.parse(window.localStorage.user) : null;
-      $http.get(apiURL + '/chatrooms', user).success(function (data) {
-        // window.localStorage.setItem("storage", JSON.stringify(data));
-        dfd.resolve(data);
-      }).error(function (err) {
-        dfd.reject(err);
-      })
-      return dfd.promise;
-    };
+  // .service('roomService', function ($http, $q, config) {
+  //   var apiURL = config.apiServiceUrl;
+  //   this.getrooms = function () {
+  //     var dfd = $q.defer();
+  //     var user = (window.localStorage.user) ? JSON.parse(window.localStorage.user) : null;
+  //     $http.get(apiURL + '/chatrooms', user).success(function (data) {
+  //       // window.localStorage.setItem("storage", JSON.stringify(data));
+  //       dfd.resolve(data);
+  //     }).error(function (err) {
+  //       dfd.reject(err);
+  //     })
+  //     return dfd.promise;
+  //   };
 
-    this.getRoom = function (roomId) {
-      var dfd = $q.defer();
-      $http.get(apiURL + '/chatrooms/' + roomId).success(function (database) {
-        dfd.resolve(database);
-      });
-      return dfd.promise;
-    };
+  //   this.getRoom = function (roomId) {
+  //     var dfd = $q.defer();
+  //     $http.get(apiURL + '/chatrooms/' + roomId).success(function (database) {
+  //       dfd.resolve(database);
+  //     });
+  //     return dfd.promise;
+  //   };
 
-    this.createRoom = function (data) {
-      var dfd = $q.defer();
-      $http.post(apiURL + '/chatrooms', data).success(function (data) {
-        dfd.resolve(data);
-      }).error(function (err) {
-        dfd.reject(err);
-      })
-      return dfd.promise;
-    };
-  })
+  //   this.createRoom = function (data) {
+  //     var dfd = $q.defer();
+  //     $http.post(apiURL + '/chatrooms', data).success(function (data) {
+  //       dfd.resolve(data);
+  //     }).error(function (err) {
+  //       dfd.reject(err);
+  //     })
+  //     return dfd.promise;
+  //   };
+  // })
 
-  .factory('Socket', function ($rootScope, config) {
+  // .factory('Socket', function ($rootScope, config) {
 
-    var url = config.url;
-    var socket = io.connect(url);
-    return {
-      connect: function () {
-        io.connect(url);
-      },
-      on: function (eventName, callback) {
-        socket.on(eventName, function () {
-          var args = arguments;
-          $rootScope.$apply(function () {
-            callback.apply(socket, args);
-          });
-        });
-      },
-      emit: function (eventName, data, callback) {
-        socket.emit(eventName, data, function () {
-          var args = arguments;
-          $rootScope.$apply(function () {
-            if (callback) {
-              callback.apply(socket, args);
-            }
-          });
-        })
-      },
-      removeAllListeners: function (eventName, callback) {
-        socket.removeAllListeners(eventName, function () {
-          var args = arguments;
-          $rootScope.$apply(function () {
-            callback.apply(socket, args);
-          });
-        });
-      }
-    };
-  })
+  //   var url = config.url;
+  //   var socket = io.connect(url);
+  //   return {
+  //     connect: function () {
+  //       io.connect(url);
+  //     },
+  //     on: function (eventName, callback) {
+  //       socket.on(eventName, function () {
+  //         var args = arguments;
+  //         $rootScope.$apply(function () {
+  //           callback.apply(socket, args);
+  //         });
+  //       });
+  //     },
+  //     emit: function (eventName, data, callback) {
+  //       socket.emit(eventName, data, function () {
+  //         var args = arguments;
+  //         $rootScope.$apply(function () {
+  //           if (callback) {
+  //             callback.apply(socket, args);
+  //           }
+  //         });
+  //       })
+  //     },
+  //     removeAllListeners: function (eventName, callback) {
+  //       socket.removeAllListeners(eventName, function () {
+  //         var args = arguments;
+  //         $rootScope.$apply(function () {
+  //           callback.apply(socket, args);
+  //         });
+  //       });
+  //     }
+  //   };
+  // })
   ;
