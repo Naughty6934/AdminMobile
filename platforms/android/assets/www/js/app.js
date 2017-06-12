@@ -5,10 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-var adminApp = angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.controllers', 'starter.services', 'satellizer', 'btford.socket-io']);
+var adminApp = angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.controllers', 'starter.services', 'satellizer']);
 adminApp.constant('config', {
-  apiServiceUrl: 'https://thamapptest.herokuapp.com/api',
-  url: 'https://thamapptest.herokuapp.com/'
+  apiServiceUrl: 'https://thamapp.herokuapp.com/api',
+  url: 'https://thamapp.herokuapp.com/'
   //https://thamapp.herokuapp.com/      for production
   //https://thamapptest.herokuapp.com/  for heroku test
   //http://localhost:3000/              for local
