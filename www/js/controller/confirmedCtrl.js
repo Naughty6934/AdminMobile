@@ -7,6 +7,8 @@ adminApp.controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $ti
     $rootScope.ordersCancel = [];
     $rootScope.ordersComplete = [];
     $rootScope.orderApt = [];
+    $rootScope.orderRjt = [];
+    $rootScope.orderWt = [];
     $scope.Wait = true;
     $scope.limitTo = 20;
     $scope.leftMoreConfirmed = 0;
@@ -27,6 +29,7 @@ adminApp.controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $ti
         $state.go('app.tab.confirmed');
     }
     $scope.init = function () {
+        $rootScope.orderApt = [];
         $rootScope.loadData();
     }
 
