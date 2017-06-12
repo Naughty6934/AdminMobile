@@ -29,7 +29,10 @@ adminApp.controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $ti
         $state.go('app.tab.confirmed');
     }
     $scope.init = function () {
+        $scope.Wait = true;
         $rootScope.orderApt = [];
+        $rootScope.orderRjt = [];
+        $rootScope.orderWt = [];
         $rootScope.loadData();
     }
 
@@ -83,29 +86,29 @@ adminApp.controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $ti
                 if ($rootScope.orderWt.length > 20) {
                     $scope.limitTo = 20;
                     $scope.leftMoreWait = $rootScope.orderWt.length - $scope.limitTo;
-                    $scope.showInfiniteMe = true;
+                    $scope.showInfiniteWait = true;
                 } else {
                     $scope.limitTo = 20;
                     $scope.leftMoreWait = 0;
-                    $scope.showInfiniteMe = false;
+                    $scope.showInfiniteWait = false;
                 }
                 if ($rootScope.orderRjt.length > 20) {
                     $scope.limitTo = 20;
                     $scope.leftMoreReject = $rootScope.orderRjt.length - $scope.limitTo;
-                    $scope.showInfiniteMe = true;
+                    $scope.showInfiniteReject = true;
                 } else {
                     $scope.limitTo = 20;
                     $scope.leftMoreReject = 0;
-                    $scope.showInfiniteMe = false;
+                    $scope.showInfiniteReject = false;
                 }
                 if ($rootScope.orderApt.length > 20) {
                     $scope.limitTo = 20;
                     $scope.leftMoreAccept = $rootScope.orderApt.length - $scope.limitTo;
-                    $scope.showInfiniteMe = true;
+                    $scope.showInfiniteAccept = true;
                 } else {
                     $scope.limitTo = 20;
                     $scope.leftMoreAccept = 0;
-                    $scope.showInfiniteMe = false;
+                    $scope.showInfiniteAccept = false;
                 }
                 $rootScope.loadMenuService();
                 $ionicLoading.hide();
