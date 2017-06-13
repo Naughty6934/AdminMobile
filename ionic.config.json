@@ -1,4 +1,8 @@
 {
   "name": "หลังบ้านธรรมธุรกิจ",
-  "app_id": "da84e856"
+  "app_id": "da84e856",
+  "type": "ionic1",
+  "watchPatterns": [
+    "scss/**/*"
+  ]
 }
