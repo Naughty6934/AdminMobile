@@ -7,8 +7,8 @@
 // 'starter.controllers' is found in controllers.js
 var adminApp = angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.controllers', 'starter.services', 'satellizer']);
 adminApp.constant('config', {
-  apiServiceUrl: 'https://thamapp.herokuapp.com/api',
-  url: 'https://thamapp.herokuapp.com/'
+  apiServiceUrl: 'https://thamapptest.herokuapp.com/api',
+  url: 'https://thamapptest.herokuapp.com/'
   //https://thamapp.herokuapp.com/      for production
   //https://thamapptest.herokuapp.com/  for heroku test
   //http://localhost:3000/              for local

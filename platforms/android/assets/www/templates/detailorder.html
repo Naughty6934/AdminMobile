@@ -183,7 +183,13 @@
                     <span class="input-group-addon" id="sizing-addon3"><i class="fa fa-search" aria-hidden="true"></i></span>
                     <input type="text" class="form-control" placeholder="ค้นหา..." ng-model="topsearch" aria-describedby="sizing-addon3">
                 </div>
-                <div class="list">
+                <div class="text-center" ng-if="!delivers">
+                    <ion-spinner icon="spiral"></ion-spinner>
+                </div>
+                <div class="text-center" ng-if="delivers.length == 0">
+                    <p>ไม่มีข้อมูลคนส่งข้าว</p>
+                </div>
+                <div class="list" ng-if="delivers.length > 0">
                     <a ng-repeat="deli in delivers | filter: {displayName : topsearch}" ng-click="chooseDeliver(deli)" class="item">
                             {{deli.displayName}}
                         <span class="item-note">
