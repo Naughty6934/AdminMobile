@@ -1,0 +1,70 @@
+<ion-view view-title="ตะกร้าสินค้าของคุณ" class="cart-view" cache-view="false">
+    <ion-nav-buttons side="right">
+        <!--<a class="button button-icon" ui-sref="app.shop.cart-chat">
+            <i class="icon ion-ios-chatbubble-outline"></i>
+        </a>-->
+    </ion-nav-buttons>
+    <ion-content scroll="true">
+        <div ng-if="products.length > 0">
+            <!---->
+            <div class="item item-divider">
+                <div class="row">
+                    <div class="col col-50">ราคารวม</div>
+                    <div class="col col-50 text-right">{{total | number : 2}}</div>
+                </div>
+            </div>
+            <div ng-repeat="product in products">
+                <div class="products-list">
+                    <div class="product-list-item">
+                        <div class="row">
+                            <span class="product-title">{{product.product.name}} ({{product.product.price}}฿)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="list">
+                    <div class="item cart-list">
+                        <div class="row">
+                            <div class="col col-25">
+                                <img ng-src="{{product.product.images}}" style="width:100%;">
+                            </div>
+                            <div class="col col-50">
+                                <div class="list">
+                                    <div class="product-list-item">
+                                        <!--<div class="row">
+                                            <p class="card-description">{{product.product.description}}</p>
+                                        </div>-->
+                                        <div class="row">
+                                            <p class="card-description">ค่าจัดส่ง {{product.deliverycost}}</p>
+                                        </div>
+                                        <div class="row">
+                                            <p class="card-description">ส่วนลด {{product.discountamount}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="padding-left: 15px; margin-top:-16px;">
+                                    <button class="button button-clear button-small button-assertive remove-product-button" ng-click="removeProductFromCart($index)">
+                                        ยกเลิกสินค้า
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col col-25">
+                                <div class="list">
+                                    <label class="item item-input input-product-qty">
+                                        <input type="number" ng-model="product.qty" ng-change="calculate(product)" />
+                                    </label>
+                                </div>
+                                <span class="product-price">฿{{product.amount + product.deliverycost - product.discountamount}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!---->
+            <div class="row padding">
+                <button class="button button-block button-balanced checkout-btn" ui-sref="app.tab.checkout">
+                    ดำเนินการต่อ
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

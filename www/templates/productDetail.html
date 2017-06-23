@@ -1,0 +1,56 @@
+<ion-view view-title="รายละเอียดสินค้า" class="shop-home-view">
+    <ion-content overflow-scroll="true">
+        <div id="widget">
+            <table class="capture-product-detail" width="100%">
+                <tr>
+                    <td>
+                        <div class="product-card-content">
+                            <div class="item item-image">
+                                <pre-img helper-class="main-image" ratio="_1_1">
+                                    <img ng-src="{{product.images}}" spinner-on-load>
+                                </pre-img>
+                            </div>
+                            <div class="item item-body">
+                                <div class="row">
+                                    <h2 class="product-title">{{product.name}}</h2>
+                                </div>
+                                <div class="row">
+                                    <div>
+                                        <p class="product-price thamma-ore-style">฿{{product.price}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row item">
+                                <div class="col col-50">
+                                    <button class="button button-block button-thamma checkout-btn" ng-click="showAddToCartPopup(product)">ใส่ตะกร้า</button>
+                                </div>
+                                <div class="col col-50">
+                                    <button class="button button-block button-balanced checkout-btn" ng-click="showAddToCartPopup(product,true)">สั่งซื้อทันที</button>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table class="capture-product-detail" width="100%">
+                <tr>
+                    <td>
+                        <div class="item item-body" ng-if="product.promotions.length > 0">
+                            <p class="product-description">โปรโมชั่น</p>
+                            <p class="product-description" ng-repeat="promotion in product.promotions">- {{promotion.description}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table class="capture-product-detail" width="100%">
+                <tr>
+                    <td>
+                        <div class="item item-body">
+                            <p class="text-not-warp-history product-detail-wordbreak">{{product.description}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </ion-content>
+</ion-view>

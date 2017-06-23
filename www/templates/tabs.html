@@ -16,13 +16,13 @@ navigation history that also transitions its views in and out.
 
 
   <!-- Accept Tab on-select="loadData()" -->
-  
+
 
   <div>
     <ion-tab title="คนส่งข้าว" badge="countOrderApt + countOrderRjt + countOrderWt" badge-style="color:red;" icon-off="ion-ios-people-outline"
       icon-on="ion-ios-people" href="#/app/tab/detailaccept">
       <ion-nav-view name="tab-detailaccept"></ion-nav-view>
-      </ion-tab>
+    </ion-tab>
   </div>
 
 
@@ -30,6 +30,13 @@ navigation history that also transitions its views in and out.
   <div ng-controller="MapCtrl">
     <ion-tab title="แผนที่" icon-off="ion-ios-location-outline" ng-click="clearItem()" icon-on="ion-ios-location">
       <ion-nav-view name="tab-map"></ion-nav-view>
+    </ion-tab>
+  </div>
+
+  <div>
+    <ion-tab title="สั่งซื้อ" badge="badgeProduct" badge-style="color:red;" icon-off="ion-ios-cart-outline"
+      icon-on="ion-ios-cart" href="#/app/tab/cart">
+      <ion-nav-view name="tab-checkout"></ion-nav-view>
     </ion-tab>
   </div>
 

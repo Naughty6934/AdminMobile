@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-var adminApp = angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.controllers', 'starter.services', 'satellizer']);
+var adminApp = angular.module('starter', ['ionic', 'ngCordova', 'angularMoment', 'starter.controllers', 'starter.services', 'satellizer', 'autocomplete.directive']);
 adminApp.constant('config', {
   apiServiceUrl: 'https://thamapptest.herokuapp.com/api',
   url: 'https://thamapptest.herokuapp.com/'
@@ -173,6 +173,46 @@ adminApp.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvid
         'tab-confirmed': {
           templateUrl: 'templates/detailorder.html',
           controller: 'OrderconCtrl'
+        }
+      }
+    })
+
+    .state('app.tab.products', {
+      url: '/products',
+      views: {
+        'tab-confirmed': {
+          templateUrl: 'templates/products.html',
+          controller: 'ProductCtrl'
+        }
+      }
+    })
+
+    .state('app.tab.productdetail', {
+      url: '/products/:{product}',
+      views: {
+        'tab-confirmed': {
+          templateUrl: 'templates/productDetail.html',
+          controller: 'ProductDetailCtrl'
+        }
+      }
+    })
+
+    .state('app.tab.cart', {
+      url: '/cart',
+      views: {
+        'tab-checkout': {
+          templateUrl: 'templates/cart.html',
+          controller: 'CheckoutCtrl'
+        }
+      }
+    })
+
+    .state('app.tab.checkout', {
+      url: '/checkout',
+      views: {
+        'tab-checkout': {
+          templateUrl: 'templates/checkout.html',
+          controller: 'CheckoutCtrl'
         }
       }
     })

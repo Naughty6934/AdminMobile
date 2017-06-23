@@ -87,7 +87,7 @@ angular.module('starter.services', [])
         dfd.resolve(database);
       }).error(function (error) {
         /* Act on the event */
-        console.log(error);
+        // console.log(error);
         dfd.resolve(error);
         // return dfd.promise;
       });
@@ -216,6 +216,150 @@ angular.module('starter.services', [])
     }
 
   }])
+
+  .service('ProductService', ['$http', '$q', '$rootScope', '$auth', 'config', 'AuthService', function ($http, $q, $rootScope, $auth, config, AuthService) {
+    var apiURL = config.apiServiceUrl;
+
+    this.getProducts = function () {
+      var dfd = $q.defer();
+      $http.get(apiURL + '/products').success(function (products) {
+        // var order = [];
+        // console.log(getUser);
+        // angular.forEach(db, function (user) {
+        //   if (user.namedeliver._id ===   getUser._id) {
+        //     order.push(user);
+        //   }
+        // })
+        //console.log(orders);
+        dfd.resolve(products);
+      });
+
+
+      return dfd.promise;
+
+    };
+
+    this.getCartProducts = function () {
+      return JSON.parse(window.localStorage.ionTheme1_cart || '[]');
+    };
+
+    this.getCountProduct = function () {
+
+      var getCartProducts = this.getCartProducts();
+      var count = 0;
+      getCartProducts.forEach(function (product) {
+        count += product.qty;
+      });
+      return count;
+    };
+
+    this.removeProductFromCart = function (index) {
+      var cart_products = JSON.parse(window.localStorage.ionTheme1_cart);
+
+      cart_products.splice(index, 1);
+
+      window.localStorage.ionTheme1_cart = JSON.stringify(cart_products);
+    };
+
+
+    this.getProduct = function (productId) {
+      var dfd = $q.defer();
+      $http.get(apiURL + '/products/' + productId).success(function (database) {
+        dfd.resolve(database);
+      });
+      return dfd.promise;
+    };
+
+    this.getPostcode = function (postcode) {
+      var dfd = $q.defer();
+      $http.get(apiURL + '/postcodes').success(function (database) {
+        dfd.resolve(database);
+      });
+      return dfd.promise;
+    };
+
+    this.addProductToCart = function (productToAdd, update) {
+      productToAdd.price = productToAdd.product.price;
+      productToAdd.retailerprice = productToAdd.product.retailerprice;
+      productToAdd.discountamount = 0;
+      productToAdd.deliverycost = 0;
+      var cart_products = window.localStorage.ionTheme1_cart ? JSON.parse(window.localStorage.ionTheme1_cart) : [];
+
+      //check if this product is already saved
+      // var existing_product = find(cart_products, function (product) {
+      //   return product.product._id === productToAdd.product._id;
+      // });
+
+      var existing_product = cart_products.filter(function (product) { return product.product._id === productToAdd.product._id; });
+
+
+
+      if (cart_products.length === 0) {
+        this.getPromotion(productToAdd);
+        cart_products.push(productToAdd);
+      } else {
+        if (existing_product != undefined && existing_product.length > 0 && existing_product[0].product._id === productToAdd.product._id) {
+          if (update) {
+            existing_product[0].qty = productToAdd.qty
+          } else {
+            existing_product[0].qty += productToAdd.qty;
+          }
+          this.getPromotion(existing_product[0]);
+
+
+          existing_product[0].amount = 0;
+          existing_product[0].amount += existing_product[0].qty * existing_product[0].product.price;
+        } else {
+          this.getPromotion(productToAdd);
+          cart_products.push(productToAdd);
+        }
+      }
+
+      window.localStorage.ionTheme1_cart = JSON.stringify(cart_products);
+    };
+
+    this.getPromotion = function (product) {
+      console.log(product);
+      for (var i = 0; i < product.product.promotions.length; i++) {
+        var sumQtyCheckCondition = parseInt(product.qty / product.product.promotions[i].condition);
+        product.discountamount = sumQtyCheckCondition * product.product.promotions[i].discount.fixBath;
+      }
+      this.getDeliveryCost(product);
+    };
+
+    this.getDeliveryCost = function (product) {
+      if (product.product.deliveryratetype === 0) {
+        product.deliverycost = 0;
+      } else if (product.product.deliveryratetype === 1) {
+        product.deliverycost = product.qty * product.product.valuetype1;
+      } else if (product.product.deliveryratetype === 2) {
+        for (var i = 0; i < product.product.rangtype2.length; i++) {
+          if (product.qty >= product.product.rangtype2[i].min && product.qty <= product.product.rangtype2[i].max) {
+            product.deliverycost = product.product.rangtype2[i].value;
+          }
+        }
+      }
+    };
+
+    this.saveOrder = function (order) {
+      var dfd = $q.defer();
+      var user = AuthService.getUser();
+      $http.post(apiURL + '/orders', order, user).then(function (res) {
+        dfd.resolve(res.data);
+        window.localStorage.removeItem('ionTheme1_cart');
+      }, function (err) {
+        dfd.reject(err);
+      });
+      return dfd.promise;
+    };
+
+    this.clearCart = function () {
+      window.localStorage.removeItem('ionTheme1_cart');
+      return true;
+    };
+
+  }])
+
   .service('RequestService', ['$http', '$q', 'config', function ($http, $q, config) {
     var apiURL = config.apiServiceUrl;
     this.getRequests = function () {

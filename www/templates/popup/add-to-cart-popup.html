@@ -1,0 +1,10 @@
+<span class="popup-product-title">{{data.product.title}}</span>
+<span class="popup-product-price">ราคาต่อหน่วย : {{data.product.price}} บาท</span>
+<div class="separator-line"></div>
+<span class="popup-product-price">ระบุจำนวนสั่งซื้อ</span>
+<div class="row product-options">
+    <div class="col col-100 border-1">
+        <input type="number" ng-model="productGotoCart.qty"></input>
+    </div>
+</div>
+<span class="popup-product-price danger-coler-text" ng-if="showError">คุณระบุจำนวนไม่ถูกต้อง!!</span>

@@ -1,0 +1,102 @@
+<!--<style>.popover { height:300px; width: 300px; }</style>-->
+<!--ng-init="calculate()"-->
+<ion-view view-title="ยืนยันการสั่งซื้อ" cache-view="false" class="checkout-view" ng-init="getPostcode()">
+    <ion-nav-buttons side="right">
+        <!--<a class="button button-icon" ui-sref="app.shop.cart">
+            <i class="icon ion-ios-cart"><span class="badge badge-assertive badge-cart">{{countProduct.getCountProduct()}}</span></i>
+        </a>-->
+    </ion-nav-buttons>
+    <ion-content overflow-scroll="true">
+        <!--address-->
+        <div>
+            <div class="item item-divider shop-section-title">
+                <span class="title-copy">ที่อยู่ที่จะจัดส่ง</span>
+            </div>
+        </div>
+        <div class="list card">
+            <div class="list">
+                <label class="item item-input">
+          <span class="input-label">ชื่อ*</span>
+          <input type="text" ng-model="order.shipping.firstName">
+        </label>
+                <label class="item item-input">
+          <span class="input-label">นามสกุล*</span>
+          <input type="text" ng-model="order.shipping.lastName">
+        </label>
+                <label class="item item-input">
+          <span class="input-label">รหัสไปรษณีย์*</span>
+          <input type="number" ng-model="order.shipping.postcode" ionic-autocomplete="{items: postcodes, onSelect: onCheckOutPostcodeSelected, onDataInvalid: onCheckOutPostcodeInvalid}"/>
+        </label>
+                <label class="item item-input">
+          <span class="input-label">แขวง/ตำบล*</span>
+          <input type="text" ng-model="order.shipping.subdistrict">
+        </label>
+                <label class="item item-input">
+          <span class="input-label">เขต/อำเภอ*</span>
+          <input type="text" ng-model="order.shipping.district">
+        </label>
+                <label class="item item-input">
+          <span class="input-label">จังหวัด*</span>
+          <input type="text" ng-model="order.shipping.province">
+        </label>
+                <label class="item item-input">
+          <span class="input-label">ที่อยู่*</span>
+          <input type="text" ng-model="order.shipping.address">
+        </label>
+                <label class="item item-input">
+          <span class="input-label">เบอร์โทร*</span>
+          <input type="text" ng-model="order.shipping.tel" maxlength="10" ng-change="chkShippingTel(order.shipping.tel)">
+        </label>
+            </div>
+        </div>
+        <!---->
+        <!---->
+        <div class="list">
+            <div class="item item-divider shop-section-title">
+                <span class="title-copy">ประเภทการจัดส่ง</span>
+            </div>
+            <ion-list>
+                <ion-radio ng-model="order.delivery.deliveryid" ng-value="'0'">
+                    <p class="font-set">ส่งโดยคนส่งข้าว (ชำระเงินปลายทาง)</p>
+                </ion-radio>
+                <!--<ion-radio ng-model="order.delivery.deliveryid" ng-value="'1'">ส่งทางไปรษณีย์</ion-radio>-->
+            </ion-list>
+            <div class="item item-divider shop-section-title">
+                <span class="title-copy">สรุปราคาสั่งซื้อ</span>
+            </div>
+            <div class="item row padding totals">
+                <div class="col col-50">
+                    <div class="row">ราคาสินค้า</div>
+                    <div class="row">ค่าจัดส่ง</div>
+                    <div class="row">ส่วนลด</div>
+                </div>
+                <div class="col col-50 totals-numbers text-right">
+                    <div class="row">{{order.amount}} บาท</div>
+                    <div class="row">{{order.deliveryamount}} บาท</div>
+                    <div class="row">{{order.discountpromotion}} บาท</div>
+                </div>
+            </div>
+            <div class="item item-divider shop-section-title">
+                <span class="title-copy">ราคารวม</span>
+                <span class="order-total-value section-action"><h2>฿{{order.totalamount}}</h2></span>
+            </div>
+            <div class="row padding">
+                <button class="button button-block button-balanced checkout-btn" ng-click="confirm()" ng-disabled="!status && (!order.shipping.address || !order.shipping.province || !order.shipping.district || !order.shipping.postcode || !order.shipping.lastName || !order.shipping.firstName) || status && (!user.address.tel) || confirmedOrder">
+          ดำเนินการต่อ
+        </button>
+            </div>
+        </div>
+        <div class="list card">
+            <div class="list">
+                <div class="item item-divider">
+                    สรุปยอดการสั่งซื้อ
+                </div>
+                <a class="item item-avatar" ng-repeat="item in order.items">
+                    <img ng-src="{{item.product.images}}">
+                    <h2>{{item.product.name}} (฿{{item.product.price}})</h2>
+                    <p>{{item.qty}} ชิ้น(฿{{item.amount + item.deliverycost - item.discountamount}})</p>
+                </a>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

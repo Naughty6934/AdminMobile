@@ -1,4 +1,4 @@
-adminApp.controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $timeout, $state, AuthService, $ionicModal, $stateParams, $rootScope, $ionicSideMenuDelegate) {
+adminApp.controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $timeout, $state, AuthService, $ionicModal, $stateParams, $rootScope, $ionicSideMenuDelegate, ProductService) {
 
     $rootScope.ordersConfirmed = [];
     $rootScope.ordersWait = [];
@@ -19,6 +19,11 @@ adminApp.controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $ti
     $scope.showInfiniteWait = true;
     $scope.showInfiniteReject = true;
     $scope.showInfiniteAccept = true;
+    $rootScope.badgeProduct = 0;
+    $rootScope.countProduct = function(){
+        $rootScope.badgeProduct = ProductService.getCountProduct();
+    };
+    $rootScope.countProduct();
 
     $scope.$on('$ionicView.enter', function () {
         $ionicSideMenuDelegate.canDragContent(true);
@@ -171,7 +176,7 @@ adminApp.controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $ti
         $state.go('app.tab.detailorder', { data: JSON.stringify(data) });
         AuthService.getDeliverNearBy(data)
             .then(function (order) {
-                console.log(order);
+                // console.log(order);
                 $rootScope.delivers = order;
             });
     }
@@ -181,7 +186,7 @@ adminApp.controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $ti
         $state.go('app.tab.detailorder2', { data: JSON.stringify(data) });
         AuthService.getDeliverNearBy(data)
             .then(function (order) {
-                console.log(order);
+                // console.log(order);
                 $rootScope.delivers = order;
             });
     }
