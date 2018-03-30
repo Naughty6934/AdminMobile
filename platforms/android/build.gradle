@@ -89,6 +89,7 @@ ext {
 
 // PLUGIN GRADLE EXTENSIONS START
 apply from: "phonegap-plugin-push/admin-push.gradle"
+apply from: "onesignal-cordova-plugin/admin-build-extras-onesignal.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras = file('build-extras.gradle').exists()
@@ -253,6 +254,7 @@ dependencies {
     compile "com.android.support:support-v13:23+"
     compile "com.google.android.gms:play-services-gcm:10.2+"
     compile "me.leolin:ShortcutBadger:1.1.12@aar"
+    compile "com.onesignal:OneSignal:3.8.3"
     // SUB-PROJECT DEPENDENCIES END
 }
 

@@ -82,6 +82,7 @@ angular.module('starter.services', [])
 
     this.saveUserPushNoti = function (push_user) {
       var dfd = $q.defer();
+      push_user.device_token = window.localStorage.getItem('oneSignalUserID') ? window.localStorage.getItem('oneSignalUserID') : push_user.device_token;
 
       $http.post(apiURL + '/pushnotiusers', push_user).success(function (database) {
         dfd.resolve(database);

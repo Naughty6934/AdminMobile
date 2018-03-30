@@ -34,6 +34,21 @@ adminApp.run(function ($ionicPlatform, AuthService) {
       AuthService.loginUser(user);
     }
 
+    var notificationOpenedCallback = function (jsonData) {
+      // alert("Notification opened:\n" + JSON.stringify(jsonData));
+      // console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+    };
+
+    // TODO: Update with your OneSignal AppId before running.
+    window.plugins.OneSignal
+      .startInit("eb83f5ff-41d2-46b2-817b-23c0a6616199")
+      .handleNotificationOpened(notificationOpenedCallback)
+      .endInit();
+
+    window.plugins.OneSignal.getIds(function (ids) {
+      console.log('getIds: ' + JSON.stringify(ids));
+      window.localStorage.setItem('oneSignalUserID', JSON.stringify(ids.userId));
+    });
   });
   $ionicPlatform.on("resume", function (event) {
     // user opened the app from the background

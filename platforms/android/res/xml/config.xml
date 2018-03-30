@@ -25,7 +25,10 @@
     <feature name="PushNotification">
         <param name="android-package" value="com.adobe.phonegap.push.PushPlugin" />
     </feature>
-    <name>ผู้ดูแลระบบtest</name>
+    <feature name="OneSignalPush">
+        <param name="android-package" value="com.plugin.gcm.OneSignalPush" />
+    </feature>
+    <name>ผู้ดูแลระบบ</name>
     <description>
         ยักษ์ จับมือ โจร ส่งถึงบ้าน
     </description>

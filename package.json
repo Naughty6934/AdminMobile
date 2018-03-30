@@ -9,6 +9,7 @@
     "gulp-minify-css": "^0.3.0",
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^2.0.4",
+    "onesignal-cordova-plugin": "^2.3.3",
     "phonegap-plugin-push": "~1.10.0"
   },
   "devDependencies": {
@@ -41,10 +42,11 @@
     "plugins": {
       "phonegap-plugin-push": {
         "SENDER_ID": "816604195373"
-      }
+      },
+      "onesignal-cordova-plugin": {}
     }
   },
-  "script":{
-    "build":"ionic-app-scripts build --prod"
+  "script": {
+    "build": "ionic-app-scripts build --prod"
   }
 }
