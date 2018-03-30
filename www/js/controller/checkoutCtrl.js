@@ -92,9 +92,11 @@ adminApp.controller('CheckoutCtrl', function ($scope, $state, $ionicModal, AuthS
         });
     };
     $scope.calculate = function (product) {
-        ProductService.addProductToCart(product, true);
+        var data = product;
+        data.qty = parseInt(product.qty);
+        ProductService.addProductToCart(data, true);
         $scope.products = ProductService.getCartProducts();
-        product.amount = product.qty * product.product.price;
+        product.amount = parseInt(product.qty) * product.product.price;
         $rootScope.countProduct();
         $scope.getTotal();
     };
@@ -199,7 +201,7 @@ adminApp.controller('CheckoutCtrl', function ($scope, $state, $ionicModal, AuthS
                     } else {
                         $scope.order.shipping.sharelocation.latitude = '';
                         $scope.order.shipping.sharelocation.longitude = '';
-                        ProductService.saveOrder($scope.order).then(function (res) {             
+                        ProductService.saveOrder($scope.order).then(function (res) {
                             ProductService.clearCart();
                             alert('สร้างการสั่งซื้อเรียบร้อยแล้ว');
                             $state.go('app.tab.confirmed');
@@ -223,5 +225,26 @@ adminApp.controller('CheckoutCtrl', function ($scope, $state, $ionicModal, AuthS
                     alert(error.message);
                 }
             });
+    };
+
+    $scope.chkPopupNumber = function (numID) {
+        var nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        var status = false;
+        nums.forEach(function (num) {
+            if (numID.length > 1) {
+                if (numID.substr(numID.length - 1) === num) {
+                    status = true;
+                }
+            } else {
+                if (numID === num) {
+                    status = true;
+                }
+            }
+
+        });
+
+        if (!status) {
+            $scope.productGotoCart.qty = $scope.productGotoCart.qty.slice(0, $scope.productGotoCart.qty.length - 1);
+        }
     };
 });

@@ -7,7 +7,7 @@ adminApp.controller('ProductDetailCtrl', function ($scope, $state, $ionicModal, 
         $scope.product = res;
         $ionicLoading.hide();
     }, function (err) {
-        $ionicLoading.hide();        
+        $ionicLoading.hide();
         alert(err.message);
     });
     $scope.productGotoCart = {
@@ -98,5 +98,26 @@ adminApp.controller('ProductDetailCtrl', function ($scope, $state, $ionicModal, 
             });
         }
 
+    };
+
+    $scope.chkPopupNumber = function (numID) {
+        var nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        var status = false;
+        nums.forEach(function (num) {
+            if (numID.length > 1) {
+                if (numID.substr(numID.length - 1) === num) {
+                    status = true;
+                }
+            } else {
+                if (numID === num) {
+                    status = true;
+                }
+            }
+
+        });
+
+        if (!status) {
+            $scope.productGotoCart.qty = $scope.productGotoCart.qty.slice(0, $scope.productGotoCart.qty.length - 1);
+        }
     };
 });

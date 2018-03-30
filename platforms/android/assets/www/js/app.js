@@ -15,8 +15,8 @@ adminApp.constant('config', {
 })
 adminApp.run(function ($ionicPlatform, AuthService) {
   $ionicPlatform.ready(function () {
-    var devicePlatform = device.platform;
-    window.localStorage.adminAppPlatform = devicePlatform;
+    // var devicePlatform = device.platform;
+    // window.localStorage.adminAppPlatform = devicePlatform;
 
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)

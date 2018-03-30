@@ -62,6 +62,12 @@ adminApp.controller('ConfirmedCtrl', function ($scope, $http, $ionicLoading, $ti
                 $rootScope.ordersReject = data.reject;
                 $rootScope.ordersCancel = data.cancel;
                 $rootScope.ordersComplete = data.complete;
+                // alert('confirmed' + data.confirmed.length);
+                // alert('wait' + data.wait.length);
+                // alert('accept' + data.accept.length);
+                // alert('reject' + data.reject.length);
+                // alert('cancel' + data.cancel.length);
+                // alert('complete' + data.complete.length);
                 var orders = [];
                 orders = orders.concat($rootScope.ordersConfirmed, $rootScope.ordersReject);
                 $rootScope.orders = orders;

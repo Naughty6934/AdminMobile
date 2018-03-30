@@ -4,7 +4,7 @@
 <span class="popup-product-price">ระบุจำนวนสั่งซื้อ</span>
 <div class="row product-options">
     <div class="col col-100 border-1">
-        <input type="number" ng-model="productGotoCart.qty"></input>
+        <input type="text" ng-model="productGotoCart.qty" ng-change="chkPopupNumber(productGotoCart.qty)"></input>
     </div>
 </div>
 <span class="popup-product-price danger-coler-text" ng-if="showError">คุณระบุจำนวนไม่ถูกต้อง!!</span>
