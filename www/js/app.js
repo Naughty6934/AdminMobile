@@ -40,15 +40,17 @@ adminApp.run(function ($ionicPlatform, AuthService) {
     };
 
     // TODO: Update with your OneSignal AppId before running.
-    window.plugins.OneSignal
-      .startInit("eb83f5ff-41d2-46b2-817b-23c0a6616199")
-      .handleNotificationOpened(notificationOpenedCallback)
-      .endInit();
+    if (window.plugins) {
+      window.plugins.OneSignal
+        .startInit("eb83f5ff-41d2-46b2-817b-23c0a6616199")
+        .handleNotificationOpened(notificationOpenedCallback)
+        .endInit();
 
-    window.plugins.OneSignal.getIds(function (ids) {
-      console.log('getIds: ' + JSON.stringify(ids));
-      window.localStorage.setItem('oneSignalUserID', JSON.stringify(ids.userId));
-    });
+      window.plugins.OneSignal.getIds(function (ids) {
+        console.log('getIds: ' + JSON.stringify(ids));
+        window.localStorage.setItem('oneSignalUserID', JSON.stringify(ids.userId));
+      });
+    }
   });
   $ionicPlatform.on("resume", function (event) {
     // user opened the app from the background
@@ -76,7 +78,9 @@ adminApp.config(function ($httpProvider) {
 
 adminApp.run(function ($rootScope, $ionicLoading) {
   $rootScope.$on('loading:show', function () {
-    $ionicLoading.show({ template: 'กรุณารอสักครู่' })
+    $ionicLoading.show({
+      template: 'กรุณารอสักครู่'
+    })
   })
 
   $rootScope.$on('loading:hide', function () {
@@ -400,8 +404,7 @@ adminApp.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvid
           controller: 'FriendsCtrl'
         }
       }
-    })
-    ;
+    });
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');

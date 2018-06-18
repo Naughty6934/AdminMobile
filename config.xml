@@ -91,4 +91,5 @@
         <variable name="SENDER_ID" value="816604195373" />
     </plugin>
     <plugin name="onesignal-cordova-plugin" spec="^2.3.3" />
+    <preference name="SplashShowOnlyFirstTime" value="false" />
 </widget>
