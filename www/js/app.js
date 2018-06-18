@@ -40,15 +40,14 @@ adminApp.run(function ($ionicPlatform, AuthService) {
     };
 
     // TODO: Update with your OneSignal AppId before running.
-    if (window.plugins) {
+    if (window.OneSignal) {
       window.plugins.OneSignal
-        .startInit("eb83f5ff-41d2-46b2-817b-23c0a6616199")
+        .startInit("d70cd18c-0d4a-49eb-ab23-97be42a22fa4")
         .handleNotificationOpened(notificationOpenedCallback)
         .endInit();
 
       window.plugins.OneSignal.getIds(function (ids) {
-        console.log('getIds: ' + JSON.stringify(ids));
-        window.localStorage.setItem('oneSignalUserID', JSON.stringify(ids.userId));
+        window.localStorage.setItem('oneSignalUserID', ids.userId);
       });
     }
   });

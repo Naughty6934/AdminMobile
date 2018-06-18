@@ -10,7 +10,8 @@
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^2.0.4",
     "onesignal-cordova-plugin": "^2.4.1",
-    "phonegap-plugin-push": "~1.10.0"
+    "phonegap-plugin-push": "~1.10.0",
+    "cordova-android": "~6.2.3"
   },
   "devDependencies": {
     "@ionic/cli-plugin-gulp": "1.0.1",
@@ -37,7 +38,8 @@
   ],
   "cordova": {
     "platforms": [
-      "ios"
+      "ios",
+      "android"
     ],
     "plugins": {
       "phonegap-plugin-push": {
