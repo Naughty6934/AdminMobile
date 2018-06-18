@@ -85,7 +85,7 @@ angular.module('starter.services', [])
       push_user.device_token = window.localStorage.getItem('oneSignalUserID') ? window.localStorage.getItem('oneSignalUserID') : push_user.device_token;
       // window.plugins.OneSignal.getIds(function (ids) {
         // push_user.device_token = ids.userId;
-        alert(JSON.stringify(push_user.device_token));
+        // alert(JSON.stringify(push_user.device_token));
         $http.post(apiURL + '/pushnotiusers', push_user).success(function (database) {
           dfd.resolve(database);
         }).error(function (error) {
